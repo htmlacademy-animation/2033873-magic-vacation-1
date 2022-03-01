@@ -54,6 +54,32 @@
     }
   }
 
+  @media (min-width: $mobile) {
+    &:hover,
+    &:focus,
+    .social-block--active & {
+      & + .social-block__list > li {
+        & > .social-block__link {
+          transform: translateY(10px);
+          opacity: 0;
+
+          animation-duration: 0.3s;
+          animation-timing-function: ease;
+          animation-fill-mode: forwards;
+          animation-name: appear-fadeIn;
+        }
+
+        &:nth-child(2) > .social-block__link {
+          animation-delay: 0.1s;
+        }
+
+        &:nth-child(3) > .social-block__link {
+          animation-delay: 0.2s;
+        }
+      }
+    }
+  }
+
   &:focus {
     color: $c-purple;
     outline: none;
