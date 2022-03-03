@@ -35,6 +35,13 @@
     background-color: $c-light;
     border: 2px solid $c-light;
     z-index: -1;
+
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform .5s cubic-bezier(.07,.71,.65,1.59);
+
+    body.loaded & {
+      transform: translate(-50%, -50%)
+    }
   }
 
   svg {
@@ -60,13 +67,7 @@
     .social-block--active & {
       & + .social-block__list > li {
         & > .social-block__link {
-          transform: translateY(10px);
-          opacity: 0;
-
-          animation-duration: 0.3s;
-          animation-timing-function: ease;
-          animation-fill-mode: forwards;
-          animation-name: appear-fadeIn;
+          animation: fadeInUp .3s ease both;
         }
 
         &:nth-child(2) > .social-block__link {
