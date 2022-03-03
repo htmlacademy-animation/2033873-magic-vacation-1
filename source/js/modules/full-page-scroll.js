@@ -52,13 +52,31 @@ export default class FullPageScroll {
   }
 
   changeVisibilityDisplay() {
+    const prevActiveScreen = document.querySelector(`.screen.active`);
+    const nextActiveScreen = this.screenElements[this.activeScreen];
+
+    // особый вид анимации переключения с вкладки история на вкладку призы
+    if (prevActiveScreen && prevActiveScreen.classList.contains(`screen--story`) && nextActiveScreen.classList.contains(`screen--prizes`)) {
+      nextActiveScreen.classList.remove(`screen--hidden`);
+      nextActiveScreen.classList.add(`active`, `animated`);
+
+      setTimeout(()=>{
+        prevActiveScreen.classList.add(`screen--hidden`);
+        prevActiveScreen.classList.remove(`active`);
+
+        nextActiveScreen.classList.remove(`animated`);
+      }, 400);
+
+      return;
+    }
+
     this.screenElements.forEach((screen) => {
       screen.classList.add(`screen--hidden`);
       screen.classList.remove(`active`);
     });
-    this.screenElements[this.activeScreen].classList.remove(`screen--hidden`);
+    nextActiveScreen.classList.remove(`screen--hidden`);
     setTimeout(() => {
-      this.screenElements[this.activeScreen].classList.add(`active`);
+      nextActiveScreen.classList.add(`active`);
     }, 100);
   }
 
