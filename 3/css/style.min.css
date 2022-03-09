@@ -922,6 +922,9 @@ button.swiper-pagination-bullet {
 html {
   box-sizing: border-box;
 }
+html.is-transitioning {
+  pointer-events: none;
+}
 
 *,
 *::after,
@@ -3575,14 +3578,6 @@ body.loaded .screen__footer {
 .screen--prizes {
   background-color: #5f458c;
 }
-.screen--prizes.animated {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  animation: slideInUpBig 0.4s ease;
-}
 
 .screen--game {
   position: relative;
@@ -4199,6 +4194,31 @@ body.loaded .social-block__toggler::before {
     width: 10px;
     height: 10px;
   }
+}
+
+.transition {
+  position: fixed;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
+.transition--background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #5f458c;
+  transform: translateY(-100%);
+}
+.transition--background__show {
+  animation: slideInUpBig 0.4s ease-in forwards;
 }
 
 /*# sourceMappingURL=style.min.css.map*/
