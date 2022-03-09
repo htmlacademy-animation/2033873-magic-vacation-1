@@ -313,15 +313,6 @@
 
 .screen--prizes {
   background-color: $c-dark;
-
-  &.animated {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    animation: slideInUpBig .4s ease;
-  }
 }
 
 .screen--game {
