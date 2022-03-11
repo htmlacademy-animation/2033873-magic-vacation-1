@@ -6,7 +6,7 @@
 
   to {
     opacity: 1;
-    transform: translateX(0)
+    transform: translateX(0);
   }
 }
 
@@ -18,6 +18,16 @@
 
   to {
     opacity: 1;
-    transform: translateY(0)
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUpBig {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
   }
 }

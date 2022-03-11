@@ -8,6 +8,7 @@ export default class FullPageScroll {
 
     this.screenElements = document.querySelectorAll(`.screen:not(.screen--result)`);
     this.menuElements = document.querySelectorAll(`.page-header__menu .js-menu-link`);
+    this.transitionBackground = document.querySelector(`.transition--background`);
 
     this.activeScreen = 0;
     this.onScrollHandler = this.onScroll.bind(this);
@@ -52,14 +53,45 @@ export default class FullPageScroll {
   }
 
   changeVisibilityDisplay() {
+    const prevActiveScreen = document.querySelector(`.screen.active`);
+    const nextActiveScreen = this.screenElements[this.activeScreen];
+
+    // особый вид анимации переключения с вкладки история на вкладку призы
+    if (prevActiveScreen && prevActiveScreen.classList.contains(`screen--story`) && nextActiveScreen.classList.contains(`screen--prizes`)) {
+      this.showTransitionScreen(prevActiveScreen, nextActiveScreen);
+
+      return;
+    }
+
     this.screenElements.forEach((screen) => {
       screen.classList.add(`screen--hidden`);
       screen.classList.remove(`active`);
     });
-    this.screenElements[this.activeScreen].classList.remove(`screen--hidden`);
+    nextActiveScreen.classList.remove(`screen--hidden`);
     setTimeout(() => {
-      this.screenElements[this.activeScreen].classList.add(`active`);
+      nextActiveScreen.classList.add(`active`);
     }, 100);
+  }
+
+  /**
+  * Запускаем плавный переход между экранами
+  *
+  * @param {HTMLElement} prevActiveScreen
+  * @param {HTMLElement} nextActiveScreen
+  */
+  showTransitionScreen(prevActiveScreen, nextActiveScreen) {
+    document.documentElement.classList.add(`is-transitioning`);
+    this.transitionBackground.classList.add(`transition--background__show`);
+
+    setTimeout(()=>{
+      nextActiveScreen.classList.remove(`screen--hidden`);
+      nextActiveScreen.classList.add(`active`);
+      prevActiveScreen.classList.remove(`active`);
+      prevActiveScreen.classList.add(`screen--hidden`);
+
+      document.documentElement.classList.remove(`is-transitioning`);
+      this.transitionBackground.classList.remove(`transition--background__show`);
+    }, 400);
   }
 
   changeActiveMenuItem() {
