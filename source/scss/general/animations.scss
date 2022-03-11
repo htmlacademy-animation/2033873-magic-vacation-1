@@ -1,6 +1,6 @@
 @keyframes fadeInRight {
   from {
-    transform: translateX(2rem);
+    transform: translateX(4rem);
     opacity: 0;
   }
 
@@ -22,6 +22,16 @@
   }
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 @keyframes slideInUpBig {
   from {
     transform: translateY(100%);
@@ -29,5 +39,37 @@
 
   to {
     transform: translateY(0);
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeInColor {
+  from {
+    color: transparent;
+  }
+
+  to {
+    color: $c-dark;
+  }
+}
+
+@keyframes buttonAppear {
+  from {
+    opacity: 0;
+    width: 6rem;
+  }
+
+  to {
+    opacity: 1;
+    width: 100%;
   }
 }
