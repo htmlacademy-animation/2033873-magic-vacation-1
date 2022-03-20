@@ -45,7 +45,7 @@
   border-radius: 3rem;
   outline: none;
 
-  transition: width .5s ease, padding .5s ease;;
+  transition: width 0.5s ease, padding 0.5s ease;
 
   &:focus {
     border: 1px solid $c-purple;
@@ -98,6 +98,10 @@
 .form__button {
   flex: none;
 
+  &--animated {
+    animation: fadeIn 0.5s ease-out 1.3s both, colorIn 0.7s ease-out 1.6s both;
+  }
+
   @media (orientation: portrait) {
     position: relative;
     padding: 0;
@@ -141,8 +145,71 @@
 }
 
 .form--result {
+  .form__labeled-field {
+    position: relative;
+    flex: none;
+    width: calc(100% - 31rem);
+    display: flex;
+    justify-content: end;
+
+    & > .form__field {
+      width: 100%;
+    }
+
+
+    @media (min-width: $stop-scaling) {
+      width: calc(100% - 310px);
+    }
+
+    @media (orientation: portrait) {
+      width: calc(100% - 5rem);
+    }
+
+    @media (max-width: $tablet) and (orientation: landscape) {
+      width: calc(100% - 9rem);
+    }
+
+    @media (max-width: $mobile) and (orientation: landscape) {
+      width: calc(100% - 5rem);
+    }
+  }
+
   .form__field {
     width: calc(100% - 31rem);
+    padding: 0 2em;
+
+    animation: inputFieldAppear 0.5s ease-out 1.3s both;
+
+    & + label {
+      position: absolute;
+      left: 2rem;
+      top: 0;
+      display: flex;
+      align-items: center;
+
+      font-size: 2.4rem;
+      line-height: 1.2;
+      height: 6rem;
+      pointer-events: none;
+
+      @media (max-width: $tablet) {
+        height: 4rem;
+        font-size: 1.6em;
+      }
+    }
+
+    & + label::before {
+      content: attr(data-label);
+      color: $c-dark;
+      text-transform: uppercase;
+
+      animation: fadeIn 0.5s ease-out 1.5s both;
+
+    }
+
+    &:focus + label::before, &:valid + label::before {
+      visibility: hidden;
+    }
 
     @media (min-width: $stop-scaling) {
       width: calc(100% - 310px);

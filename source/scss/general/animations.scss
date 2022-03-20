@@ -196,3 +196,10 @@
     transform: translate(11em, 7em);
   }
 }
+
+@keyframes inputFieldAppear {
+  from {
+    width: 0;
+    padding: 0;
+  }
+}

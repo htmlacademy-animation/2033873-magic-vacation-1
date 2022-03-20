@@ -114,7 +114,8 @@
   left: 0;
   z-index: 100;
   opacity: 0.5;
-  display: none;
+  // TODO: временно разблокированы кнопки для проверки анимации
+  // display: none;
 }
 
 .game__button {
