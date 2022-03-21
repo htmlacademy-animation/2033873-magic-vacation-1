@@ -39,19 +39,41 @@
     right: -1rem;
   }
 
-  picture {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-
   img {
     display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
+    position: absolute;
   }
+
+  .image_flamingo {
+    height: 15em;
+    animation: flamingo 4s ease-in-out 1s both;
+
+    transform-origin: 50% 60%
+  }
+
+  .image_suitcase {
+    height: 23em;
+    animation: fadeIn 0.35s ease-out 1s both,
+      suitcase 0.5s $bounce-timing-function 1s both;
+  }
+
+  .image_leaf-blue-1 {
+    transform-origin: bottom left;
+
+    animation: fadeIn 1s ease-out 1s both, leaf1 2.5s ease-in-out 1s both;
+  }
+
+  .image_leaf-blue-2 {
+    transform-origin: right;
+
+    animation: fadeIn 1s ease-out 1s both, leaf2 2.5s ease-in-out 1s both;
+  }
+}
+
+.image_leaf-green {
+  transform-origin: bottom left;
+
+  animation: fadeIn 1s ease-out 1.3s both, leaf-green 2.5s ease-in-out 1s both;
 }
 
 .result__title {
