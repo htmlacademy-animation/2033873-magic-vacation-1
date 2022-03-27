@@ -299,11 +299,23 @@
       color: $c-purple;
       outline: none;
 
+      body.blue & {
+        color: $c-light-blue;
+      }
+
+      body.light-blue & {
+        color: $c-blue;
+      }
+
+      body.purple & {
+        color: $c-dark;
+      }
+
       &::after {
         opacity: 1;
         width: 100%;
         left: 0;
-        background-color: $c-purple;
+        background-color: currentColor;
       }
     }
   }
