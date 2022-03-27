@@ -98,12 +98,12 @@
   line-height: 2rem;
 
   .swiper-slide-active & {
-    animation: fadeInRight .5s ease .3s both;
+    animation: fadeInRight 0.5s ease 0.3s both;
   }
 
   @media (min-width: $mobile) {
     .swiper-slide-next & {
-      animation: fadeInRight .5s ease .6s both;
+      animation: fadeInRight 0.5s ease 0.6s both;
     }
   }
 
@@ -160,15 +160,43 @@
 }
 
 .slider__control {
+  --duration: 0.3s;
+  --timing-function: ease-in-out;
+
   @include btn-reset;
   position: relative;
   width: 4rem;
   height: 4rem;
   color: $c-dark;
+  opacity: 0;
+  transition: opacity var(--duration) var(--timing-function);
+  will-change: opacity;
 
   @media (min-width: $stop-scaling) {
     width: 40px;
     height: 40px;
+  }
+
+  .screen--story.active & {
+    &.slider__control--prev {
+      animation: rotateSlideLeftToRight var(--duration) var(--timing-function)
+        forwards;
+    }
+
+    &.slider__control--next {
+      animation: rotateSlideRightToLeft var(--duration) var(--timing-function)
+        forwards;
+    }
+
+    &.slider__control--prev,
+    &.slider__control--next {
+      opacity: 1;
+
+      &.swiper-button-disabled {
+        opacity: 0.5;
+        pointer-events: none;
+      }
+    }
   }
 
   &::before {
@@ -223,11 +251,6 @@
       background-color: $c-purple;
       border-color: $c-purple;
     }
-  }
-
-  &.swiper-button-disabled {
-    opacity: 0.5;
-    pointer-events: none;
   }
 }
 
