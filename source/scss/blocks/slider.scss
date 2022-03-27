@@ -160,7 +160,7 @@
 }
 
 .slider__control {
-  --duration: 0.3s;
+  --duration: .5s;
   --timing-function: ease-in-out;
 
   @include btn-reset;

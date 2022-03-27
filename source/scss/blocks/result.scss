@@ -48,7 +48,7 @@
     height: 15em;
     animation: flamingo 4s ease-in-out 1s both;
 
-    transform-origin: 50% 60%
+    transform-origin: 50% 60%;
   }
 
   .image_suitcase {
@@ -126,6 +126,9 @@
 }
 
 .result__button {
+  --duration: .5s;
+  --timing-function: ease-in-out;
+
   @include btn-reset;
   display: flex;
   align-items: center;
@@ -137,6 +140,10 @@
   font-size: 2.4rem;
   line-height: 1.2;
   color: $c-light;
+
+  .screen--result.screen--show & {
+    animation: fadeIn var(--duration) var(--timing-function) forwards;
+  }
 
   @media (min-width: $stop-scaling) {
     margin: auto auto 10px;
@@ -169,6 +176,11 @@
     width: 4rem;
     height: 4rem;
     color: $c-dark;
+
+    .screen--result.screen--show & {
+      animation: rotateSlideRightToLeft var(--duration) var(--timing-function)
+        forwards;
+    }
 
     @media (min-width: $stop-scaling) {
       margin-left: 15px;
