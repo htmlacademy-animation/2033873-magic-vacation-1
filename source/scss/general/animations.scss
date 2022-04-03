@@ -221,3 +221,20 @@
     transform: initial;
   }
 }
+
+@keyframes mobileFooterAppear {
+  from {
+    transform: translate(calc(-100% + 3.5rem), calc(100% - 3.5rem));
+    color: transparent;
+  }
+
+  60% {
+    transform: initial;
+    color: transparent;
+  }
+
+  to {
+    transform: initial;
+    color: $c-dark;
+  }
+}
