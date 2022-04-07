@@ -2959,6 +2959,13 @@ body.purple .page-header__menu a:hover, body.purple .page-header__menu a:focus {
   display: block;
   position: absolute;
 }
+.result__image img.image__full-screen {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
 .result__image .image_flamingo {
   height: 15em;
   animation: flamingo 4s ease-in-out 1s both;
