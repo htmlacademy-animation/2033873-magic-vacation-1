@@ -49,54 +49,44 @@
 
   transform: translateY(100%);
   opacity: 0;
-  transition: transform .7s $custom-timing-function, opacity .7s $custom-timing-function;
+  transition: transform 0.7s $custom-timing-function,
+    opacity 0.7s $custom-timing-function;
 
   body.loaded & {
     transform: translateY(0);
     opacity: 1;
   }
 
-
   @media (max-width: $tablet) and (orientation: portrait) {
-    width: 3.5rem;
-    height: 3.5rem;
+    width: 100%;
+    height: 18rem;
     border-radius: 0 3.6rem 0 0;
+    transform: translate(calc(-100%), calc(100%));
+    transition: transform .3s ease;
 
-    &.screen__footer--full {
-      width: 100%;
-      height: 18rem;
+    &-wrapper {
+      padding: 0 1rem;
+    }
+
+    body.loaded & {
+      transform: translate(calc(-100% + 3.5rem), calc(100% - 3.5rem));
+
+      &.screen__footer--is_opening {
+        animation: mobileFooterAppear .6s ease forwards;
+      }
+
+      &.screen__footer--is_closing {
+        animation: mobileFooterAppear .6s ease reverse forwards;
+      }
+
+      &.screen__footer--full {
+        transform: initial;
+      }
     }
   }
 
   @media (max-width: $mobile) and (orientation: landscape) {
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 0 3.6rem 0 0;
-
-    &.screen__footer--full {
-      width: 100%;
-      height: 16rem;
-    }
-  }
-}
-
-.screen__footer-wrapper {
-  @include container;
-
-  @media (max-width: $tablet) and (orientation: portrait) {
-    opacity: 0;
-
-    .screen__footer--full & {
-      opacity: 1;
-    }
-  }
-
-  @media (max-width: $mobile) and (orientation: landscape) {
-    opacity: 0;
-
-    .screen__footer--full & {
-      opacity: 1;
-    }
+    height: 16rem;
   }
 }
 
@@ -113,8 +103,14 @@
 
   @media (max-width: $tablet) and (orientation: portrait) {
     display: block;
+    left: initial;
+    bottom: initial;
+    right: 0;
+    top: 0;
+    width: 3.5rem;
+    height: 3.5rem;
 
-    .screen__footer--full & {
+    .screen__footer--is_opening &, .screen__footer--full & {
       opacity: 0;
       pointer-events: none;
     }
@@ -123,7 +119,7 @@
   @media (max-width: $mobile) and (orientation: landscape) {
     display: block;
 
-    .screen__footer--full & {
+    .screen__footer--is_opening &, .screen__footer--full & {
       opacity: 0;
       pointer-events: none;
     }
@@ -155,18 +151,7 @@
     opacity: 0;
     pointer-events: none;
 
-    .screen__footer--full & {
-      opacity: 1;
-      pointer-events: auto;
-    }
-  }
-
-  @media (max-width: $mobile) and (orientation: landscape) {
-    display: block;
-    opacity: 0;
-    pointer-events: none;
-
-    .screen__footer--full & {
+    .screen__footer--is_opening &, .screen__footer--full & {
       opacity: 1;
       pointer-events: auto;
     }
@@ -300,7 +285,8 @@
 
 .screen--story {
   background-color: $c-dark;
-  background-image: url("../img/slide1.jpg"), url("../img/slide2.jpg"), url("../img/slide3.jpg"), url("../img/slide4.jpg");
+  background-image: url("../img/slide1.jpg"), url("../img/slide2.jpg"),
+    url("../img/slide3.jpg"), url("../img/slide4.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

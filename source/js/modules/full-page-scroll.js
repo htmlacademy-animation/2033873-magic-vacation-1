@@ -1,4 +1,5 @@
 import throttle from 'lodash/throttle';
+import bodyTheme from '../helpers/body-theme'
 
 export default class FullPageScroll {
   constructor() {
@@ -55,6 +56,14 @@ export default class FullPageScroll {
   changeVisibilityDisplay() {
     const prevActiveScreen = document.querySelector(`.screen.active`);
     const nextActiveScreen = this.screenElements[this.activeScreen];
+
+    if (prevActiveScreen && prevActiveScreen.classList.contains(`screen--story`)) {
+      bodyTheme.clearBodyTheme()
+    }
+
+    if (nextActiveScreen.classList.contains(`screen--story`)) {
+      bodyTheme.applyTheme()
+    }
 
     // особый вид анимации переключения с вкладки история на вкладку призы
     if (prevActiveScreen && prevActiveScreen.classList.contains(`screen--story`) && nextActiveScreen.classList.contains(`screen--prizes`)) {
