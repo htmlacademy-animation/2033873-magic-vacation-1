@@ -14,6 +14,9 @@ export default class FullPageScroll {
     this.activeScreen = 0;
     this.onScrollHandler = this.onScroll.bind(this);
     this.onUrlHashChengedHandler = this.onUrlHashChanged.bind(this);
+
+    this.prizesItemJourney = document.getElementById('journeysAnimation')
+    this.journeyItem = document.querySelector('.prizes__item--journeys')
   }
 
   init() {
@@ -68,9 +71,18 @@ export default class FullPageScroll {
     // особый вид анимации переключения с вкладки история на вкладку призы
     if (prevActiveScreen && prevActiveScreen.classList.contains(`screen--story`) && nextActiveScreen.classList.contains(`screen--prizes`)) {
       this.showTransitionScreen(prevActiveScreen, nextActiveScreen);
+      setTimeout(()=>{
+        this.startPrizesAnimation()
+      }, 500)
 
       return;
     }
+
+  if (nextActiveScreen.classList.contains(`screen--prizes`)) {
+    setTimeout(()=>{
+      this.startPrizesAnimation()
+    }, 100)
+  }
 
     this.screenElements.forEach((screen) => {
       screen.classList.add(`screen--hidden`);
@@ -101,6 +113,25 @@ export default class FullPageScroll {
       document.documentElement.classList.remove(`is-transitioning`);
       this.transitionBackground.classList.remove(`transition--background__show`);
     }, 400);
+  }
+
+  startPrizesAnimation() {
+    if (this.journeyItem.classList.contains('active')) {
+      return;
+    }
+
+    const svgDoc = document.getElementById("journeysPrize").contentDocument;
+
+    if (!svgDoc) {
+      return
+    }
+
+    const animationTag = svgDoc.getElementById('journeysAnimation')
+
+    if (animationTag) {
+      this.journeyItem.classList.add('active')
+      animationTag.beginElement()
+    }
   }
 
   changeActiveMenuItem() {
