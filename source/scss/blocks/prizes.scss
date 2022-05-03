@@ -115,9 +115,10 @@
     margin-left: 75px;
   }
 
-  @media (max-width: $tablet) and (orientation: portrait) {
+  @media (max-width: $mobile) and (orientation: portrait) {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
+    height: 20vh;
     margin-left: 0;
     margin-bottom: 2.8rem;
 
@@ -133,6 +134,10 @@
   &--journeys {
     transition: transform 0.8s ease-out 3.3s;
     transform: translateX(330px);
+
+    @media (max-width: $mobile) and (orientation: portrait) {
+      transform: translateX(0);
+    }
 
     &.active {
       transform: translateX(0)
@@ -151,17 +156,12 @@
 
       @media (max-width: $tablet) and (orientation: portrait) {
         left: 0;
-        bottom: 0;
+        bottom: 1.8rem;
         width: 9.4rem;
       }
 
       @media (max-width: $tablet) and (orientation: landscape) {
         left: -2rem;
-        width: 13rem;
-      }
-
-      @media (max-width: $mobile) and (orientation: landscape) {
-        width: 10rem;
       }
     }
   }
