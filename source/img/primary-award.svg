@@ -467,7 +467,7 @@
     </line>
   </g>
 
-  <g>
+  <g id="mountain">
     <path
       d="M289.94,327.88H244.88L212.8,296.58a1.89,1.89,0,0,0-2.44,0l-10.2,10.23a1.72,1.72,0,0,1-2.25,0l-19-20.17a2.4,2.4,0,0,0-3.1,0l-26.42,25.64a1.71,1.71,0,0,1-2.25,0l-2.63-2.92a1.71,1.71,0,0,0-2.31,0L124.63,329H80.78"
       fill="none"
@@ -477,6 +477,7 @@
       stroke-width="2"
     >
       <animate
+        attributeType="XML"
         attributeName="d"
         begin="windowAppearAnimation.begin"
         end="journeysAnimation.end"
@@ -503,7 +504,7 @@
                     328 142.403 328 C 142.249 328 142.106 328 141.97 328 C 141.834 328
                     141.704 328 141.575 328 C 141.447 328 141.32 328 141.19 328 L
                     80.78 328"
-        dur=".5s"
+        dur="0.5s"
         fill="freeze"
       />
     </path>
@@ -750,8 +751,8 @@
       begin="skyAnimation.begin"
       end="journeysAnimation.end"
       attributeName="transform"
-      type="translateX"
-      values="-120; 0"
+      type="translate"
+      values="-120 0; 0 0"
       dur="0.5s"
       keySplines="0.32 0 0.12 1"
       calcMode="spline"
@@ -782,10 +783,10 @@
 
     <animateTransform
       attributeName="transform"
-      type="translateX"
+      type="translate"
       begin="windowAppearAnimation.begin"
       end="journeysAnimation.end"
-      values="-120; 0"
+      values="-120 0; 0 0"
       dur="0.5s"
       keySplines="0.32 0 0.12 1"
       calcMode="spline"
@@ -887,8 +888,8 @@
       begin="windowAppearAnimation.begin"
       end="journeysAnimation.end"
       attributeName="transform"
-      type="translateX"
-      values="-120; 0"
+      type="translate"
+      values="-120 0; 0 0"
       dur="0.5s"
       keySplines="0.32 0 0.12 1"
       calcMode="spline"
@@ -899,7 +900,7 @@
       begin="windowAppearAnimation.begin"
       end="journeysAnimation.end"
       attributeName="transform"
-      type="rotateY"
+      type="rotate"
       values="-6.4; 5; -2.5; 1.2; 0"
       keySplines="0.2 0 0.78 1;0.2 0 0.78 1;0.2 0 0.78 1;0.2 0 0.78 1"
       calcMode="spline"
