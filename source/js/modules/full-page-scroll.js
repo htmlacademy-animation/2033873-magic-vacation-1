@@ -15,8 +15,8 @@ export default class FullPageScroll {
     this.onScrollHandler = this.onScroll.bind(this);
     this.onUrlHashChengedHandler = this.onUrlHashChanged.bind(this);
 
-    this.prizesItemJourney = document.getElementById('journeysAnimation')
     this.journeyItem = document.querySelector('.prizes__item--journeys')
+    this.casesItem = document.querySelector('.prizes__item--cases')
   }
 
   init() {
@@ -120,6 +120,7 @@ export default class FullPageScroll {
       return;
     }
 
+    // анимация первого приза
     const svgDoc = document.getElementById("journeysPrize").contentDocument;
 
     if (!svgDoc) {
@@ -132,6 +133,17 @@ export default class FullPageScroll {
       this.journeyItem.classList.add('active')
       animationTag.beginElement()
     }
+
+    // анимация второго приза
+    setTimeout(() => {
+      const svgDoc = document.getElementById("casesPrize").contentDocument;
+      const animationTag = svgDoc.getElementById('casesAnimation')
+
+      if (animationTag) {
+        this.casesItem.classList.add('active')
+        animationTag.beginElement()
+      }
+    }, 3800)
   }
 
   changeActiveMenuItem() {
