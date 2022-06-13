@@ -1,5 +1,7 @@
 import throttle from "lodash/throttle";
+import { GAME_TIME_LIMIT } from "../constants";
 import bodyTheme from "../helpers/body-theme";
+import { Timer, UIElementController } from "./game";
 
 export default class FullPageScroll {
   constructor() {
@@ -24,6 +26,12 @@ export default class FullPageScroll {
     this.journeyItem = document.querySelector(".prizes__item--journeys");
     this.casesItem = document.querySelector(".prizes__item--cases");
     this.codesItem = document.querySelector(".prizes__item--codes");
+
+    this.timerRef = new UIElementController(
+      document.querySelector(".game__counter > span")
+    );
+    this.timer = null;
+    this.onTimerTimeEnd = this.onTimerTimeEnd.bind(this)
   }
 
   init() {
@@ -101,6 +109,10 @@ export default class FullPageScroll {
       setTimeout(() => {
         this.startPrizesAnimation();
       }, 100);
+    }
+
+    if (nextActiveScreen.classList.contains("screen--game") && !this.timer) {
+      this.initNewTimer()
     }
 
     this.screenElements.forEach((screen) => {
@@ -210,4 +222,25 @@ export default class FullPageScroll {
       this.activeScreen = Math.max(0, --this.activeScreen);
     }
   }
+
+  initNewTimer() {
+    this.timer = new Timer(GAME_TIME_LIMIT, this.timerRef, this.onTimerTimeEnd);
+
+      this.timer.startTimer()
+  }
+
+  onTimerTimeEnd() {
+    this.timer = null;
+    const results = document.querySelectorAll(`.screen--result`);
+    const targetEl = [].slice.call(results).find(el => el.getAttribute(`id`) === 'result3');
+    targetEl.classList.add(`screen--show`);
+    targetEl.classList.remove(`screen--hidden`);
+
+    let playBtn = document.querySelector(`.js-play`);
+    if (playBtn) {
+      playBtn.addEventListener('click', ()=>{
+        this.initNewTimer.call(this)
+      }, {once: true})
+    }
+  };
 }
