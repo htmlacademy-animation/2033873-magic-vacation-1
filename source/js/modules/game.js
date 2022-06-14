@@ -1,29 +1,26 @@
 export class Timer {
   constructor(timeLimit, timerElement, onTimeEndCallback) {
     this.timeLimit = timeLimit;
-    this.timeStarted = null;
     this.onTimeEndCallback = onTimeEndCallback;
-    this.prevTickText = "";
-    this.animationFrameId = null;
     this.timerElement = timerElement;
+    this.timeStarted = null;
+    this.animationFrameId = null;
 
-    this.timeFormatter = new Intl.DateTimeFormat("ru", {
-      minute: "numeric",
-      second: "numeric",
-    });
+    this.prevTickText = Timer.timeFormatter.format(this.timeLimit);
+    this.timerElement.updateTextContent(this.prevTickText);
 
     this.tick = this.tick.bind(this);
   }
 
   tick() {
     const now = Date.now();
-    const delta = now - this.timeStarted;
+    const delta = this.timeStarted + this.timeLimit - now;
 
-    if (delta >= this.timeLimit) {
+    if (delta <= 0) {
       return this.onTimeEnd();
     }
 
-    const newTickText = this.timeFormatter.format(delta);
+    const newTickText = Timer.timeFormatter.format(delta);
 
     if (newTickText !== this.prevTickText) {
       this.prevTickText = newTickText;
@@ -36,9 +33,6 @@ export class Timer {
   startTimer() {
     this.timeStarted = Date.now();
 
-    this.prevTickText = this.timeFormatter.format(0);
-    this.timerElement.updateTextContent(this.prevTickText);
-
     this.animationFrameId = requestAnimationFrame(this.tick);
   }
 
@@ -48,6 +42,11 @@ export class Timer {
     this.onTimeEndCallback();
   }
 }
+
+Timer.timeFormatter = new Intl.DateTimeFormat("ru", {
+  minute: "numeric",
+  second: "numeric",
+});
 
 export class UIElementController {
   constructor(elem) {
