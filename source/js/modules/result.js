@@ -9,11 +9,9 @@ export default () => {
           el.classList.remove(`screen--show`);
           el.classList.add(`screen--hidden`);
         });
-        let targetEl = [].slice.call(results).filter(function (el) {
-          return el.getAttribute(`id`) === target;
-        });
-        targetEl[0].classList.add(`screen--show`);
-        targetEl[0].classList.remove(`screen--hidden`);
+        const targetEl = [].slice.call(results).find(el => el.getAttribute(`id`) === target);
+        targetEl.classList.add(`screen--show`);
+        targetEl.classList.remove(`screen--hidden`);
       });
     }
 
