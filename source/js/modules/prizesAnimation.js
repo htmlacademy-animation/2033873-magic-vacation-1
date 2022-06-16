@@ -1,3 +1,5 @@
+import {NumbersGrowAnimation} from '../helpers/numbersGrowAnimation'
+
 class PrizesAnimation {
   constructor() {
     this.journeyItem = document.querySelector(".prizes__item--journeys");
@@ -7,6 +9,10 @@ class PrizesAnimation {
     this.journeyDesc = this.journeyItem.querySelector(".prizes__desc");
     this.casesDesc = this.casesItem.querySelector(".prizes__desc");
     this.codesDesc = this.codesItem.querySelector(".prizes__desc");
+
+    this.journeyNum = this.journeyItem.querySelector(".prizes__desc > b");
+    this.casesNum = this.casesItem.querySelector(".prizes__desc > b");
+    this.codesNum = this.codesItem.querySelector(".prizes__desc > b");
   }
 
   start() {
@@ -27,7 +33,10 @@ class PrizesAnimation {
       this.journeyItem.classList.add("active");
       animationTag.beginElement();
 
-      setTimeout(() => this.journeyDesc.classList.add("active"), 1000);
+      setTimeout(() => {
+        this.journeyDesc.classList.add("active");
+        new NumbersGrowAnimation(this.journeyNum, 3);
+      }, 1000);
     }
 
     // анимация второго приза
@@ -39,7 +48,10 @@ class PrizesAnimation {
         this.casesItem.classList.add("active");
         animationTag.beginElement();
 
-        setTimeout(() => this.casesDesc.classList.add("active"), 1000);
+        setTimeout(() => {
+          this.casesDesc.classList.add("active");
+          new NumbersGrowAnimation(this.casesNum, 7);
+        }, 1000);
       }
     }, 3800);
 
@@ -52,7 +64,10 @@ class PrizesAnimation {
         this.codesItem.classList.add("active");
         animationTag.beginElement();
 
-        setTimeout(() => this.codesDesc.classList.add("active"), 1000);
+        setTimeout(() => {
+          this.codesDesc.classList.add("active");
+          new NumbersGrowAnimation(this.codesNum, 900);
+        }, 1000);
       }
     }, 6200);
   }

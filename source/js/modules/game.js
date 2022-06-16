@@ -1,4 +1,4 @@
-import {UIElementController} from './controllers'
+import {UIElementController} from '../helpers/controllers'
 import {GAME_TIME_LIMIT} from '../constants'
 
 class Timer {

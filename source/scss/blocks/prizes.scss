@@ -109,6 +109,7 @@
 }
 
 .prizes__item {
+  position: relative;
   margin-left: 7.5rem;
 
   @media (min-width: $stop-scaling) {
@@ -181,10 +182,22 @@
 .prizes__desc {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   margin: 5.6rem 0 0 0;
   font-size: 1.8rem;
   line-height: 1.1;
+
+  position: absolute;
+  left: 0;
+  right: 0;
+
+  .prizes__item:nth-child(1) > & {
+    transform: translateX(-6rem);
+  }
+
+  .prizes__item:nth-child(2) > & {
+    transform: translateX(-3rem);
+  }
 
   @media (min-width: $stop-scaling) {
     margin-top: 56px;
@@ -240,7 +253,7 @@
     display: flex;
     align-items: flex-end;
     margin-left: 1.4rem;
-    max-width: 14rem;
+    max-width: 11rem;
 
     opacity: 0;
 
