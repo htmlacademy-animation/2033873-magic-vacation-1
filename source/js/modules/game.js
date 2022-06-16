@@ -1,4 +1,7 @@
-export class Timer {
+import {UIElementController} from './controllers'
+import {GAME_TIME_LIMIT} from '../constants'
+
+class Timer {
   constructor(timeLimit, timerElement, onTimeEndCallback) {
     this.timeLimit = timeLimit;
     this.onTimeEndCallback = onTimeEndCallback;
@@ -36,6 +39,10 @@ export class Timer {
     this.animationFrameId = requestAnimationFrame(this.tick);
   }
 
+  stopTimer() {
+    cancelAnimationFrame(this.animationFrameId);
+  }
+
   onTimeEnd() {
     cancelAnimationFrame(this.animationFrameId);
 
@@ -48,24 +55,41 @@ Timer.timeFormatter = new Intl.DateTimeFormat("ru", {
   second: "numeric",
 });
 
-export class UIElementController {
-  constructor(elem) {
-    this.elem = elem;
+class Game {
+  constructor() {
+    this.timerRef = new UIElementController(
+      document.querySelector(".game__counter > span")
+    );
+    this.timer = null;
+    this.onTimerTimeEnd = this.onTimerTimeEnd.bind(this);
   }
 
-  getTextContent() {
-    if (!this.elem) {
-      return null;
-    }
 
-    return this.elem.textContent;
-  }
-
-  updateTextContent(text) {
-    if (!this.elem) {
+  start() {
+    if (this.timer) {
       return;
     }
 
-    this.elem.textContent = text;
+    this.timer = new Timer(GAME_TIME_LIMIT, this.timerRef, this.onTimerTimeEnd);
+
+    this.timer.startTimer();
+  }
+
+  end() {
+    this.timer.stopTimer()
+
+    this.timer = null;
+  }
+
+  onTimerTimeEnd() {
+    this.timer = null;
+    const results = document.querySelectorAll(`.screen--result`);
+    const targetEl = [].slice
+      .call(results)
+      .find((el) => el.getAttribute(`id`) === "result3");
+    targetEl.classList.add(`screen--show`);
+    targetEl.classList.remove(`screen--hidden`);
   }
 }
+
+export const game = new Game()

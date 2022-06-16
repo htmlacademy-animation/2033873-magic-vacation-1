@@ -1,9 +1,13 @@
+import {game} from './game'
+
 export default () => {
   let showResultEls = document.querySelectorAll(`.js-show-result`);
   let results = document.querySelectorAll(`.screen--result`);
   if (results.length) {
     for (let i = 0; i < showResultEls.length; i++) {
       showResultEls[i].addEventListener(`click`, function () {
+        game.end()
+
         let target = showResultEls[i].getAttribute(`data-target`);
         [].slice.call(results).forEach(function (el) {
           el.classList.remove(`screen--show`);
@@ -24,6 +28,8 @@ export default () => {
         });
         document.getElementById(`messages`).innerHTML = ``;
         document.getElementById(`message-field`).focus();
+
+        game.start()
       });
     }
   }
