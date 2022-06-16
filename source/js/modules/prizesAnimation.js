@@ -3,6 +3,10 @@ class PrizesAnimation {
     this.journeyItem = document.querySelector(".prizes__item--journeys");
     this.casesItem = document.querySelector(".prizes__item--cases");
     this.codesItem = document.querySelector(".prizes__item--codes");
+
+    this.journeyDesc = this.journeyItem.querySelector(".prizes__desc");
+    this.casesDesc = this.casesItem.querySelector(".prizes__desc");
+    this.codesDesc = this.codesItem.querySelector(".prizes__desc");
   }
 
   start() {
@@ -22,6 +26,8 @@ class PrizesAnimation {
     if (animationTag) {
       this.journeyItem.classList.add("active");
       animationTag.beginElement();
+
+      setTimeout(() => this.journeyDesc.classList.add("active"), 1000);
     }
 
     // анимация второго приза
@@ -32,6 +38,8 @@ class PrizesAnimation {
       if (animationTag) {
         this.casesItem.classList.add("active");
         animationTag.beginElement();
+
+        setTimeout(() => this.casesDesc.classList.add("active"), 1000);
       }
     }, 3800);
 
@@ -43,9 +51,11 @@ class PrizesAnimation {
       if (animationTag) {
         this.codesItem.classList.add("active");
         animationTag.beginElement();
+
+        setTimeout(() => this.codesDesc.classList.add("active"), 1000);
       }
     }, 6200);
   }
 }
 
-export const prizesAnimation = new PrizesAnimation()
+export const prizesAnimation = new PrizesAnimation();

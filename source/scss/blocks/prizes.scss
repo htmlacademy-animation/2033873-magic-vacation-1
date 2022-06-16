@@ -140,7 +140,7 @@
     }
 
     &.active {
-      transform: translateX(100px)
+      transform: translateX(100px);
     }
   }
 
@@ -149,7 +149,7 @@
     opacity: 0;
 
     &.active {
-     opacity: 1;
+      opacity: 1;
     }
 
     & .prizes__desc {
@@ -162,7 +162,7 @@
 
     &.active {
       opacity: 1;
-     }
+    }
   }
 }
 
@@ -180,7 +180,7 @@
 
 .prizes__desc {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
   margin: 5.6rem 0 0 0;
   font-size: 1.8rem;
@@ -216,6 +216,8 @@
     font-size: 12rem;
     line-height: 0.55;
 
+    opacity: 0;
+
     @media (min-width: $stop-scaling) {
       font-size: 120px;
     }
@@ -239,6 +241,8 @@
     align-items: flex-end;
     margin-left: 1.4rem;
     max-width: 14rem;
+
+    opacity: 0;
 
     @media (min-width: $stop-scaling) {
       margin-left: 14px;
@@ -278,5 +282,13 @@
       width: 0.5rem;
       height: 0.5rem;
     }
+  }
+
+  &.active > b {
+    opacity: 1;
+  }
+
+  &.active > span {
+    animation: fadeInRight 0.6s ease both;
   }
 }
