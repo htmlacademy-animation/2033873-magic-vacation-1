@@ -1,6 +1,7 @@
 import throttle from "lodash/throttle";
 import bodyTheme from "../helpers/body-theme";
 import { game } from "./game";
+import { prizesAnimation } from "./prizesAnimation";
 
 export default class FullPageScroll {
   constructor() {
@@ -21,10 +22,6 @@ export default class FullPageScroll {
     this.activeScreen = 0;
     this.onScrollHandler = this.onScroll.bind(this);
     this.onUrlHashChengedHandler = this.onUrlHashChanged.bind(this);
-
-    this.journeyItem = document.querySelector(".prizes__item--journeys");
-    this.casesItem = document.querySelector(".prizes__item--cases");
-    this.codesItem = document.querySelector(".prizes__item--codes");
   }
 
   init() {
@@ -92,7 +89,7 @@ export default class FullPageScroll {
     ) {
       this.showTransitionScreen(prevActiveScreen, nextActiveScreen);
       setTimeout(() => {
-        this.startPrizesAnimation();
+        prizesAnimation.start();
       }, 500);
 
       return;
@@ -100,12 +97,12 @@ export default class FullPageScroll {
 
     if (nextActiveScreen.classList.contains(`screen--prizes`)) {
       setTimeout(() => {
-        this.startPrizesAnimation();
+        prizesAnimation.start();
       }, 100);
     }
 
     if (nextActiveScreen.classList.contains("screen--game")) {
-      game.start()
+      game.start();
     }
 
     this.screenElements.forEach((screen) => {
@@ -139,48 +136,6 @@ export default class FullPageScroll {
         `transition--background__show`
       );
     }, 400);
-  }
-
-  startPrizesAnimation() {
-    if (this.journeyItem.classList.contains("active")) {
-      return;
-    }
-
-    // анимация первого приза
-    const svgDoc = document.getElementById("primaryAward").contentDocument;
-
-    if (!svgDoc) {
-      return;
-    }
-
-    const animationTag = svgDoc.getElementById("journeysAnimation");
-
-    if (animationTag) {
-      this.journeyItem.classList.add("active");
-      animationTag.beginElement();
-    }
-
-    // анимация второго приза
-    setTimeout(() => {
-      const svgDoc = document.getElementById("secondaryAward").contentDocument;
-      const animationTag = svgDoc.getElementById("casesAnimation");
-
-      if (animationTag) {
-        this.casesItem.classList.add("active");
-        animationTag.beginElement();
-      }
-    }, 3800);
-
-    // анимация дополнительного приза
-    setTimeout(() => {
-      const svgDoc = document.getElementById("additionalAward").contentDocument;
-      const animationTag = svgDoc.getElementById("suitcaseAnimation");
-
-      if (animationTag) {
-        this.codesItem.classList.add("active");
-        animationTag.beginElement();
-      }
-    }, 6200);
   }
 
   changeActiveMenuItem() {
