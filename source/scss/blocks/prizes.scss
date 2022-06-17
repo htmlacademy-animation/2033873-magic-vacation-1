@@ -109,6 +109,7 @@
 }
 
 .prizes__item {
+  position: relative;
   margin-left: 7.5rem;
 
   @media (min-width: $stop-scaling) {
@@ -140,7 +141,7 @@
     }
 
     &.active {
-      transform: translateX(100px)
+      transform: translateX(100px);
     }
   }
 
@@ -149,7 +150,7 @@
     opacity: 0;
 
     &.active {
-     opacity: 1;
+      opacity: 1;
     }
 
     & .prizes__desc {
@@ -162,7 +163,7 @@
 
     &.active {
       opacity: 1;
-     }
+    }
   }
 }
 
@@ -180,11 +181,23 @@
 
 .prizes__desc {
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  align-items: center;
+  justify-content: flex-end;
   margin: 5.6rem 0 0 0;
   font-size: 1.8rem;
   line-height: 1.1;
+
+  position: absolute;
+  left: 0;
+  right: 0;
+
+  .prizes__item:nth-child(1) > & {
+    transform: translateX(-6rem);
+  }
+
+  .prizes__item:nth-child(2) > & {
+    transform: translateX(-3rem);
+  }
 
   @media (min-width: $stop-scaling) {
     margin-top: 56px;
@@ -216,6 +229,8 @@
     font-size: 12rem;
     line-height: 0.55;
 
+    opacity: 0;
+
     @media (min-width: $stop-scaling) {
       font-size: 120px;
     }
@@ -238,7 +253,9 @@
     display: flex;
     align-items: flex-end;
     margin-left: 1.4rem;
-    max-width: 14rem;
+    max-width: 11rem;
+
+    opacity: 0;
 
     @media (min-width: $stop-scaling) {
       margin-left: 14px;
@@ -278,5 +295,13 @@
       width: 0.5rem;
       height: 0.5rem;
     }
+  }
+
+  &.active > b {
+    opacity: 1;
+  }
+
+  &.active > span {
+    animation: fadeInRight 0.6s ease both;
   }
 }

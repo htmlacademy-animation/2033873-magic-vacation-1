@@ -1,29 +1,29 @@
-export class Timer {
+import {UIElementController} from '../helpers/controllers'
+import {GAME_TIME_LIMIT} from '../constants'
+
+class Timer {
   constructor(timeLimit, timerElement, onTimeEndCallback) {
     this.timeLimit = timeLimit;
-    this.timeStarted = null;
     this.onTimeEndCallback = onTimeEndCallback;
-    this.prevTickText = "";
-    this.animationFrameId = null;
     this.timerElement = timerElement;
+    this.timeStarted = null;
+    this.animationFrameId = null;
 
-    this.timeFormatter = new Intl.DateTimeFormat("ru", {
-      minute: "numeric",
-      second: "numeric",
-    });
+    this.prevTickText = Timer.timeFormatter.format(this.timeLimit);
+    this.timerElement.updateTextContent(this.prevTickText);
 
     this.tick = this.tick.bind(this);
   }
 
   tick() {
     const now = Date.now();
-    const delta = now - this.timeStarted;
+    const delta = this.timeStarted + this.timeLimit - now;
 
-    if (delta >= this.timeLimit) {
+    if (delta <= 0) {
       return this.onTimeEnd();
     }
 
-    const newTickText = this.timeFormatter.format(delta);
+    const newTickText = Timer.timeFormatter.format(delta);
 
     if (newTickText !== this.prevTickText) {
       this.prevTickText = newTickText;
@@ -36,10 +36,11 @@ export class Timer {
   startTimer() {
     this.timeStarted = Date.now();
 
-    this.prevTickText = this.timeFormatter.format(0);
-    this.timerElement.updateTextContent(this.prevTickText);
-
     this.animationFrameId = requestAnimationFrame(this.tick);
+  }
+
+  stopTimer() {
+    cancelAnimationFrame(this.animationFrameId);
   }
 
   onTimeEnd() {
@@ -49,24 +50,46 @@ export class Timer {
   }
 }
 
-export class UIElementController {
-  constructor(elem) {
-    this.elem = elem;
+Timer.timeFormatter = new Intl.DateTimeFormat("ru", {
+  minute: "numeric",
+  second: "numeric",
+});
+
+class Game {
+  constructor() {
+    this.timerRef = new UIElementController(
+      document.querySelector(".game__counter > span")
+    );
+    this.timer = null;
+    this.onTimerTimeEnd = this.onTimerTimeEnd.bind(this);
   }
 
-  getTextContent() {
-    if (!this.elem) {
-      return null;
-    }
 
-    return this.elem.textContent;
-  }
-
-  updateTextContent(text) {
-    if (!this.elem) {
+  start() {
+    if (this.timer) {
       return;
     }
 
-    this.elem.textContent = text;
+    this.timer = new Timer(GAME_TIME_LIMIT, this.timerRef, this.onTimerTimeEnd);
+
+    this.timer.startTimer();
+  }
+
+  end() {
+    this.timer.stopTimer()
+
+    this.timer = null;
+  }
+
+  onTimerTimeEnd() {
+    this.timer = null;
+    const results = document.querySelectorAll(`.screen--result`);
+    const targetEl = [].slice
+      .call(results)
+      .find((el) => el.getAttribute(`id`) === "result3");
+    targetEl.classList.add(`screen--show`);
+    targetEl.classList.remove(`screen--hidden`);
   }
 }
+
+export const game = new Game()

@@ -1,7 +1,7 @@
 import throttle from "lodash/throttle";
-import { GAME_TIME_LIMIT } from "../constants";
 import bodyTheme from "../helpers/body-theme";
-import { Timer, UIElementController } from "./game";
+import { game } from "./game";
+import { prizesAnimation } from "./prizesAnimation";
 
 export default class FullPageScroll {
   constructor() {
@@ -22,16 +22,6 @@ export default class FullPageScroll {
     this.activeScreen = 0;
     this.onScrollHandler = this.onScroll.bind(this);
     this.onUrlHashChengedHandler = this.onUrlHashChanged.bind(this);
-
-    this.journeyItem = document.querySelector(".prizes__item--journeys");
-    this.casesItem = document.querySelector(".prizes__item--cases");
-    this.codesItem = document.querySelector(".prizes__item--codes");
-
-    this.timerRef = new UIElementController(
-      document.querySelector(".game__counter > span")
-    );
-    this.timer = null;
-    this.onTimerTimeEnd = this.onTimerTimeEnd.bind(this)
   }
 
   init() {
@@ -99,7 +89,7 @@ export default class FullPageScroll {
     ) {
       this.showTransitionScreen(prevActiveScreen, nextActiveScreen);
       setTimeout(() => {
-        this.startPrizesAnimation();
+        prizesAnimation.start();
       }, 500);
 
       return;
@@ -107,12 +97,12 @@ export default class FullPageScroll {
 
     if (nextActiveScreen.classList.contains(`screen--prizes`)) {
       setTimeout(() => {
-        this.startPrizesAnimation();
+        prizesAnimation.start();
       }, 100);
     }
 
-    if (nextActiveScreen.classList.contains("screen--game") && !this.timer) {
-      this.initNewTimer()
+    if (nextActiveScreen.classList.contains("screen--game")) {
+      game.start();
     }
 
     this.screenElements.forEach((screen) => {
@@ -148,48 +138,6 @@ export default class FullPageScroll {
     }, 400);
   }
 
-  startPrizesAnimation() {
-    if (this.journeyItem.classList.contains("active")) {
-      return;
-    }
-
-    // анимация первого приза
-    const svgDoc = document.getElementById("primaryAward").contentDocument;
-
-    if (!svgDoc) {
-      return;
-    }
-
-    const animationTag = svgDoc.getElementById("journeysAnimation");
-
-    if (animationTag) {
-      this.journeyItem.classList.add("active");
-      animationTag.beginElement();
-    }
-
-    // анимация второго приза
-    setTimeout(() => {
-      const svgDoc = document.getElementById("secondaryAward").contentDocument;
-      const animationTag = svgDoc.getElementById("casesAnimation");
-
-      if (animationTag) {
-        this.casesItem.classList.add("active");
-        animationTag.beginElement();
-      }
-    }, 3800);
-
-    // анимация дополнительного приза
-    setTimeout(() => {
-      const svgDoc = document.getElementById("additionalAward").contentDocument;
-      const animationTag = svgDoc.getElementById("suitcaseAnimation");
-
-      if (animationTag) {
-        this.codesItem.classList.add("active");
-        animationTag.beginElement();
-      }
-    }, 6200);
-  }
-
   changeActiveMenuItem() {
     const activeItem = Array.from(this.menuElements).find(
       (item) => item.dataset.href === this.screenElements[this.activeScreen].id
@@ -222,25 +170,4 @@ export default class FullPageScroll {
       this.activeScreen = Math.max(0, --this.activeScreen);
     }
   }
-
-  initNewTimer() {
-    this.timer = new Timer(GAME_TIME_LIMIT, this.timerRef, this.onTimerTimeEnd);
-
-      this.timer.startTimer()
-  }
-
-  onTimerTimeEnd() {
-    this.timer = null;
-    const results = document.querySelectorAll(`.screen--result`);
-    const targetEl = [].slice.call(results).find(el => el.getAttribute(`id`) === 'result3');
-    targetEl.classList.add(`screen--show`);
-    targetEl.classList.remove(`screen--hidden`);
-
-    let playBtn = document.querySelector(`.js-play`);
-    if (playBtn) {
-      playBtn.addEventListener('click', ()=>{
-        this.initNewTimer.call(this)
-      }, {once: true})
-    }
-  };
 }
