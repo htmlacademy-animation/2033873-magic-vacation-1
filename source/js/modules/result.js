@@ -1,4 +1,5 @@
-import {game} from './game'
+import { game } from "./game";
+import { runWinningScene } from "../winning-scene/main";
 
 export default () => {
   let showResultEls = document.querySelectorAll(`.js-show-result`);
@@ -6,14 +7,21 @@ export default () => {
   if (results.length) {
     for (let i = 0; i < showResultEls.length; i++) {
       showResultEls[i].addEventListener(`click`, function () {
-        game.end()
+        game.end();
 
         let target = showResultEls[i].getAttribute(`data-target`);
+
+        if (target === "result") {
+          runWinningScene();
+        }
+
         [].slice.call(results).forEach(function (el) {
           el.classList.remove(`screen--show`);
           el.classList.add(`screen--hidden`);
         });
-        const targetEl = [].slice.call(results).find(el => el.getAttribute(`id`) === target);
+        const targetEl = [].slice
+          .call(results)
+          .find((el) => el.getAttribute(`id`) === target);
         targetEl.classList.add(`screen--show`);
         targetEl.classList.remove(`screen--hidden`);
       });
@@ -29,7 +37,7 @@ export default () => {
         document.getElementById(`messages`).innerHTML = ``;
         document.getElementById(`message-field`).focus();
 
-        game.start()
+        game.start();
       });
     }
   }
