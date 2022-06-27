@@ -1,5 +1,5 @@
-import {UIElementController} from '../helpers/controllers'
-import {GAME_TIME_LIMIT} from '../constants'
+import { UIElementController } from "../helpers/controllers";
+import { GAME_TIME_LIMIT } from "../constants";
 
 class Timer {
   constructor(timeLimit, timerElement, onTimeEndCallback) {
@@ -20,7 +20,8 @@ class Timer {
     const delta = this.timeStarted + this.timeLimit - now;
 
     if (delta <= 0) {
-      return this.onTimeEnd();
+      this.onTimeEnd();
+      return;
     }
 
     const newTickText = Timer.timeFormatter.format(delta);
@@ -64,7 +65,6 @@ class Game {
     this.onTimerTimeEnd = this.onTimerTimeEnd.bind(this);
   }
 
-
   start() {
     if (this.timer) {
       return;
@@ -76,7 +76,7 @@ class Game {
   }
 
   end() {
-    this.timer.stopTimer()
+    this.timer.stopTimer();
 
     this.timer = null;
   }
@@ -92,4 +92,4 @@ class Game {
   }
 }
 
-export const game = new Game()
+export const game = new Game();
