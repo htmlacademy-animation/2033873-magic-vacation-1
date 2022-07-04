@@ -11778,7 +11778,7 @@ class Scene2DSeaCalf extends _scene_2d_js__WEBPACK_IMPORTED_MODULE_1__["default"
       objects: OBJECTS,
       locals: LOCALS,
       imagesUrls: IMAGES_URLS,
-      imagePrefix: "/img/module-4/win-primary-images/",
+      imagePrefix: "../img/module-4/win-primary-images/",
     });
 
     this.initLocals();
