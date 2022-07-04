@@ -107,7 +107,7 @@ export default class Scene2DSeaCalf extends Scene2D {
       objects: OBJECTS,
       locals: LOCALS,
       imagesUrls: IMAGES_URLS,
-      imagePrefix: "../img/module-4/win-primary-images/",
+      imagePrefix: "./img/module-4/win-primary-images/",
     });
 
     this.initLocals();
