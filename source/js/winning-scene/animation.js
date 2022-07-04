@@ -1,11 +1,11 @@
-import { Easing } from "./Easing";
+import { easeLinear } from "./easing";
 
 export default class Animation {
   constructor(options) {
     this.options = options;
 
     if (!this.options.easing) {
-      this.options.easing = Easing.easeLinear;
+      this.options.easing = easeLinear;
     }
 
     if (!this.options.duration) {
@@ -37,8 +37,6 @@ export default class Animation {
 
       if (this.options.duration === "infinite") {
         animateFrame = (currentTime) => {
-          this.requestId = requestAnimationFrame(animateFrame);
-
           const delta = currentTime - this.lastFrameTime;
 
           if (delta > this.interval) {
@@ -49,13 +47,13 @@ export default class Animation {
               options,
             });
 
-            this.lastFrameTime = currentTime - (delta % this.interval);
+            this.lastFrameTime = currentTime;
           }
+
+          this.requestId = requestAnimationFrame(animateFrame);
         };
       } else {
         animateFrame = (currentTime) => {
-          this.requestId = requestAnimationFrame(animateFrame);
-
           const delta = currentTime - this.lastFrameTime;
 
           if (delta > this.interval) {
@@ -77,7 +75,7 @@ export default class Animation {
                 options,
               });
 
-              this.lastFrameTime = currentTime - (delta % this.interval);
+              this.lastFrameTime = currentTime;
             }
 
             if (this.isFinished) {
@@ -88,6 +86,8 @@ export default class Animation {
               }
             }
           }
+
+          this.requestId = requestAnimationFrame(animateFrame);
         };
       }
 

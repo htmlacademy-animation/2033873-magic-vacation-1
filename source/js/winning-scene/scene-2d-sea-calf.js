@@ -1,6 +1,6 @@
 import Animation from "./animation.js";
 import Scene2D from "./scene-2d.js";
-import { Easing } from "./Easing.js";
+import { easeInQuad, easeOutElastic } from "./easing.js";
 
 const IMAGES_URLS = Object.freeze({
   plane: "airplane.png",
@@ -107,7 +107,7 @@ export default class Scene2DSeaCalf extends Scene2D {
       objects: OBJECTS,
       locals: LOCALS,
       imagesUrls: IMAGES_URLS,
-      imagePrefix: '/img/module-4/win-primary-images/'
+      imagePrefix: "/img/module-4/win-primary-images/",
     });
 
     this.initLocals();
@@ -121,6 +121,8 @@ export default class Scene2DSeaCalf extends Scene2D {
     this.initLocals();
     this.start();
     this.updateSize();
+
+    this.drawScene = this.drawScene.bind(this);
   }
 
   initLocals() {
@@ -145,9 +147,7 @@ export default class Scene2DSeaCalf extends Scene2D {
   initAnimations() {
     this.animations.push(
       new Animation({
-        func: () => {
-          this.drawScene();
-        },
+        func: this.drawScene,
         duration: "infinite",
         fps: 60,
       })
@@ -175,7 +175,7 @@ export default class Scene2DSeaCalf extends Scene2D {
         },
         duration: 500,
         delay: 1200,
-        easing: Easing.easeInQuad,
+        easing: easeInQuad,
       })
     );
   }
@@ -196,7 +196,7 @@ export default class Scene2DSeaCalf extends Scene2D {
         },
         duration: 500,
         delay: 1200,
-        easing: Easing.easeInQuad,
+        easing: easeInQuad,
       })
     );
   }
@@ -210,7 +210,7 @@ export default class Scene2DSeaCalf extends Scene2D {
         },
         duration: 500,
         delay: 1200,
-        easing: Easing.easeInQuad,
+        easing: easeInQuad,
       })
     );
 
@@ -222,7 +222,7 @@ export default class Scene2DSeaCalf extends Scene2D {
         },
         duration: 500,
         delay: 1500,
-        easing: Easing.easeInQuad,
+        easing: easeInQuad,
       })
     );
   }
@@ -243,7 +243,7 @@ export default class Scene2DSeaCalf extends Scene2D {
         },
         duration: 2000,
         delay: 1000,
-        easing: Easing.easeOutElastic,
+        easing: easeOutElastic,
       })
     );
 
@@ -255,7 +255,7 @@ export default class Scene2DSeaCalf extends Scene2D {
         },
         duration: 100,
         delay: 1000,
-        easing: Easing.easeInQuad,
+        easing: easeInQuad,
       })
     );
   }
@@ -263,10 +263,9 @@ export default class Scene2DSeaCalf extends Scene2D {
   initSnowflakesAnimations() {
     this.animations.push(
       new Animation({
-        func: (progress, details) => {
+        func: (_progress, { currentTime, startTime }) => {
           this.objects.snowflake.transforms.translateY =
-            2 *
-            Math.sin((1.5 * (details.currentTime - details.startTime)) / 1000);
+            2 * Math.sin((1.5 * (currentTime - startTime)) / 1000);
         },
         duration: "infinite",
       })
@@ -274,10 +273,9 @@ export default class Scene2DSeaCalf extends Scene2D {
 
     this.animations.push(
       new Animation({
-        func: (progress, details) => {
+        func: (_progress, { currentTime, startTime }) => {
           this.objects.snowflake2.transforms.translateY =
-            2 *
-            Math.sin((1.5 * (details.currentTime - details.startTime)) / 1000);
+            2 * Math.sin((1.5 * (currentTime - startTime)) / 1000);
         },
         duration: "infinite",
         delay: 800,
@@ -291,7 +289,7 @@ export default class Scene2DSeaCalf extends Scene2D {
         },
         duration: 500,
         delay: 1500,
-        easing: Easing.easeInQuad,
+        easing: easeInQuad,
       })
     );
 
@@ -302,7 +300,7 @@ export default class Scene2DSeaCalf extends Scene2D {
         },
         duration: 500,
         delay: 1900,
-        easing: Easing.easeInQuad,
+        easing: easeInQuad,
       })
     );
   }
