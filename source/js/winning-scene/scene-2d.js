@@ -129,9 +129,12 @@ export default class Scene2D {
       return;
     }
 
-    let width = this.size * (size / 100);
-    let height = (this.size * (size / 100) * image.height) / image.width;
+    const aspectRatio = image.width / image.height;
 
+    let width = this.size * (size / 100);
+    let height = width / aspectRatio;
+
+    // координаты x и y должны быть в центре изображения
     x = this.size * (x / 100) - width / 2;
     y = this.size * (y / 100) - height / 2;
 
