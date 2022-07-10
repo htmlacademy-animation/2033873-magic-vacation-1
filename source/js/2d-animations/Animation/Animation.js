@@ -1,4 +1,4 @@
-import { easeLinear } from "./easing";
+import { easeLinear } from "../../helpers/easing";
 
 export default class Animation {
   constructor(options) {
@@ -84,6 +84,8 @@ export default class Animation {
               if (typeof this.options.callback === "function") {
                 this.options.callback();
               }
+
+              return;
             }
           }
 

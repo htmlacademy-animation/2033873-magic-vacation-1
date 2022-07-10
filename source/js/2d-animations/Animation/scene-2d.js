@@ -19,6 +19,8 @@ export default class Scene2D {
     this.initEventListeners();
     this.updateSize();
     this.loadImages(options.imagesUrls);
+
+    this.drawScene = this.drawScene.bind(this);
   }
 
   initEventListeners() {
@@ -106,6 +108,8 @@ export default class Scene2D {
     });
 
     this.isStarted = true;
+
+    this.drawScene()
   }
 
   stop() {

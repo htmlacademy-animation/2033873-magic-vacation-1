@@ -76,9 +76,11 @@ class Game {
   }
 
   end() {
-    this.timer.stopTimer();
+    if (this.timer) {
+      this.timer.stopTimer();
 
-    this.timer = null;
+      this.timer = null;
+    }
   }
 
   onTimerTimeEnd() {
