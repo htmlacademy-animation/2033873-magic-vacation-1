@@ -4,7 +4,7 @@ import { easeInCubic, easeInOutSine, easeOutCubic } from "../../helpers/easing";
 
 const IMAGES_URLS = Object.freeze({
   key: "key.png",
-  // crocodile: "crocodile.png",
+  crocodile: "crocodile.png",
   // drop: "drop.png",
   flamingo: "flamingo.png",
   leaf: "leaf.png",
@@ -54,13 +54,20 @@ const OBJECTS = Object.freeze({
     opacity: 0,
     transforms: {},
   },
-
   leaf: {
     imageId: "leaf",
     x: 50,
     y: 58,
     size: 20,
     opacity: 0,
+    transforms: {},
+  },
+  crocodile: {
+    imageId: "crocodile",
+    x: 50,
+    y: 58,
+    size:80,
+    opacity: 1,
     transforms: {},
   },
 });
