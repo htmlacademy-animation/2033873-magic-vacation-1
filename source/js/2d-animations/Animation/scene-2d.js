@@ -109,7 +109,7 @@ export default class Scene2D {
 
     this.isStarted = true;
 
-    this.drawScene()
+    this.drawScene();
   }
 
   stop() {
@@ -217,13 +217,13 @@ export default class Scene2D {
         const object = this.objects[name];
 
         if (object.before && typeof object.before === "function") {
-          object.before();
+          object.before({ ctx: this.ctx, size: this.size });
         }
 
         this.drawImage(this.images[object.imageId], object);
 
         if (object.after && typeof object.after === "function") {
-          object.after();
+          object.after({ ctx: this.ctx });
         }
       }
     }

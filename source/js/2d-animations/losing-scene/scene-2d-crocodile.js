@@ -66,9 +66,36 @@ const OBJECTS = Object.freeze({
     imageId: "crocodile",
     x: 50,
     y: 58,
-    size:80,
+    size: 80,
     opacity: 1,
-    transforms: {},
+    transforms: {
+      translateX: 80,
+      translateY: 20,
+    },
+    before({ ctx, size }) {
+      ctx.save();
+
+      ctx.beginPath();
+
+      ctx.strokeStyle = "red";
+      ctx.arc(
+        size / 2,
+        size / 2 + 12,
+        74,
+        (-90 * Math.PI) / 180,
+        (48 * Math.PI) / 180,
+        false
+      );
+      ctx.lineTo(size / 1.5 - 20, size);
+      ctx.lineTo(0, size);
+      ctx.lineTo(0, 0);
+      ctx.closePath();
+
+      ctx.clip();
+    },
+    after({ ctx }) {
+      ctx.restore();
+    },
   },
 });
 
@@ -109,6 +136,7 @@ export default class Scene2dCrocodile extends Scene2D {
     this.initSnowFlakeAnimation();
     this.initSaturnAnimation();
     this.initLeafAnimation();
+    this.initCrocodileAnimation();
   }
 
   initKeyAnimations() {
@@ -242,6 +270,21 @@ export default class Scene2dCrocodile extends Scene2D {
         duration: 583,
         delay: 717,
         easing: easeInCubic,
+      })
+    );
+  }
+
+  initCrocodileAnimation() {
+    this.animations.push(
+      new Animation({
+        func: (progress) => {
+          this.objects.crocodile.transforms.translateX =  80 * (1 - progress);
+          this.objects.crocodile.transforms.translateY = 6 - 20 * (1 - progress);
+          this.objects.crocodile.transforms.rotate = (1 - progress) * 15;
+        },
+        duration: 600,
+        delay: 683,
+        easing: easeInOutSine,
       })
     );
   }
