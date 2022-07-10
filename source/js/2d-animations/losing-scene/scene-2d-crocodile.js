@@ -1,4 +1,6 @@
 import Scene2D from "../Animation/scene-2d";
+import Animation from "../Animation/Animation";
+import {  easeInOutSine } from "../../helpers/easing";
 
 const IMAGES_URLS = Object.freeze({
   key: "key.png",
@@ -15,10 +17,10 @@ const OBJECTS = Object.freeze({
   key: {
     imageId: "key",
     x: 50,
-    y: 60,
-    size: 30,
-    opacity: 1,
-    transforms: {},
+    y: 58,
+    size: 22,
+    opacity: 0,
+    transforms: { scaleX: 0.8, scaleY: 0.8 },
   },
 });
 
@@ -44,5 +46,30 @@ export default class Scene2dCrocodile extends Scene2D {
     window.addEventListener("resize", this.updateSize.bind(this));
   }
 
-  initAnimations() {}
+  initAnimations() {
+    this.animations.push(
+      new Animation({
+        func: this.drawScene,
+        duration: "infinite",
+        fps: 60,
+      })
+    );
+
+    this.initKeyAnimations();
+  }
+
+  initKeyAnimations() {
+    this.animations.push(
+      new Animation({
+        func: (progress) => {
+          this.objects.key.opacity = progress;
+          this.objects.key.transforms.scaleX = 0.8 + 0.2 * progress;
+          this.objects.key.transforms.scaleY = 0.8 + 0.2 * progress;
+        },
+        duration: 187,
+        delay: 0,
+        easing: easeInOutSine,
+      })
+    );
+  }
 }
