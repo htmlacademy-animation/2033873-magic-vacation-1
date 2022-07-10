@@ -72,30 +72,6 @@ const OBJECTS = Object.freeze({
       translateX: 80,
       translateY: 20,
     },
-    before({ ctx, size }) {
-      ctx.save();
-
-      ctx.beginPath();
-
-      ctx.strokeStyle = "red";
-      ctx.arc(
-        size / 2,
-        size / 2 + 12,
-        74,
-        (-90 * Math.PI) / 180,
-        (48 * Math.PI) / 180,
-        false
-      );
-      ctx.lineTo(size / 1.5 - 20, size);
-      ctx.lineTo(0, size);
-      ctx.lineTo(0, 0);
-      ctx.closePath();
-
-      ctx.clip();
-    },
-    after({ ctx }) {
-      ctx.restore();
-    },
   },
 });
 
@@ -109,6 +85,11 @@ export default class Scene2dCrocodile extends Scene2D {
       imagesUrls: IMAGES_URLS,
       imagePrefix: "./img/module-4/lose-images/",
     });
+
+    this.afterInit = () => {
+      this.objects.crocodile.before = this.drawMask.bind(this);
+      this.objects.crocodile.after = this.restoreContext.bind(this);
+    };
 
     this.initEventListeners();
     this.initObjects(OBJECTS);
@@ -209,7 +190,7 @@ export default class Scene2dCrocodile extends Scene2D {
           this.objects.snowFlake.opacity = progress;
           this.objects.snowFlake.transforms.translateX = 22 * progress;
           this.objects.snowFlake.transforms.translateY = 6 * progress;
-          this.objects.snowFlake.transforms.rotate = (1 - progress) * 60;
+          this.objects.snowFlake.transforms.rotate = (1 - progress) * -60;
         },
         duration: 617,
         delay: 100,
@@ -233,7 +214,7 @@ export default class Scene2dCrocodile extends Scene2D {
           this.objects.saturn.opacity = progress;
           this.objects.saturn.transforms.translateX = 36 * progress;
           this.objects.saturn.transforms.translateY = 22 * progress;
-          this.objects.saturn.transforms.rotate = (1 - progress) * 60;
+          this.objects.saturn.transforms.rotate = (1 - progress) * 50;
         },
         duration: 617,
         delay: 100,
@@ -257,7 +238,7 @@ export default class Scene2dCrocodile extends Scene2D {
           this.objects.leaf.opacity = progress;
           this.objects.leaf.transforms.translateX = 40 * progress;
           this.objects.leaf.transforms.translateY = -10 * progress;
-          this.objects.leaf.transforms.rotate = (1 - progress) * 60;
+          this.objects.leaf.transforms.rotate = (1 - progress) * -40;
         },
         duration: 617,
         delay: 100,
@@ -287,5 +268,29 @@ export default class Scene2dCrocodile extends Scene2D {
         easing: easeInOutSine,
       })
     );
+  }
+
+  drawMask() {
+    this.ctx.save();
+
+    this.ctx.beginPath();
+    this.ctx.arc(
+      this.size / 2,
+      this.size / 2 + 12,
+      74,
+      (-90 * Math.PI) / 180,
+      (48 * Math.PI) / 180,
+      false
+    );
+    this.ctx.lineTo(this.size / 1.5 - 20, this.size);
+    this.ctx.lineTo(0, this.size);
+    this.ctx.lineTo(0, 0);
+    this.ctx.closePath();
+
+    this.ctx.clip();
+  }
+
+  restoreContext() {
+    this.ctx.restore()
   }
 }

@@ -217,13 +217,13 @@ export default class Scene2D {
         const object = this.objects[name];
 
         if (object.before && typeof object.before === "function") {
-          object.before({ ctx: this.ctx, size: this.size });
+          object.before();
         }
 
         this.drawImage(this.images[object.imageId], object);
 
         if (object.after && typeof object.after === "function") {
-          object.after({ ctx: this.ctx });
+          object.after();
         }
       }
     }
