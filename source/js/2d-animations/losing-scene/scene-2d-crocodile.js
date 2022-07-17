@@ -5,7 +5,7 @@ import { easeInCubic, easeInOutSine, easeOutCubic } from "../../helpers/easing";
 const IMAGES_URLS = Object.freeze({
   key: "key.png",
   crocodile: "crocodile.png",
-  // drop: "drop.png",
+  drop: "drop.png",
   flamingo: "flamingo.png",
   leaf: "leaf.png",
   saturn: "saturn.png",
@@ -73,6 +73,17 @@ const OBJECTS = Object.freeze({
       translateY: 20,
     },
   },
+  drop: {
+    imageId: "drop",
+    x: 48,
+    y: 68,
+    size: 4,
+    opacity: 1,
+    transforms: {
+      scaleX: 0,
+      scaleY: 0,
+    },
+  },
 });
 
 export default class Scene2dCrocodile extends Scene2D {
@@ -85,6 +96,9 @@ export default class Scene2dCrocodile extends Scene2D {
       imagesUrls: IMAGES_URLS,
       imagePrefix: "./img/module-4/lose-images/",
     });
+
+    this.dropAnimations = [];
+    this.initDropAnimation = this.initDropAnimation.bind(this);
 
     this.afterInit = () => {
       this.objects.crocodile.before = this.drawMask.bind(this);
@@ -264,9 +278,58 @@ export default class Scene2dCrocodile extends Scene2D {
             6 - 20 * (1 - progress);
           this.objects.crocodile.transforms.rotate = (1 - progress) * 15;
         },
+        callback: () => this.startDropAnimation(),
         duration: 600,
         delay: 683,
         easing: easeInOutSine,
+      })
+    );
+  }
+
+  startDropAnimation() {
+    this.dropAnimations = []
+
+    this.initDropAnimation();
+
+    this.dropAnimations.forEach((animation) => {
+      animation.start();
+    });
+
+    this.drawScene();
+  }
+
+  initDropAnimation() {
+    this.dropAnimations.push(
+      new Animation({
+        func: (progress) => {
+          this.objects.drop.transforms.translateY = (1 - progress) * -2;
+          this.objects.drop.transforms.scaleX = progress;
+          this.objects.drop.transforms.scaleY = progress;
+        },
+        duration: 600,
+        delay: 0,
+        easing: easeInOutSine,
+      }),
+      new Animation({
+        func: (progress) => {
+          this.objects.drop.transforms.translateY = progress * 10;
+        },
+        duration: 600,
+        delay: 600,
+        easing: easeInOutSine,
+      }),
+      new Animation({
+        func: (progress) => {
+          this.objects.drop.transforms.opacity = 1 - progress;
+          this.objects.drop.transforms.scaleX = 1 - progress;
+          this.objects.drop.transforms.scaleY = 1 - progress;
+        },
+        duration: 200,
+        delay: 1000,
+        easing: easeInOutSine,
+        callback: () => {
+          setTimeout(() => this.startDropAnimation(), 500)
+        }
       })
     );
   }

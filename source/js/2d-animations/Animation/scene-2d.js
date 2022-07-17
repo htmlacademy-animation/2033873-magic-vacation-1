@@ -152,14 +152,6 @@ export default class Scene2D {
     }
 
     if (transforms) {
-      if (transforms.translateX) {
-        x += this.size * (transforms.translateX / 100);
-      }
-
-      if (transforms.translateY) {
-        y += this.size * (transforms.translateY / 100);
-      }
-
       if (transforms.rotate) {
         this.ctx.translate(x + width / 2, y + height / 2);
         this.ctx.rotate((transforms.rotate * Math.PI) / 180);
@@ -191,6 +183,14 @@ export default class Scene2D {
 
       if (transforms.rotate) {
         this.ctx.translate(-x - width / 2, -y - height / 2);
+      }
+
+      if (transforms.translateX) {
+        x += this.size * (transforms.translateX / 100);
+      }
+
+      if (transforms.translateY) {
+        y += this.size * (transforms.translateY / 100);
       }
     }
 
