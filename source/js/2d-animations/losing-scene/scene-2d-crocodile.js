@@ -259,8 +259,9 @@ export default class Scene2dCrocodile extends Scene2D {
     this.animations.push(
       new Animation({
         func: (progress) => {
-          this.objects.crocodile.transforms.translateX =  80 * (1 - progress);
-          this.objects.crocodile.transforms.translateY = 6 - 20 * (1 - progress);
+          this.objects.crocodile.transforms.translateX = 80 * (1 - progress);
+          this.objects.crocodile.transforms.translateY =
+            6 - 20 * (1 - progress);
           this.objects.crocodile.transforms.rotate = (1 - progress) * 15;
         },
         duration: 600,
@@ -276,13 +277,13 @@ export default class Scene2dCrocodile extends Scene2D {
     this.ctx.beginPath();
     this.ctx.arc(
       this.size / 2,
-      this.size / 2 + 12,
-      74,
+      (this.size * 32) / 62,
+      this.size / 11,
       (-90 * Math.PI) / 180,
       (48 * Math.PI) / 180,
       false
     );
-    this.ctx.lineTo(this.size / 1.5 - 20, this.size);
+    this.ctx.lineTo((this.size * 14) / 22, this.size);
     this.ctx.lineTo(0, this.size);
     this.ctx.lineTo(0, 0);
     this.ctx.closePath();
@@ -291,6 +292,6 @@ export default class Scene2dCrocodile extends Scene2D {
   }
 
   restoreContext() {
-    this.ctx.restore()
+    this.ctx.restore();
   }
 }
