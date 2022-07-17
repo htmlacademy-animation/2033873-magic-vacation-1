@@ -9,7 +9,7 @@ const IMAGES_URLS = Object.freeze({
   flamingo: "flamingo.png",
   leaf: "leaf.png",
   saturn: "saturn.png",
-  snowFlake: "snowFlake.png",
+  snowflake: "snowflake.png",
   watermelon: "watermelon.png",
 });
 
@@ -38,8 +38,8 @@ const OBJECTS = Object.freeze({
     opacity: 0,
     transforms: {},
   },
-  snowFlake: {
-    imageId: "snowFlake",
+  snowflake: {
+    imageId: "snowflake",
     x: 50,
     y: 58,
     size: 12,
@@ -201,10 +201,10 @@ export default class Scene2dCrocodile extends Scene2D {
     this.animations.push(
       new Animation({
         func: (progress) => {
-          this.objects.snowFlake.opacity = progress;
-          this.objects.snowFlake.transforms.translateX = 22 * progress;
-          this.objects.snowFlake.transforms.translateY = 6 * progress;
-          this.objects.snowFlake.transforms.rotate = (1 - progress) * -60;
+          this.objects.snowflake.opacity = progress;
+          this.objects.snowflake.transforms.translateX = 22 * progress;
+          this.objects.snowflake.transforms.translateY = 6 * progress;
+          this.objects.snowflake.transforms.rotate = (1 - progress) * -60;
         },
         duration: 617,
         delay: 100,
@@ -212,7 +212,7 @@ export default class Scene2dCrocodile extends Scene2D {
       }),
       new Animation({
         func: (progress) => {
-          this.objects.snowFlake.transforms.translateY = 6 + 80 * progress;
+          this.objects.snowflake.transforms.translateY = 6 + 80 * progress;
         },
         duration: 583,
         delay: 717,
