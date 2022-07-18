@@ -53,3 +53,7 @@ export function easeOutElastic(x) {
     return Math.pow(2, -10 * x) * Math.sin((x * 10 - 0.75) * c4) + 1;
   }
 }
+
+export function easeInOutSine(x) {
+  return -(Math.cos(Math.PI * x) - 1) / 2;
+}

@@ -19,6 +19,8 @@ export default class Scene2D {
     this.initEventListeners();
     this.updateSize();
     this.loadImages(options.imagesUrls);
+
+    this.drawScene = this.drawScene.bind(this);
   }
 
   initEventListeners() {
@@ -106,6 +108,8 @@ export default class Scene2D {
     });
 
     this.isStarted = true;
+
+    this.drawScene();
   }
 
   stop() {
@@ -135,8 +139,8 @@ export default class Scene2D {
     let height = width / aspectRatio;
 
     // координаты x и y должны быть в центре изображения
-    x = this.size * (x / 100) - width / 2;
-    y = this.size * (y / 100) - height / 2;
+    x = this.size * (object.x / 100) - width / 2;
+    y = this.size * (object.y / 100) - height / 2;
 
     const isContextTransforming =
       opacity ||
@@ -148,14 +152,6 @@ export default class Scene2D {
     }
 
     if (transforms) {
-      if (transforms.translateX) {
-        x += this.size * (transforms.translateX / 100);
-      }
-
-      if (transforms.translateY) {
-        y += this.size * (transforms.translateY / 100);
-      }
-
       if (transforms.rotate) {
         this.ctx.translate(x + width / 2, y + height / 2);
         this.ctx.rotate((transforms.rotate * Math.PI) / 180);
@@ -163,6 +159,8 @@ export default class Scene2D {
 
       if (transforms.scaleX) {
         width *= transforms.scaleX;
+        // уточняем значение x после изменения ширины
+        x = this.size * (object.x / 100) - width / 2;
 
         if (transforms.scaleX < 0) {
           this.ctx.scale(-1, 1);
@@ -173,6 +171,8 @@ export default class Scene2D {
 
       if (transforms.scaleY) {
         height *= transforms.scaleY;
+        // уточняем значение y после изменения высоты
+        y = this.size * (object.y / 100) - height / 2;
 
         if (transforms.scaleY < 0) {
           this.ctx.scale(1, -1);
@@ -183,6 +183,14 @@ export default class Scene2D {
 
       if (transforms.rotate) {
         this.ctx.translate(-x - width / 2, -y - height / 2);
+      }
+
+      if (transforms.translateX) {
+        x += this.size * (transforms.translateX / 100);
+      }
+
+      if (transforms.translateY) {
+        y += this.size * (transforms.translateY / 100);
       }
     }
 

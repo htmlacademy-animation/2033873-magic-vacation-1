@@ -1,5 +1,5 @@
 import { game } from "./game";
-import { runWinningScene } from "../winning-scene/main";
+import {runLosingScene, runWinningScene} from "../2d-animations/main";
 
 export default () => {
   let showResultEls = document.querySelectorAll(`.js-show-result`);
@@ -13,6 +13,8 @@ export default () => {
 
         if (target === "result") {
           runWinningScene();
+        } else if (target === 'result3') {
+          runLosingScene();
         }
 
         [].slice.call(results).forEach(function (el) {
