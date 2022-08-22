@@ -9,6 +9,8 @@ export class Scene3d {
     this.initCamera();
     this.initRenderer();
     this.initTextureLoader();
+
+    window.addEventListener("resize", this.onWindowResize.bind(this));
   }
 
   initScene() {
@@ -45,6 +47,13 @@ export class Scene3d {
     this.textureLoader = new THREE.TextureLoader();
   }
 
+  onWindowResize() {
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
   render() {
     this.renderer.render(this.scene, this.camera);
   }
@@ -59,10 +68,20 @@ export class Scene3d {
     this.render();
   }
 
+  clearScene() {
+    this.transformationsLoop = new Set();
+
+    this.meshObjects.forEach((mesh) => {
+      this.scene.remove(mesh);
+
+      this.meshObjects.delete(mesh);
+    });
+  }
+
   addMainScreenAnimation() {
     const imageAspectRatio = 2;
-    const imageWidth = window.innerWidth / 100;
-    const imageHeight = imageWidth / imageAspectRatio;
+    const imageHeight = window.innerHeight / 100;
+    const imageWidth = imageHeight * imageAspectRatio;
 
     const geometry = new THREE.PlaneGeometry(imageWidth, imageHeight);
 
@@ -74,6 +93,8 @@ export class Scene3d {
           side: THREE.DoubleSide,
         });
         const planeImage = new THREE.Mesh(geometry, material);
+
+        this.meshObjects.add(planeImage);
 
         this.scene.add(planeImage);
       }
