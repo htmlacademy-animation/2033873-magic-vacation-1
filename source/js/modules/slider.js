@@ -1,13 +1,13 @@
 import Swiper from "swiper";
 import bodyTheme from "../helpers/body-theme";
+import { plainMeshController } from "../3d-animations/initAnimationScreen";
 
 export default () => {
   let storySlider;
-  // let sliderContainer = document.getElementById(`story`);
-  // sliderContainer.style.backgroundImage = `url("img/slide1.jpg"), linear-gradient(180deg, rgba(83, 65, 118, 0) 0%, #523E75 16.85%)`;
 
   const setSlider = function () {
-    bodyTheme.setAndApplyBodyTheme('dark');
+    bodyTheme.setAndApplyBodyTheme("dark");
+    plainMeshController.setStoryActiveMesh();
 
     if (window.innerWidth / window.innerHeight < 1 || window.innerWidth < 769) {
       storySlider = new Swiper(`.js-slider`, {
@@ -24,22 +24,22 @@ export default () => {
               storySlider.activeIndex === 0 ||
               storySlider.activeIndex === 1
             ) {
-              // sliderContainer.style.backgroundImage = `url("img/slide1.jpg"), linear-gradient(180deg, rgba(83, 65, 118, 0) 0%, #523E75 16.85%)`;
+              plainMeshController.setStoryActiveMesh(0);
             } else if (
               storySlider.activeIndex === 2 ||
               storySlider.activeIndex === 3
             ) {
-              // sliderContainer.style.backgroundImage = `url("img/slide2.jpg"), linear-gradient(180deg, rgba(45, 54, 179, 0) 0%, #2A34B0 16.85%)`;
+              plainMeshController.setStoryActiveMesh(1);
             } else if (
               storySlider.activeIndex === 4 ||
               storySlider.activeIndex === 5
             ) {
-              // sliderContainer.style.backgroundImage = `url("img/slide3.jpg"), linear-gradient(180deg, rgba(92, 138, 198, 0) 0%, #5183C4 16.85%)`;
+              plainMeshController.setStoryActiveMesh(2);
             } else if (
               storySlider.activeIndex === 6 ||
               storySlider.activeIndex === 7
             ) {
-              // sliderContainer.style.backgroundImage = `url("img/slide4.jpg"), linear-gradient(180deg, rgba(45, 39, 63, 0) 0%, #2F2A42 16.85%)`;
+              plainMeshController.setStoryActiveMesh(3);
             }
           },
           resize: () => {
@@ -68,16 +68,16 @@ export default () => {
           slideChange: () => {
             if (storySlider.activeIndex === 0) {
               bodyTheme.setAndApplyBodyTheme("purple");
-              // sliderContainer.style.backgroundImage = `url("img/slide1.jpg")`;
+              plainMeshController.setStoryActiveMesh(0);
             } else if (storySlider.activeIndex === 2) {
               bodyTheme.setAndApplyBodyTheme("blue");
-              // sliderContainer.style.backgroundImage = `url("img/slide2.jpg")`;
+              plainMeshController.setStoryActiveMesh(1);
             } else if (storySlider.activeIndex === 4) {
               bodyTheme.setAndApplyBodyTheme("light-blue");
-              // sliderContainer.style.backgroundImage = `url("img/slide3.jpg")`;
+              plainMeshController.setStoryActiveMesh(2);
             } else if (storySlider.activeIndex === 6) {
               bodyTheme.setAndApplyBodyTheme("dark");
-              // sliderContainer.style.backgroundImage = `url("img/slide4.jpg")`;
+              plainMeshController.setStoryActiveMesh(3);
             }
           },
           resize: () => {

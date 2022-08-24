@@ -76,28 +76,19 @@ export class Scene3d {
 
       this.meshObjects.delete(mesh);
     });
+
+    this.scene.dispose()
   }
 
-  addMainScreenAnimation() {
-    const imageAspectRatio = 2;
-    const imageHeight = window.innerHeight / 100;
-    const imageWidth = imageHeight * imageAspectRatio;
+  addSceneObject(meshObject) {
+    this.meshObjects.add(meshObject);
+    this.scene.add(meshObject);
+  }
 
-    const geometry = new THREE.PlaneGeometry(imageWidth, imageHeight);
+  setSceneObjects(...meshObjects) {
+    this.clearScene();
 
-    this.textureLoader.load(
-      "../../img/module-5/scenes-textures/scene-0.png",
-      (texture) => {
-        const material = new THREE.MeshBasicMaterial({
-          map: texture,
-          side: THREE.DoubleSide,
-        });
-        const planeImage = new THREE.Mesh(geometry, material);
-
-        this.meshObjects.add(planeImage);
-
-        this.scene.add(planeImage);
-      }
-    );
+    this.meshObjects.add(...meshObjects);
+    this.scene.add(...meshObjects);
   }
 }
