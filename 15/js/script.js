@@ -62050,7 +62050,7 @@ const plainMeshController = {
         (img) =>
           new Promise((resolve) => {
             _initAnimationScreen__WEBPACK_IMPORTED_MODULE_1__["scene"].textureLoader.load(
-              `../../img/module-5/scenes-textures/${img}.png`,
+              `./img/module-5/scenes-textures/${img}.png`,
               (texture) => {
                 const material = new three__WEBPACK_IMPORTED_MODULE_0__["MeshBasicMaterial"]({
                   map: texture,
