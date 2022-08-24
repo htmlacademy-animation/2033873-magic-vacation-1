@@ -4,22 +4,22 @@ const initBodyTheme = (theme) => {
   let currentBodyTheme = theme;
   const themes = ["dark", "purple", "blue", "light-blue"];
 
-  const applyTheme = function (newTheme = currentBodyTheme) {
+  const applyTheme = (newTheme = currentBodyTheme) => {
     if (themes.includes(newTheme)) {
       document.body.classList.remove(...themes);
       document.body.classList.add(newTheme);
     }
   };
 
-  const setAndApplyBodyTheme = function (newTheme) {
+  const setAndApplyBodyTheme = (newTheme) => {
     if (themes.includes(newTheme)) {
       currentBodyTheme = newTheme;
-      this.applyTheme();
+      applyTheme();
     }
   };
 
-  const clearBodyTheme = function () {
-    this.applyTheme(initTheme);
+  const clearBodyTheme = () => {
+    applyTheme(initTheme);
   };
 
   return {
@@ -30,7 +30,6 @@ const initBodyTheme = (theme) => {
   };
 };
 
-const bodyTheme = initBodyTheme(initTheme)
+const bodyTheme = initBodyTheme(initTheme);
 
 export default bodyTheme;
-

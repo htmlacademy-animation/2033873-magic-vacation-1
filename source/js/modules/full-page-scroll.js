@@ -2,6 +2,7 @@ import throttle from "lodash/throttle";
 import bodyTheme from "../helpers/body-theme";
 import { game } from "./game";
 import { prizesAnimation } from "./prizesAnimation";
+import { plainMeshController } from "../3d-animations/planeMeshController";
 
 export default class FullPageScroll {
   constructor() {
@@ -69,6 +70,16 @@ export default class FullPageScroll {
   changeVisibilityDisplay() {
     const prevActiveScreen = document.querySelector(`.screen.active`);
     const nextActiveScreen = this.screenElements[this.activeScreen];
+
+    plainMeshController.clearScene();
+
+    if (nextActiveScreen.classList.contains(`screen--intro`)) {
+      plainMeshController.addScreenMesh("intro");
+    } else if (nextActiveScreen.classList.contains(`screen--story`)) {
+      plainMeshController.addScreenMesh("story").then(() => {
+        plainMeshController.setStoryActiveMesh();
+      });
+    }
 
     if (
       prevActiveScreen &&
