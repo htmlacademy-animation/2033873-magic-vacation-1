@@ -46,7 +46,7 @@ export const plainMeshController = {
         (img) =>
           new Promise((resolve) => {
             scene.textureLoader.load(
-              `../../img/module-5/scenes-textures/${img}.png`,
+              `./img/module-5/scenes-textures/${img}.png`,
               (texture) => {
                 const material = new THREE.MeshBasicMaterial({
                   map: texture,
