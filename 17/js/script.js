@@ -62099,8 +62099,8 @@ const plainMeshController = {
     _initAnimationScreen__WEBPACK_IMPORTED_MODULE_1__["scene"].clearTransformationsLoop();
 
     if (index === 1) {
-      const transformationCallback = () => {
-        mesh.material.uniforms.delta.value = Math.cos(Date.now() / 1000) * 20;
+      const transformationCallback = (timestamp) => {
+        mesh.material.uniforms.delta.value = Math.cos(timestamp / 1000) * 20;
       };
 
       transformations.push(transformationCallback);
@@ -62137,6 +62137,7 @@ class Scene3d {
     this.initTextureLoader();
 
     window.addEventListener("resize", this.onWindowResize.bind(this));
+    this.animate = this.animate.bind(this)
   }
 
   initScene() {
@@ -62184,15 +62185,15 @@ class Scene3d {
     this.renderer.render(this.scene, this.camera);
   }
 
-  animate() {
-    requestAnimationFrame(() => this.animate());
+  animate(timestamp) {
+    requestAnimationFrame(this.animate);
 
     this.transformationsLoop.forEach((callback) => {
-      callback();
+      callback(timestamp);
     });
 
     this.render();
-  }
+  };
 
   clearScene() {
     this.clearTransformationsLoop();
