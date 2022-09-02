@@ -3,7 +3,7 @@ import * as THREE from "three";
 export class Scene3d {
   constructor() {
     this.meshObjects = new Set();
-    this.transformationsLoop = new Set();
+    this.transformationsLoop = [];
 
     this.initScene();
     this.initCamera();
@@ -69,7 +69,7 @@ export class Scene3d {
   }
 
   clearScene() {
-    this.transformationsLoop = new Set();
+    this.clearTransformationsLoop();
 
     this.meshObjects.forEach((mesh) => {
       this.scene.remove(mesh);
@@ -77,7 +77,15 @@ export class Scene3d {
       this.meshObjects.delete(mesh);
     });
 
-    this.scene.dispose()
+    this.scene.dispose();
+  }
+
+  addTransformationsToLoop(transformations) {
+    this.transformationsLoop.push(...transformations);
+  }
+
+  clearTransformationsLoop() {
+    this.transformationsLoop = [];
   }
 
   addSceneObject(meshObject) {

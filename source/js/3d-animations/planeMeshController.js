@@ -1,5 +1,7 @@
 import * as THREE from "three";
-import { scene } from "./initAnimationScreen";
+import {scene} from "./initAnimationScreen";
+import vertexShader from "../../shader/planeMeshShader/vertexShader.glsl";
+import fragmentShader from "../../shader/planeMeshShader/fragmentShader.glsl";
 
 const imageAspectRatio = 2;
 const imageHeight = window.innerHeight / 100;
@@ -23,6 +25,9 @@ export const plainMeshController = {
     scene.scene.children.forEach((mesh) => {
       if (mesh.name === this.textureScreenImages.story[index]) {
         mesh.visible = true;
+
+        this.setMeshTransformations(mesh, index);
+
         return;
       }
 
@@ -50,10 +55,10 @@ export const plainMeshController = {
               (texture) => {
                 const material = this.getEffectMaterial(texture);
 
-                const planeImage = new THREE.Mesh(planeGeometry, material);
-                planeImage.name = img;
+                const planeMesh = new THREE.Mesh(planeGeometry, material);
+                planeMesh.name = img;
 
-                scene.addSceneObject(planeImage);
+                scene.addSceneObject(planeMesh);
 
                 resolve();
               }
@@ -71,40 +76,28 @@ export const plainMeshController = {
         map: {
           value: texture,
         },
+        delta: {
+          value: 0,
+        },
       },
-      vertexShader: `
-    uniform mat4 projectionMatrix;
-    uniform mat4 modelMatrix;
-    uniform mat4 viewMatrix;
-
-    attribute vec3 position;
-    attribute vec3 normal;
-    attribute vec2 uv;
-
-    varying vec2 vUv;
-
-    void main() {
-
-      vUv = uv;
-
-      gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4( position, 1.0 );
-
-    }`,
-
-      fragmentShader: `
-    precision mediump float;
-
-    uniform sampler2D map;
-
-    varying vec2 vUv;
-
-    void main() {
-
-      vec4 texel = texture2D( map, vUv );
-
-      gl_FragColor = texel;
-
-    }`,
+      vertexShader,
+      fragmentShader,
     });
+  },
+
+  setMeshTransformations(mesh, index) {
+    const transformations = [];
+
+    scene.clearTransformationsLoop();
+
+    if (index === 1) {
+      const transformationCallback = () => {
+        mesh.material.uniforms.delta.value = Math.cos(Date.now() / 1000) * 20;
+      };
+
+      transformations.push(transformationCallback);
+    }
+
+    scene.addTransformationsToLoop(transformations);
   },
 };
