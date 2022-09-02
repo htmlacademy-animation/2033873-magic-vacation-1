@@ -91,8 +91,8 @@ export const plainMeshController = {
     scene.clearTransformationsLoop();
 
     if (index === 1) {
-      const transformationCallback = () => {
-        mesh.material.uniforms.delta.value = Math.cos(Date.now() / 1000) * 20;
+      const transformationCallback = (timestamp) => {
+        mesh.material.uniforms.delta.value = Math.cos(timestamp / 1000) * 20;
       };
 
       transformations.push(transformationCallback);

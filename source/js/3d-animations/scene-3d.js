@@ -11,6 +11,7 @@ export class Scene3d {
     this.initTextureLoader();
 
     window.addEventListener("resize", this.onWindowResize.bind(this));
+    this.animate = this.animate.bind(this)
   }
 
   initScene() {
@@ -58,15 +59,15 @@ export class Scene3d {
     this.renderer.render(this.scene, this.camera);
   }
 
-  animate() {
-    requestAnimationFrame(() => this.animate());
+  animate(timestamp) {
+    requestAnimationFrame(this.animate);
 
     this.transformationsLoop.forEach((callback) => {
-      callback();
+      callback(timestamp);
     });
 
     this.render();
-  }
+  };
 
   clearScene() {
     this.clearTransformationsLoop();
