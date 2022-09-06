@@ -2,8 +2,18 @@ precision mediump float;
 
 uniform sampler2D map;
 uniform float delta;
-uniform vec2 bubblePosition;
+
+struct Bubble {
+    vec2 bubblePosition;
+    float bubbleRadius;
+};
+
+uniform Bubble bubble1;
+uniform Bubble bubble2;
+uniform Bubble bubble3;
+
 uniform bool hasBubbles;
+uniform float bubbleRadius;
 
 varying vec2 vUv;
 
@@ -15,54 +25,42 @@ vec3 applyHue(vec3 aColor, float aHue) {
     return aColor * cosAngle + k * aColor * sin(angle) + k * dot(k, aColor) * (1.0 - cosAngle);
 }
 
-float getDistanceFromCurrentPixelToBubblePosition() {
+void drawBubble(inout vec4 outputColor, in Bubble bubble) {
     vec2 currentPosition = vec2(vUv.x * float(IMAGE_ASPECT_RATIO), vUv.y);
-    vec2 currentBubblePosition = vec2(bubblePosition.x * float(IMAGE_ASPECT_RATIO), bubblePosition.y);
+    vec2 currentBubblePosition = vec2(bubble.bubblePosition.x * float(IMAGE_ASPECT_RATIO), bubble.bubblePosition.y);
 
-    return length(currentPosition - currentBubblePosition);
-}
+    float distanceFromCurrentPixelToBubblePosition = length(currentPosition - currentBubblePosition);
 
-void setShift(inout vec2 shift, in float distanceFromCurrentPixelToBubblePosition) {
-    if (distanceFromCurrentPixelToBubblePosition > BUBBLE_RADIUS) {
+    vec2 shift = vec2(0, 0);
+
+    if (distanceFromCurrentPixelToBubblePosition > bubble.bubbleRadius) {
         return;
     }
 
-    float con = pow(distanceFromCurrentPixelToBubblePosition, 0.3) + 1.0;
-
-    shift = (bubblePosition - vUv) * (1.0 - sqrt(distanceFromCurrentPixelToBubblePosition / BUBBLE_RADIUS));
-}
-
-void drawBubble(inout vec4 outputColor, float distanceFromCurrentPixelToBubblePosition) {
-    float gray = 0.8;
-
-    if (distanceFromCurrentPixelToBubblePosition <= BUBBLE_RADIUS && distanceFromCurrentPixelToBubblePosition >= BUBBLE_RADIUS - BUBBLE_LINE_WIDTH) {
+    // подкрашиваем контуры пузырька
+    if (distanceFromCurrentPixelToBubblePosition >= bubble.bubbleRadius - BUBBLE_LINE_WIDTH) {
+        float gray = 0.8;
         outputColor.rgb = vec3(gray, gray, gray);
+        return;
     }
+
+    shift = (bubble.bubblePosition - vUv) * (1.0 - sqrt(distanceFromCurrentPixelToBubblePosition / bubble.bubbleRadius));
+
+    outputColor = texture2D(map, vUv + shift);
 }
 
 void main() {
-    vec2 shift = vec2(0, 0);
-    float distanceFromCurrentPixelToBubblePosition;
+    vec4 outputColor = texture2D(map, vUv);
 
     if (hasBubbles == true) {
-        distanceFromCurrentPixelToBubblePosition = getDistanceFromCurrentPixelToBubblePosition();
-        setShift(shift, distanceFromCurrentPixelToBubblePosition);
+        drawBubble(outputColor, bubble1);
+        drawBubble(outputColor, bubble2);
+        drawBubble(outputColor, bubble3);
     }
-
-    vec4 texel = texture2D(map, vUv + shift);
-
-    vec4 outputColor = texel;
 
     // исходники тут
     // @see: https://forum.unity.com/threads/hue-saturation-brightness-contrast-shader.260649/
     outputColor.rgb = applyHue(outputColor.rgb, delta);
-
-    // подкрашиваем контуры пузырька
-
-    if (hasBubbles == true) {
-        drawBubble(outputColor, distanceFromCurrentPixelToBubblePosition);
-    }
-
 
     gl_FragColor = outputColor;
 }
