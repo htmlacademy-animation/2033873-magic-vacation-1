@@ -1,11 +1,11 @@
 import * as THREE from "three";
-import {scene} from "./initAnimationScreen";
+import { scene } from "./initAnimationScreen";
 import vertexShader from "../../shader/planeMeshShader/vertexShader.glsl";
 import fragmentShader from "../../shader/planeMeshShader/fragmentShader.glsl";
 
-const imageAspectRatio = 2;
+const IMAGE_ASPECT_RATIO = 2;
 const imageHeight = window.innerHeight / 100;
-const imageWidth = imageHeight * imageAspectRatio;
+const imageWidth = imageHeight * IMAGE_ASPECT_RATIO;
 
 const planeGeometry = new THREE.PlaneGeometry(imageWidth, imageHeight);
 
@@ -72,6 +72,7 @@ export const plainMeshController = {
 
   getEffectMaterial(texture) {
     return new THREE.RawShaderMaterial({
+      transparent: true,
       uniforms: {
         map: {
           value: texture,
@@ -79,7 +80,12 @@ export const plainMeshController = {
         delta: {
           value: 0,
         },
+        bubblePosition: new THREE.Uniform(new THREE.Vector2(0, 0)),
+        hasBubbles: {
+          value: false,
+        },
       },
+      defines: { IMAGE_ASPECT_RATIO, BUBBLE_RADIUS: 0.07, BUBBLE_LINE_WIDTH: 0.002 },
       vertexShader,
       fragmentShader,
     });
@@ -93,6 +99,14 @@ export const plainMeshController = {
     if (index === 1) {
       const transformationCallback = (timestamp) => {
         mesh.material.uniforms.delta.value = Math.cos(timestamp / 1000) * 20;
+
+        if (mesh.material.uniforms.bubblePosition.value.y > 1.5) {
+          mesh.material.uniforms.bubblePosition.value.y = -0.5
+        }
+
+        mesh.material.uniforms.hasBubbles.value = true;
+        mesh.material.uniforms.bubblePosition.value.x = Math.sin(timestamp / 300) * 0.05 + 0.4
+        mesh.material.uniforms.bubblePosition.value.y += 0.003
       };
 
       transformations.push(transformationCallback);

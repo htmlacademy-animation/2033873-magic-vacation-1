@@ -3,6 +3,7 @@ precision mediump float;
 uniform sampler2D map;
 uniform float delta;
 uniform vec2 bubblePosition;
+uniform bool hasBubbles;
 
 varying vec2 vUv;
 
@@ -21,16 +22,14 @@ float getDistanceFromCurrentPixelToBubblePosition() {
     return length(currentPosition - currentBubblePosition);
 }
 
-vec2 getShift(float distanceFromCurrentPixelToBubblePosition) {
-    vec2 shift = vec2(0, 0);
-
+void setShift(inout vec2 shift, in float distanceFromCurrentPixelToBubblePosition) {
     if (distanceFromCurrentPixelToBubblePosition > BUBBLE_RADIUS) {
-        return shift;
+        return;
     }
 
     float con = pow(distanceFromCurrentPixelToBubblePosition, 0.3) + 1.0;
 
-    return (bubblePosition - vUv) * (1.0 - sqrt(distanceFromCurrentPixelToBubblePosition / BUBBLE_RADIUS));
+    shift = (bubblePosition - vUv) * (1.0 - sqrt(distanceFromCurrentPixelToBubblePosition / BUBBLE_RADIUS));
 }
 
 void drawBubble(inout vec4 outputColor, float distanceFromCurrentPixelToBubblePosition) {
@@ -42,8 +41,13 @@ void drawBubble(inout vec4 outputColor, float distanceFromCurrentPixelToBubblePo
 }
 
 void main() {
-    float distanceFromCurrentPixelToBubblePosition = getDistanceFromCurrentPixelToBubblePosition();
-    vec2 shift = getShift(distanceFromCurrentPixelToBubblePosition);
+    vec2 shift = vec2(0, 0);
+    float distanceFromCurrentPixelToBubblePosition;
+
+    if (hasBubbles == true) {
+        distanceFromCurrentPixelToBubblePosition = getDistanceFromCurrentPixelToBubblePosition();
+        setShift(shift, distanceFromCurrentPixelToBubblePosition);
+    }
 
     vec4 texel = texture2D(map, vUv + shift);
 
@@ -54,7 +58,11 @@ void main() {
     outputColor.rgb = applyHue(outputColor.rgb, delta);
 
     // подкрашиваем контуры пузырька
-    drawBubble(outputColor, distanceFromCurrentPixelToBubblePosition);
+
+    if (hasBubbles == true) {
+        drawBubble(outputColor, distanceFromCurrentPixelToBubblePosition);
+    }
+
 
     gl_FragColor = outputColor;
 }
