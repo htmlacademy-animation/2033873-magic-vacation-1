@@ -1,11 +1,11 @@
 import * as THREE from "three";
-import {scene} from "./initAnimationScreen";
+import { scene } from "./initAnimationScreen";
 import vertexShader from "../../shader/planeMeshShader/vertexShader.glsl";
 import fragmentShader from "../../shader/planeMeshShader/fragmentShader.glsl";
 
-const imageAspectRatio = 2;
+const IMAGE_ASPECT_RATIO = 2;
 const imageHeight = window.innerHeight / 100;
-const imageWidth = imageHeight * imageAspectRatio;
+const imageWidth = imageHeight * IMAGE_ASPECT_RATIO;
 
 const planeGeometry = new THREE.PlaneGeometry(imageWidth, imageHeight);
 
@@ -73,12 +73,25 @@ export const plainMeshController = {
   getEffectMaterial(texture) {
     return new THREE.RawShaderMaterial({
       uniforms: {
-        map: {
-          value: texture,
-        },
-        delta: {
-          value: 0,
-        },
+        map: new THREE.Uniform(texture),
+        delta: new THREE.Uniform(0),
+        bubble1: new THREE.Uniform({
+          bubblePosition: new THREE.Vector2(0, 0),
+          bubbleRadius: 0.07,
+        }),
+        bubble2: new THREE.Uniform({
+          bubblePosition: new THREE.Vector2(0, -0.2),
+          bubbleRadius: 0.06,
+        }),
+        bubble3: new THREE.Uniform({
+          bubblePosition: new THREE.Vector2(0, -0.7),
+          bubbleRadius: 0.04,
+        }),
+        hasBubbles: new THREE.Uniform(false),
+      },
+      defines: {
+        IMAGE_ASPECT_RATIO,
+        BUBBLE_LINE_WIDTH: 0.002,
       },
       vertexShader,
       fragmentShader,
@@ -92,7 +105,36 @@ export const plainMeshController = {
 
     if (index === 1) {
       const transformationCallback = (timestamp) => {
+        // анимация эффекта hue
         mesh.material.uniforms.delta.value = Math.cos(timestamp / 1000) * 20;
+
+        // анимация пузырьков
+        mesh.material.uniforms.hasBubbles.value = true;
+
+        const bubble1position =
+          mesh.material.uniforms.bubble1.value.bubblePosition;
+        const bubble2position =
+          mesh.material.uniforms.bubble2.value.bubblePosition;
+        const bubble3position =
+          mesh.material.uniforms.bubble3.value.bubblePosition;
+
+        if (bubble1position.y > 1.5) {
+          bubble1position.y = -0.5;
+        }
+        if (bubble2position.y > 1.5) {
+          bubble2position.y = -0.5;
+        }
+        if (bubble3position.y > 1.5) {
+          bubble3position.y = -0.5;
+        }
+
+        bubble1position.x = Math.sin(timestamp / 300) * 0.05 + 0.4;
+        bubble2position.x = Math.sin(timestamp / 350) * 0.06 + 0.5;
+        bubble3position.x = Math.sin(timestamp / 400) * 0.07 + 0.6;
+
+        bubble1position.y += 0.003;
+        bubble2position.y += 0.002;
+        bubble3position.y += 0.0025;
       };
 
       transformations.push(transformationCallback);
