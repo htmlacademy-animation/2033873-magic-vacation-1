@@ -17,24 +17,23 @@ uniform float bubbleRadius;
 
 varying vec2 vUv;
 
-#define PI 3.141592;
+#define PI 3.141592
 
 vec3 applyHue(vec3 aColor) {
     // тут почему то не получается использовать глобальную переменную PI, поэтому определяем локально
-    float pi = 3.141592;
     float duration = 2.0;
 
     float currentTimePosition = mod(timestamp / 1000.0, duration);
     float currentHueDegrees = 0.0;
 
     if (currentTimePosition < 0.3) {
-        currentHueDegrees = (1.0 - cos((currentTimePosition / 0.3) * pi)) * 8.0;
+        currentHueDegrees = (1.0 - cos((currentTimePosition / 0.3) * PI)) * 8.0;
     } else if (currentTimePosition < 0.6) {
-        currentHueDegrees = (1.0 - cos(((currentTimePosition) / 0.3) * pi)) * 6.0 + 2.0;
+        currentHueDegrees = (1.0 - cos(((currentTimePosition) / 0.3) * PI)) * 6.0 + 2.0;
     } else if (currentTimePosition < 1.0) {
-        currentHueDegrees = (1.0 - cos(((currentTimePosition - 0.6) / 0.4) * pi)) * 8.0 + 2.0;
+        currentHueDegrees = (1.0 - cos(((currentTimePosition - 0.6) / 0.4) * PI)) * 8.0 + 2.0;
     } else if (currentTimePosition < 1.4) {
-        currentHueDegrees = (1.0 - cos(((currentTimePosition - 0.6) / 0.4) * pi)) * 10.0;
+        currentHueDegrees = (1.0 - cos(((currentTimePosition - 0.6) / 0.4) * PI)) * 10.0;
     }
 
     float angle = radians(currentHueDegrees);
