@@ -70,7 +70,9 @@ void drawBubble(inout vec4 outputColor, in Bubble bubble) {
     float blickRadius = bubble.bubbleRadius * 4.0 / 5.0;
 
     // подкрашиваем блик
-    if (distanceFromCurrentPixelToBubblePosition < blickRadius && distanceFromCurrentPixelToBubblePosition >= blickRadius - BUBBLE_LINE_WIDTH) {
+    bool isPixelInsideBlick = distanceFromCurrentPixelToBubblePosition < blickRadius && distanceFromCurrentPixelToBubblePosition >= blickRadius - BUBBLE_LINE_WIDTH;
+
+    if (isPixelInsideBlick) {
         vec2 normalizedVectorFromCenterBubbleToLeft = normalize(fromCurrentPixelToBubblePosition);
         vec2 normalizedCurrentBubblePosition = normalize(vec2(0.0, 1.0) - vec2(1.0, 0.0));
 
