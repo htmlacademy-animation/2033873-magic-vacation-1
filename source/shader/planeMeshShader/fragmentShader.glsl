@@ -1,7 +1,7 @@
 precision mediump float;
 
 uniform sampler2D map;
-uniform float delta;
+uniform float timestamp;
 
 struct Bubble {
     vec2 bubblePosition;
@@ -17,8 +17,10 @@ uniform float bubbleRadius;
 
 varying vec2 vUv;
 
-vec3 applyHue(vec3 aColor, float aHue) {
-    float angle = radians(aHue);
+#define PI 3.141592;
+
+vec3 applyHue(vec3 aColor) {
+    float angle = radians(cos(timestamp / 1000.0) * 20.0);
     vec3 k = vec3(0.57735, 0.57735, 0.57735);
     float cosAngle = cos(angle);
     //Rodrigues' rotation formula
@@ -55,7 +57,7 @@ void drawBubble(inout vec4 outputColor, in Bubble bubble) {
         vec2 normalizedVectorFromCenterBubbleToLeft = normalize(fromCurrentPixelToBubblePosition);
         vec2 normalizedCurrentBubblePosition = normalize(vec2(0.0, 1.0) - vec2(1.0, 0.0));
 
-        float degree = acos(dot(normalizedVectorFromCenterBubbleToLeft, normalizedCurrentBubblePosition)) * 180.0 / 3.1415;
+        float degree = acos(dot(normalizedVectorFromCenterBubbleToLeft, normalizedCurrentBubblePosition)) * 180.0 / PI;
 
         if (degree < 15.0) {
             outputColor = getBorderColor();
@@ -79,7 +81,7 @@ void main() {
 
     // исходники тут
     // @see: https://forum.unity.com/threads/hue-saturation-brightness-contrast-shader.260649/
-    outputColor.rgb = applyHue(outputColor.rgb, delta);
+    outputColor.rgb = applyHue(outputColor.rgb);
 
     gl_FragColor = outputColor;
 }
