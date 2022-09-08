@@ -78,14 +78,17 @@ export const plainMeshController = {
         bubble1: new THREE.Uniform({
           bubblePosition: new THREE.Vector2(0, 0),
           bubbleRadius: 0.07,
+          bubbleSpeedY: 0.003,
         }),
         bubble2: new THREE.Uniform({
           bubblePosition: new THREE.Vector2(0, -0.2),
           bubbleRadius: 0.06,
+          bubbleSpeedY: 0.002,
         }),
         bubble3: new THREE.Uniform({
           bubblePosition: new THREE.Vector2(0, -0.7),
           bubbleRadius: 0.04,
+          bubbleSpeedY: 0.0025,
         }),
         hasBubbles: new THREE.Uniform(false),
       },
@@ -111,30 +114,21 @@ export const plainMeshController = {
         // анимация пузырьков
         mesh.material.uniforms.hasBubbles.value = true;
 
-        const bubble1position =
-          mesh.material.uniforms.bubble1.value.bubblePosition;
-        const bubble2position =
-          mesh.material.uniforms.bubble2.value.bubblePosition;
-        const bubble3position =
-          mesh.material.uniforms.bubble3.value.bubblePosition;
+        const bubble1 = mesh.material.uniforms.bubble1.value;
+        const bubble2 = mesh.material.uniforms.bubble2.value;
+        const bubble3 = mesh.material.uniforms.bubble3.value;
 
-        if (bubble1position.y > 1.5) {
-          bubble1position.y = -0.5;
-        }
-        if (bubble2position.y > 1.5) {
-          bubble2position.y = -0.5;
-        }
-        if (bubble3position.y > 1.5) {
-          bubble3position.y = -0.5;
-        }
+        [bubble1, bubble2, bubble3].forEach((bubble) => {
+          if (bubble.bubblePosition.y > 1.0 + 2 * bubble.bubbleRadius) {
+            bubble.bubblePosition.y = -2 * bubble1.bubbleRadius;
+          }
 
-        bubble1position.x = Math.sin(timestamp / 300) * 0.05 + 0.4;
-        bubble2position.x = Math.sin(timestamp / 350) * 0.06 + 0.5;
-        bubble3position.x = Math.sin(timestamp / 400) * 0.07 + 0.6;
+          bubble.bubblePosition.y += bubble.bubbleSpeedY;
+        });
 
-        bubble1position.y += 0.003;
-        bubble2position.y += 0.002;
-        bubble3position.y += 0.0025;
+        bubble1.bubblePosition.x = Math.sin(timestamp / 300) * 0.05 + 0.4;
+        bubble2.bubblePosition.x = Math.sin(timestamp / 350) * 0.06 + 0.5;
+        bubble3.bubblePosition.x = Math.sin(timestamp / 400) * 0.07 + 0.6;
       };
 
       transformations.push(transformationCallback);
