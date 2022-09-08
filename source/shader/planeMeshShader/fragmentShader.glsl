@@ -1,7 +1,7 @@
 precision mediump float;
 
 uniform sampler2D map;
-uniform float delta;
+uniform float timestamp;
 
 struct Bubble {
     vec2 bubblePosition;
@@ -17,9 +17,28 @@ uniform float bubbleRadius;
 
 varying vec2 vUv;
 
-vec3 applyHue(vec3 aColor, float aHue) {
-    float angle = radians(aHue);
-    vec3 k = vec3(0.57735, 0.57735, 0.57735);
+#define PI 3.141592;
+
+vec3 applyHue(vec3 aColor) {
+    // тут почему то не получается использовать глобальную переменную PI, поэтому определяем локально
+    float pi = 3.141592;
+    float duration = 2.0;
+
+    float currentTimePosition = mod(timestamp / 1000.0, duration);
+    float currentHueDegrees = 0.0;
+
+    if (currentTimePosition < 0.3) {
+        currentHueDegrees = (1.0 - cos((currentTimePosition / 0.3) * pi)) * 8.0;
+    } else if (currentTimePosition < 0.6) {
+        currentHueDegrees = (1.0 - cos(((currentTimePosition) / 0.3) * pi)) * 6.0 + 2.0;
+    } else if (currentTimePosition < 1.0) {
+        currentHueDegrees = (1.0 - cos(((currentTimePosition - 0.6) / 0.4) * pi)) * 8.0 + 2.0;
+    } else if (currentTimePosition < 1.4) {
+        currentHueDegrees = (1.0 - cos(((currentTimePosition - 0.6) / 0.4) * pi)) * 10.0;
+    }
+
+    float angle = radians(currentHueDegrees);
+    vec3 k = vec3(0.57735);
     float cosAngle = cos(angle);
     //Rodrigues' rotation formula
     return aColor * cosAngle + k * aColor * sin(angle) + k * dot(k, aColor) * (1.0 - cosAngle);
@@ -51,11 +70,13 @@ void drawBubble(inout vec4 outputColor, in Bubble bubble) {
     float blickRadius = bubble.bubbleRadius * 4.0 / 5.0;
 
     // подкрашиваем блик
-    if (distanceFromCurrentPixelToBubblePosition < blickRadius && distanceFromCurrentPixelToBubblePosition >= blickRadius - BUBBLE_LINE_WIDTH) {
+    bool isPixelInsideBlick = distanceFromCurrentPixelToBubblePosition < blickRadius && distanceFromCurrentPixelToBubblePosition >= blickRadius - BUBBLE_LINE_WIDTH;
+
+    if (isPixelInsideBlick) {
         vec2 normalizedVectorFromCenterBubbleToLeft = normalize(fromCurrentPixelToBubblePosition);
         vec2 normalizedCurrentBubblePosition = normalize(vec2(0.0, 1.0) - vec2(1.0, 0.0));
 
-        float degree = acos(dot(normalizedVectorFromCenterBubbleToLeft, normalizedCurrentBubblePosition)) * 180.0 / 3.1415;
+        float degree = acos(dot(normalizedVectorFromCenterBubbleToLeft, normalizedCurrentBubblePosition)) * 180.0 / PI;
 
         if (degree < 15.0) {
             outputColor = getBorderColor();
@@ -79,7 +100,7 @@ void main() {
 
     // исходники тут
     // @see: https://forum.unity.com/threads/hue-saturation-brightness-contrast-shader.260649/
-    outputColor.rgb = applyHue(outputColor.rgb, delta);
+    outputColor.rgb = applyHue(outputColor.rgb);
 
     gl_FragColor = outputColor;
 }
