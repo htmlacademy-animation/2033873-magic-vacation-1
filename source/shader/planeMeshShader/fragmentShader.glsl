@@ -20,8 +20,25 @@ varying vec2 vUv;
 #define PI 3.141592;
 
 vec3 applyHue(vec3 aColor) {
-    float angle = radians(cos(timestamp / 1000.0) * 20.0);
-    vec3 k = vec3(0.57735, 0.57735, 0.57735);
+    // тут почему то не получается использовать глобальную переменную PI, поэтому определяем локально
+    float pi = 3.141592;
+    float duration = 2.0;
+
+    float currentTimePosition = mod(timestamp / 1000.0, duration);
+    float currentHueDegrees = 0.0;
+
+    if (currentTimePosition < 0.3) {
+        currentHueDegrees = (1.0 - cos((currentTimePosition / 0.3) * pi)) * 8.0;
+    } else if (currentTimePosition < 0.6) {
+        currentHueDegrees = (1.0 - cos(((currentTimePosition) / 0.3) * pi)) * 6.0 + 2.0;
+    } else if (currentTimePosition < 1.0) {
+        currentHueDegrees = (1.0 - cos(((currentTimePosition - 0.6) / 0.4) * pi)) * 8.0 + 2.0;
+    } else if (currentTimePosition < 1.4) {
+        currentHueDegrees = (1.0 - cos(((currentTimePosition - 0.6) / 0.4) * pi)) * 10.0;
+    }
+
+    float angle = radians(currentHueDegrees);
+    vec3 k = vec3(0.57735);
     float cosAngle = cos(angle);
     //Rodrigues' rotation formula
     return aColor * cosAngle + k * aColor * sin(angle) + k * dot(k, aColor) * (1.0 - cosAngle);
