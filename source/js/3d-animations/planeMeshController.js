@@ -4,7 +4,7 @@ import vertexShader from "../../shader/planeMeshShader/vertexShader.glsl";
 import fragmentShader from "../../shader/planeMeshShader/fragmentShader.glsl";
 
 const IMAGE_ASPECT_RATIO = 2;
-const imageHeight = window.innerHeight / 100;
+const imageHeight = window.innerHeight / 1.5;
 const imageWidth = imageHeight * IMAGE_ASPECT_RATIO;
 
 const planeGeometry = new THREE.PlaneGeometry(imageWidth, imageHeight);
@@ -23,6 +23,10 @@ export const plainMeshController = {
     }
 
     scene.scene.children.forEach((mesh) => {
+      if (!mesh.isMesh) {
+        return;
+      }
+
       if (mesh.name === this.textureScreenImages.story[index]) {
         mesh.visible = true;
 
@@ -35,6 +39,8 @@ export const plainMeshController = {
     });
 
     this.prevStoryTheme = index;
+
+    scene.render();
   },
 
   clearScene() {
@@ -81,7 +87,8 @@ export const plainMeshController = {
           startTime: 0,
           delay: 600,
           getPositionX: (time) =>
-            0.3 + 0.02 * Math.exp(-0.05 * time) * Math.sin(Math.PI * time * 2.5),
+            0.3 +
+            0.02 * Math.exp(-0.05 * time) * Math.sin(Math.PI * time * 2.5),
           getPositionY: (y) => y + 0.005,
         }),
         bubble2: new THREE.Uniform({
@@ -90,7 +97,8 @@ export const plainMeshController = {
           startTime: 0,
           delay: 0,
           getPositionX: (time) =>
-            0.4 + 0.03 * Math.exp(-0.05 * time) * Math.sin(Math.PI * time * 2.5),
+            0.4 +
+            0.03 * Math.exp(-0.05 * time) * Math.sin(Math.PI * time * 2.5),
           getPositionY: (y) => y + 0.005,
         }),
         bubble3: new THREE.Uniform({
