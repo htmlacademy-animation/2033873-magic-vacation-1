@@ -4,7 +4,7 @@ import { game } from "./game";
 import { prizesAnimation } from "./prizesAnimation";
 import { plainMeshController } from "../3d-animations/planeMeshController";
 import {scene} from "../3d-animations/initAnimationScreen";
-import {circleController} from "../3d-animations/circleController";
+import {sceneController} from "../3d-animations/sceneController";
 
 export default class FullPageScroll {
   constructor() {
@@ -77,7 +77,7 @@ export default class FullPageScroll {
 
     if (nextActiveScreen.classList.contains(`screen--intro`)) {
       // plainMeshController.addScreenMesh("intro");
-      circleController.addScreenMesh();
+      sceneController.addScreenMesh();
     } else if (nextActiveScreen.classList.contains(`screen--story`)) {
       plainMeshController.addScreenMesh("story").then(() => {
         plainMeshController.setStoryActiveMesh();

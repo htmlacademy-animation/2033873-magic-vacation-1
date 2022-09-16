@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { Lantern } from "../mesh-complex-objects/Lantern";
+import {Snowman} from '../mesh-complex-objects/Snowman';
 
 export class SceneWithLantern extends THREE.Group {
   constructor() {
@@ -12,6 +13,7 @@ export class SceneWithLantern extends THREE.Group {
   constructChildren() {
     this.addPyramid();
     this.addLantern();
+    this.addSnowman();
   }
 
   addPyramid() {
@@ -30,6 +32,13 @@ export class SceneWithLantern extends THREE.Group {
     lantern.position.set(400, 0, 0);
 
     this.add(lantern);
+  }
+
+  addSnowman() {
+    const snowman = new Snowman(this.defaultMaterial);
+    snowman.position.set(-400, 0, 0);
+
+    this.add(snowman);
   }
 
   getDefaultMaterial() {
