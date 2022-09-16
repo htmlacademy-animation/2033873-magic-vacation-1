@@ -28,7 +28,7 @@ export class Scene3d {
   initScene() {
     this.scene = new THREE.Scene();
 
-    const axesHelper = new THREE.AxesHelper( 200 );
+    const axesHelper = new THREE.AxesHelper( 1000 );
     this.scene.add( axesHelper );
   }
 
