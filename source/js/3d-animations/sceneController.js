@@ -4,7 +4,7 @@ import { SvgPathsLoader } from "./svg/SvgPathsLoader";
 import { EXTRUDE_SETTINGS, SVG_FORMS } from "../constants";
 import { ExtrudeSvgFactory } from "./svg/ExtrudeSvg";
 import { LatheGeometryCreator } from "./creators/LatheGeometryCreator";
-import {degreesToRadians} from './utils/degreesToRadians';
+import { Saturn } from "./mesh-complex-objects/Saturn";
 
 export const sceneController = {
   clearScene() {
@@ -67,14 +67,24 @@ export const sceneController = {
     scene.addSceneObject(keyholeMesh);
   },
 
+  addRoadAndCarpet() {
+    const road = new LatheGeometryCreator().createRoad();
+
+    road.position.set(0, 100, 0);
+
+    scene.addSceneObject(road);
+    scene.addSceneObject(new LatheGeometryCreator().createCarpet());
+  },
+
   async addScreenMesh() {
     // scene.addSceneObject(new SceneWithLantern());
 
-    const road = new LatheGeometryCreator().createRoad();
+    this.addRoadAndCarpet();
 
-    road.rotateY(degreesToRadians(90));
+    const saturn = new Saturn();
 
-    scene.addSceneObject(road);
-    scene.addSceneObject(new LatheGeometryCreator().createCarpet())
+    saturn.position.set(0, 200, 0);
+
+    scene.addSceneObject(saturn);
   },
 };
