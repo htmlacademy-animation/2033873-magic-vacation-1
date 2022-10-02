@@ -3,15 +3,15 @@ import { scene } from "./initAnimationScreen";
 import { SvgPathsLoader } from "./svg/SvgPathsLoader";
 import { EXTRUDE_SETTINGS, SVG_FORMS } from "../constants";
 import { ExtrudeSvgFactory } from "./svg/ExtrudeSvg";
+import { LatheGeometryCreator } from "./creators/LatheGeometryCreator";
+import {degreesToRadians} from './utils/degreesToRadians';
 
 export const sceneController = {
   clearScene() {
     scene.clearScene();
   },
 
-  async addScreenMesh() {
-    // scene.addSceneObject(new SceneWithLantern());
-
+  async addSvgExtrudeImages() {
     const svgShapeLoader = new SvgPathsLoader(SVG_FORMS);
     const extrudeSvgFactory = new ExtrudeSvgFactory(
       svgShapeLoader,
@@ -65,5 +65,16 @@ export const sceneController = {
     scene.addSceneObject(leafMesh);
     scene.addSceneObject(flowerMesh);
     scene.addSceneObject(keyholeMesh);
+  },
+
+  async addScreenMesh() {
+    // scene.addSceneObject(new SceneWithLantern());
+
+    const road = new LatheGeometryCreator().createRoad();
+
+    road.rotateY(degreesToRadians(90));
+
+    scene.addSceneObject(road);
+    scene.addSceneObject(new LatheGeometryCreator().createCarpet())
   },
 };
