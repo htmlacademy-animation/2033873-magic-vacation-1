@@ -179,7 +179,7 @@ MaterialCreator.Colors = {
 MaterialCreator.Config = {
   SoftMaterial: {
     roughness: 0.9,
-    metalness: 0.4,
+    metalness: 0.0,
     name: "SoftMaterial",
   },
   BasicMaterial: {
