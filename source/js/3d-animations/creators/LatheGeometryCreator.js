@@ -1,10 +1,11 @@
 import * as THREE from "three";
 import { degreesToRadians } from "../utils/degreesToRadians";
+import { RoadCustomMaterial } from "../CustomMaterials/RoadCustomMaterial";
 
 export class LatheGeometryCreator {
   createRoad() {
     const geometry = this.createGeometry(732, 160, 3, 0, 90);
-    const material = new THREE.MeshBasicMaterial({
+    const material = new RoadCustomMaterial({
       color: 0xaaaaaa,
     });
 

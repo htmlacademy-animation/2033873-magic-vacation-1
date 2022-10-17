@@ -23,7 +23,7 @@ export const sceneController = {
     road.position.set(0, 100, 0);
 
     scene.addSceneObject(road);
-    scene.addSceneObject(new LatheGeometryCreator().createCarpet());
+    // scene.addSceneObject(new LatheGeometryCreator().createCarpet());
   },
 
   addSaturn() {
@@ -110,15 +110,15 @@ export const sceneController = {
   },
 
   addScreenMesh() {
-    this.addSceneWithLantern();
+    // this.addSceneWithLantern();
+    //
+    // this.addSpheres();
+    //
+    // this.addSaturn();
+    // this.addDarkSaturn();
+    //
+    // this.addMainPageComposition();
 
-    this.addSpheres();
-
-    this.addSaturn();
-    this.addDarkSaturn();
-
-    this.addMainPageComposition();
-
-    // this.addRoadAndCarpet();
+    this.addRoadAndCarpet();
   },
 };

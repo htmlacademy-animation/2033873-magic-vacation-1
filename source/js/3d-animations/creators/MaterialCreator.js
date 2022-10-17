@@ -1,5 +1,7 @@
 import * as THREE from "three";
 
+import { RoadCustomMaterial } from "../CustomMaterials/RoadCustomMaterial";
+
 export class MaterialCreator {
   constructor(scene, gui) {
     this.scene = scene;
@@ -12,8 +14,8 @@ export class MaterialCreator {
   /**
    * Создает материал
    *
-   * @param {'SoftMaterial'|'BasicMaterial'|'StrongMaterial'} materialType
-   * @param {THREE.MeshStandardMaterialParameters} config
+   * @param {'SoftMaterial'|'BasicMaterial'|'StrongMaterial'|'CustomRoadMaterial'} materialType
+   * @param {THREE.ShaderMaterialParameters} config
    * @return {THREE.Material}
    */
   create(materialType, config) {
@@ -36,6 +38,9 @@ export class MaterialCreator {
           ...config,
         });
       }
+      case "CustomRoadMaterial": {
+        return this.createRoadMaterial(config);
+      }
       default: {
         return this.createBasic({
           ...MaterialCreator.Config.StrongMaterial,
@@ -46,7 +51,7 @@ export class MaterialCreator {
   }
 
   /**
-   * @param {THREE.MeshStandardMaterialParameters} config
+   * @param {THREE.ShaderMaterialParameters} config
    *
    * @return {THREE.Material}
    */
@@ -55,7 +60,7 @@ export class MaterialCreator {
   }
 
   /**
-   * @param {THREE.MeshStandardMaterialParameters} config
+   * @param {THREE.ShaderMaterialParameters} config
    *
    * @return {THREE.Material}
    */
@@ -64,7 +69,7 @@ export class MaterialCreator {
   }
 
   /**
-   * @param {THREE.MeshStandardMaterialParameters} config
+   * @param {THREE.ShaderMaterialParameters} config
    *
    * @return {THREE.Material}
    */
@@ -72,11 +77,20 @@ export class MaterialCreator {
     return new THREE.MeshPhongMaterial(config);
   }
 
+  /**
+   * @param {THREE.ShaderMaterialParameters} config
+   *
+   * @return {THREE.Material}
+   */
+  createRoadMaterial(config) {
+    return new RoadCustomMaterial(config);
+  }
+
   findMaterialAndUpdate(data, materialName, propName) {
     return (object) => {
       if (object.type === "Mesh" && object.material.name === materialName) {
-        if (propName === 'specular') {
-          object.material[propName] = new THREE.Color(data)
+        if (propName === "specular") {
+          object.material[propName] = new THREE.Color(data);
         } else {
           object.material[propName] = data;
         }
