@@ -9,6 +9,7 @@ import { MainPageComposition } from "./mesh-complex-objects/MainPageComposition"
 
 const gui = new GUI();
 const materialCreator = new MaterialCreator(scene, gui);
+const latheGeometryCreator = new LatheGeometryCreator(materialCreator)
 
 scene.addSceneObject(gui);
 
@@ -18,7 +19,7 @@ export const sceneController = {
   },
 
   addRoadAndCarpet() {
-    const road = new LatheGeometryCreator().createRoad();
+    const road = latheGeometryCreator.createRoad();
 
     road.position.set(0, 100, 0);
 

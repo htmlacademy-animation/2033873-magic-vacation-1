@@ -39,7 +39,10 @@ export class MaterialCreator {
         });
       }
       case "CustomRoadMaterial": {
-        return this.createRoadMaterial(config);
+        return this.createRoadMaterial({
+          ...MaterialCreator.Config.SoftMaterial,
+          ...config,
+        });
       }
       default: {
         return this.createBasic({
