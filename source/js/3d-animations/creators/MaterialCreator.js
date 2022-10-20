@@ -1,6 +1,7 @@
 import * as THREE from "three";
 
 import { RoadCustomMaterial } from "../CustomMaterials/RoadCustomMaterial";
+import { CarpetCustomMaterial } from "../CustomMaterials/CarpetCustomMaterial";
 
 export class MaterialCreator {
   constructor(scene, gui) {
@@ -14,7 +15,7 @@ export class MaterialCreator {
   /**
    * Создает материал
    *
-   * @param {'SoftMaterial'|'BasicMaterial'|'StrongMaterial'|'CustomRoadMaterial'} materialType
+   * @param {'SoftMaterial'|'BasicMaterial'|'StrongMaterial'|'CustomRoadMaterial'|'CustomCarpetMaterial'} materialType
    * @param {THREE.ShaderMaterialParameters} config
    * @return {THREE.Material}
    */
@@ -40,6 +41,12 @@ export class MaterialCreator {
       }
       case "CustomRoadMaterial": {
         return this.createRoadMaterial({
+          ...MaterialCreator.Config.SoftMaterial,
+          ...config,
+        });
+      }
+      case "CustomCarpetMaterial": {
+        return this.createCarpetMaterial({
           ...MaterialCreator.Config.SoftMaterial,
           ...config,
         });
@@ -87,6 +94,15 @@ export class MaterialCreator {
    */
   createRoadMaterial(config) {
     return new RoadCustomMaterial(config);
+  }
+
+  /**
+   * @param {THREE.ShaderMaterialParameters} config
+   *
+   * @return {THREE.Material}
+   */
+  createCarpetMaterial(config) {
+    return new CarpetCustomMaterial(config);
   }
 
   findMaterialAndUpdate(data, materialName, propName) {

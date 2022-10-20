@@ -15,9 +15,7 @@ export class LatheGeometryCreator {
 
   createCarpet() {
     const geometry = this.createGeometry(763, 180, 3, 16, 74);
-    const material = new THREE.MeshBasicMaterial({
-      color: 0xa2017a,
-    });
+    const material = this.materialCreator.create("CustomCarpetMaterial")
 
     return new THREE.Mesh(geometry, material);
   }
