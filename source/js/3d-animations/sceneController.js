@@ -11,6 +11,7 @@ import { Carpet } from "./mesh-complex-objects/Carpet";
 import { SvgPathsLoader } from "./loaders/SvgPathsLoader";
 import { EXTRUDE_SETTINGS, SVG_FORMS } from "../constants";
 import { ExtrudeSvgCreator } from "./creators/ExtrudeSvgCreator";
+import {ObjectsCreator} from './creators/ObjectCreator';
 
 const gui = new GUI();
 const materialCreator = new MaterialCreator(scene, gui);
@@ -20,6 +21,7 @@ const extrudeSvgCreator = new ExtrudeSvgCreator(
   svgShapeLoader,
   EXTRUDE_SETTINGS
 );
+const objectCreator = new ObjectsCreator(materialCreator)
 
 scene.addSceneObject(gui);
 
@@ -124,6 +126,12 @@ export const sceneController = {
     scene.addSceneObject(new SceneWithLantern(materialCreator));
   },
 
+  addAeroplane() {
+    objectCreator.create('airplane', (mesh)=> {
+      scene.addSceneObject(mesh)
+    })
+  },
+
   addScreenMesh() {
     // this.addSceneWithLantern();
     //
@@ -134,6 +142,8 @@ export const sceneController = {
     //
     // this.addMainPageComposition();
 
-    this.addRoadAndCarpet();
+    // this.addRoadAndCarpet();
+
+    this.addAeroplane()
   },
 };
