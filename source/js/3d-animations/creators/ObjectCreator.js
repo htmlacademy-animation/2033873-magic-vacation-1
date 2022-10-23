@@ -17,23 +17,30 @@ export class ObjectsCreator {
     if (!config) return;
 
     const onComplete = (obj3d) => {
-      const material = this.materialCreator.create(config.materialType, {
-        color: config.color,
-      });
+      if (config.materialType) {
+        const material = this.materialCreator.create(config.materialType, {
+          color: config.color,
+        });
 
-      obj3d.traverse((child) => {
-        if (child.isMesh) {
-          child.material = material;
-        }
-      });
+        obj3d.traverse((child) => {
+          if (child.isMesh) {
+            child.material = material;
+          }
+        });
+      }
 
       if (typeof onSuccess === "function") onSuccess.call(null, obj3d);
+    };
+
+    const onGltfComplete = (gltf) => {
+      if (!gltf.scene) return;
+      onComplete(gltf.scene);
     };
 
     if (config.path.endsWith(".obj")) {
       this.objLoader.load(config.path, onComplete);
     } else if (config.path.endsWith(".gltf")) {
-      this.loaderGltf.load(config.path, onComplete);
+      this.loaderGltf.load(config.path, onGltfComplete);
     }
   }
 }

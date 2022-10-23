@@ -132,6 +132,22 @@ export const sceneController = {
     })
   },
 
+  addWatermelon() {
+    objectCreator.create('watermelon', (mesh)=> {
+      mesh.position.set(0, 100, 0)
+
+      scene.addSceneObject(mesh)
+    })
+  },
+
+  addSuitcase() {
+    objectCreator.create('suitcase', (mesh)=> {
+      mesh.position.set(200, 0, 0)
+
+      scene.addSceneObject(mesh)
+    })
+  },
+
   addScreenMesh() {
     // this.addSceneWithLantern();
     //
@@ -145,5 +161,9 @@ export const sceneController = {
     // this.addRoadAndCarpet();
 
     this.addAeroplane()
+
+    this.addWatermelon()
+
+    this.addSuitcase()
   },
 };
