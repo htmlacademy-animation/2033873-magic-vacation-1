@@ -8,10 +8,18 @@ import { GUI } from "dat.gui";
 import { MainPageComposition } from "./mesh-complex-objects/MainPageComposition";
 import { Road } from "./mesh-complex-objects/Road";
 import { Carpet } from "./mesh-complex-objects/Carpet";
+import { SvgPathsLoader } from "./loaders/SvgPathsLoader";
+import { EXTRUDE_SETTINGS, SVG_FORMS } from "../constants";
+import { ExtrudeSvgCreator } from "./creators/ExtrudeSvgCreator";
 
 const gui = new GUI();
 const materialCreator = new MaterialCreator(scene, gui);
 const latheGeometryCreator = new LatheGeometryCreator();
+const svgShapeLoader = new SvgPathsLoader(SVG_FORMS);
+const extrudeSvgCreator = new ExtrudeSvgCreator(
+  svgShapeLoader,
+  EXTRUDE_SETTINGS
+);
 
 scene.addSceneObject(gui);
 
@@ -102,7 +110,10 @@ export const sceneController = {
   },
 
   addMainPageComposition() {
-    const mainPageComposition = new MainPageComposition(materialCreator);
+    const mainPageComposition = new MainPageComposition(
+      materialCreator,
+      extrudeSvgCreator
+    );
 
     mainPageComposition.position.set(0, 0, -400);
 
