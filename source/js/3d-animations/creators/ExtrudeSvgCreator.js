@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-export class ExtrudeSvgFactory {
+export class ExtrudeSvgCreator {
   constructor(svgShapeLoader, settings) {
     this.svgShapeLoader = svgShapeLoader;
     this.settings = settings;

@@ -1,7 +1,7 @@
 import * as THREE from "three";
-import { SvgPathsLoader } from "../svg/SvgPathsLoader";
+import { SvgPathsLoader } from "../loaders/SvgPathsLoader";
 import { EXTRUDE_SETTINGS, SVG_FORMS } from "../../constants";
-import { ExtrudeSvgFactory } from "../svg/ExtrudeSvg";
+import { ExtrudeSvgCreator } from "../creators/ExtrudeSvgCreator";
 import { degreesToRadians } from "../utils/degreesToRadians";
 import { MaterialCreator } from "../creators/MaterialCreator";
 
@@ -11,7 +11,7 @@ export class MainPageComposition extends THREE.Group {
   constructor(materialCreator) {
     super();
 
-    this.extrudeSvgFactory = new ExtrudeSvgFactory(
+    this.extrudeSvgFactory = new ExtrudeSvgCreator(
       svgShapeLoader,
       EXTRUDE_SETTINGS
     );

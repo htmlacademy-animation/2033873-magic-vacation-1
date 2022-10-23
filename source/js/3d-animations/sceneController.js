@@ -6,10 +6,12 @@ import { MaterialCreator } from "./creators/MaterialCreator";
 import * as THREE from "three";
 import { GUI } from "dat.gui";
 import { MainPageComposition } from "./mesh-complex-objects/MainPageComposition";
+import { Road } from "./mesh-complex-objects/Road";
+import { Carpet } from "./mesh-complex-objects/Carpet";
 
 const gui = new GUI();
 const materialCreator = new MaterialCreator(scene, gui);
-const latheGeometryCreator = new LatheGeometryCreator(materialCreator);
+const latheGeometryCreator = new LatheGeometryCreator();
 
 scene.addSceneObject(gui);
 
@@ -19,8 +21,8 @@ export const sceneController = {
   },
 
   addRoadAndCarpet() {
-    const road = latheGeometryCreator.createRoad();
-    const carpet = latheGeometryCreator.createCarpet()
+    const road = new Road(latheGeometryCreator, materialCreator);
+    const carpet = new Carpet(latheGeometryCreator, materialCreator);
 
     road.position.set(0, 100, 0);
 
