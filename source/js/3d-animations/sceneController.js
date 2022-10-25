@@ -4,26 +4,24 @@ import { LatheGeometryCreator } from "./creators/LatheGeometryCreator";
 import { Saturn } from "./mesh-complex-objects/Saturn";
 import { MaterialCreator } from "./creators/MaterialCreator";
 import * as THREE from "three";
-import { GUI } from "dat.gui";
 import { MainPageComposition } from "./mesh-complex-objects/MainPageComposition";
 import { Road } from "./mesh-complex-objects/Road";
 import { Carpet } from "./mesh-complex-objects/Carpet";
 import { SvgPathsLoader } from "./loaders/SvgPathsLoader";
 import { EXTRUDE_SETTINGS, SVG_FORMS } from "../constants";
 import { ExtrudeSvgCreator } from "./creators/ExtrudeSvgCreator";
-import {ObjectsCreator} from './creators/ObjectCreator';
+import { ObjectsCreator } from "./creators/ObjectCreator";
+// import { ProjectGui } from "./ProjectGui/ProjectGui";
 
-const gui = new GUI();
-const materialCreator = new MaterialCreator(scene, gui);
+// const gui = new ProjectGui(scene);
+const materialCreator = new MaterialCreator();
 const latheGeometryCreator = new LatheGeometryCreator();
 const svgShapeLoader = new SvgPathsLoader(SVG_FORMS);
 const extrudeSvgCreator = new ExtrudeSvgCreator(
   svgShapeLoader,
   EXTRUDE_SETTINGS
 );
-const objectCreator = new ObjectsCreator(materialCreator)
-
-scene.addSceneObject(gui);
+const objectCreator = new ObjectsCreator(materialCreator);
 
 export const sceneController = {
   clearScene() {
@@ -117,8 +115,6 @@ export const sceneController = {
       extrudeSvgCreator
     );
 
-    mainPageComposition.position.set(0, 0, -400);
-
     scene.addSceneObject(mainPageComposition);
   },
 
@@ -127,25 +123,25 @@ export const sceneController = {
   },
 
   addAeroplane() {
-    objectCreator.create('airplane', (mesh)=> {
-      scene.addSceneObject(mesh)
-    })
+    objectCreator.create("airplane", (mesh) => {
+      scene.addSceneObject(mesh);
+    });
   },
 
   addWatermelon() {
-    objectCreator.create('watermelon', (mesh)=> {
-      mesh.position.set(0, 100, 0)
+    objectCreator.create("watermelon", (mesh) => {
+      mesh.position.set(0, 100, 0);
 
-      scene.addSceneObject(mesh)
-    })
+      scene.addSceneObject(mesh);
+    });
   },
 
   addSuitcase() {
-    objectCreator.create('suitcase', (mesh)=> {
-      mesh.position.set(200, 0, 0)
+    objectCreator.create("suitcase", (mesh) => {
+      mesh.position.set(200, 0, 0);
 
-      scene.addSceneObject(mesh)
-    })
+      scene.addSceneObject(mesh);
+    });
   },
 
   addScreenMesh() {
@@ -156,14 +152,14 @@ export const sceneController = {
     // this.addSaturn();
     // this.addDarkSaturn();
     //
-    // this.addMainPageComposition();
+    this.addMainPageComposition();
 
     // this.addRoadAndCarpet();
 
-    this.addAeroplane()
-
-    this.addWatermelon()
-
-    this.addSuitcase()
+    // this.addAeroplane()
+    //
+    // this.addWatermelon()
+    //
+    // this.addSuitcase()
   },
 };

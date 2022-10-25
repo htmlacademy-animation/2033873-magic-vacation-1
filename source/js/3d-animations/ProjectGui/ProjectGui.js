@@ -1,0 +1,71 @@
+import { GUI } from "dat.gui";
+import * as THREE from "three";
+import { MaterialCreator } from "../creators/MaterialCreator";
+
+export class ProjectGui extends GUI {
+  constructor(scene) {
+    super();
+
+    this.scene = scene;
+    this.init();
+  }
+
+  init() {
+    const softMaterial = this.addFolder("SoftMaterial");
+    softMaterial
+      .add(MaterialCreator.Config.SoftMaterial, "roughness", 0, 1, 0.01)
+      .onChange((data) => {
+        this.updateChildrenMeshMaterial(data, "SoftMaterial", "roughness");
+      });
+    softMaterial
+      .add(MaterialCreator.Config.SoftMaterial, "metalness", 0, 1, 0.01)
+      .onChange((data) => {
+        this.updateChildrenMeshMaterial(data, "SoftMaterial", "metalness");
+      });
+    softMaterial.open();
+
+    const basicMaterial = this.addFolder("BasicMaterial");
+    basicMaterial
+      .add(MaterialCreator.Config.BasicMaterial, "roughness", 0, 1, 0.01)
+      .onChange((data) => {
+        this.updateChildrenMeshMaterial(data, "BasicMaterial", "roughness");
+      });
+    basicMaterial
+      .add(MaterialCreator.Config.BasicMaterial, "metalness", 0, 1, 0.01)
+      .onChange((data) => {
+        this.updateChildrenMeshMaterial(data, "BasicMaterial", "metalness");
+      });
+    basicMaterial.open();
+
+    const strongMaterial = this.addFolder("StrongMaterial");
+    strongMaterial
+      .add(MaterialCreator.Config.StrongMaterial, "shininess", 0, 100, 1)
+      .onChange((data) => {
+        this.updateChildrenMeshMaterial(data, "StrongMaterial", "shininess");
+      });
+    strongMaterial
+      .addColor(MaterialCreator.Config.StrongMaterial, "specular")
+      .onChange((value) => {
+        const data = Number("0x" + value.toString(16));
+
+        MaterialCreator.Config.StrongMaterial.specular = data;
+
+        this.updateChildrenMeshMaterial(data, "StrongMaterial", "specular");
+      });
+    strongMaterial.open();
+
+    this.scene.addSceneObject(this);
+  }
+
+  updateChildrenMeshMaterial(data, materialName, propName) {
+    this.scene.scene.traverse((child) => {
+      if (child.type === "Mesh" && child.material.name === materialName) {
+        if (propName === "specular") {
+          child.material[propName] = new THREE.Color(data);
+        } else {
+          child.material[propName] = data;
+        }
+      }
+    });
+  }
+}
