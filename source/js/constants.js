@@ -1,12 +1,18 @@
 export const GAME_TIME_LIMIT = 5 * 60 * 1000
 
-export const SVG_FORMS = {
+export const SVG_ELEMENTS = {
   flamingo: 'flamingo',
   flower: 'flower',
   keyhole: 'keyhole',
   leaf: 'leaf',
   question: 'question',
   snowflake: 'snowflake'
+}
+
+export const OBJECT_ELEMENTS = {
+  airplane: 'airplane',
+  suitcase: 'suitcase',
+  watermelon: 'watermelon',
 }
 
 export const EXTRUDE_SETTINGS = {

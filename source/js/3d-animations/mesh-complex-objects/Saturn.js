@@ -13,10 +13,13 @@ export class Saturn extends THREE.Group {
   }
 
   constructChildren() {
-    this.addRope();
     this.addPlanet();
-    this.addSmallSphere();
     this.addRing();
+
+    if (this.options.withRope) {
+      this.addRope();
+      this.addSmallSphere();
+    }
   }
 
   addRope() {

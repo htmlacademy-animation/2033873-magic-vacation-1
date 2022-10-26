@@ -8,15 +8,13 @@ import { MainPageComposition } from "./mesh-complex-objects/MainPageComposition"
 import { Road } from "./mesh-complex-objects/Road";
 import { Carpet } from "./mesh-complex-objects/Carpet";
 import { SvgPathsLoader } from "./loaders/SvgPathsLoader";
-import { EXTRUDE_SETTINGS, SVG_FORMS } from "../constants";
+import { EXTRUDE_SETTINGS, SVG_ELEMENTS } from "../constants";
 import { ExtrudeSvgCreator } from "./creators/ExtrudeSvgCreator";
 import { ObjectsCreator } from "./creators/ObjectCreator";
-// import { ProjectGui } from "./ProjectGui/ProjectGui";
 
-// const gui = new ProjectGui(scene);
 const materialCreator = new MaterialCreator();
 const latheGeometryCreator = new LatheGeometryCreator();
-const svgShapeLoader = new SvgPathsLoader(SVG_FORMS);
+const svgShapeLoader = new SvgPathsLoader(SVG_ELEMENTS);
 const extrudeSvgCreator = new ExtrudeSvgCreator(
   svgShapeLoader,
   EXTRUDE_SETTINGS
@@ -112,7 +110,8 @@ export const sceneController = {
   addMainPageComposition() {
     const mainPageComposition = new MainPageComposition(
       materialCreator,
-      extrudeSvgCreator
+      extrudeSvgCreator,
+      objectCreator
     );
 
     scene.addSceneObject(mainPageComposition);
@@ -120,28 +119,6 @@ export const sceneController = {
 
   addSceneWithLantern() {
     scene.addSceneObject(new SceneWithLantern(materialCreator));
-  },
-
-  addAeroplane() {
-    objectCreator.create("airplane", (mesh) => {
-      scene.addSceneObject(mesh);
-    });
-  },
-
-  addWatermelon() {
-    objectCreator.create("watermelon", (mesh) => {
-      mesh.position.set(0, 100, 0);
-
-      scene.addSceneObject(mesh);
-    });
-  },
-
-  addSuitcase() {
-    objectCreator.create("suitcase", (mesh) => {
-      mesh.position.set(200, 0, 0);
-
-      scene.addSceneObject(mesh);
-    });
   },
 
   addScreenMesh() {

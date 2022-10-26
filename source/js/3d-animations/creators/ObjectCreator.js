@@ -1,6 +1,7 @@
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { MaterialCreator } from "./MaterialCreator";
+import { OBJECT_ELEMENTS } from "../../constants";
 
 export class ObjectsCreator {
   constructor(materialCreator) {
@@ -12,9 +13,16 @@ export class ObjectsCreator {
   }
 
   create(name, onSuccess) {
+    if (this.objects[name] && typeof onSuccess === "function") {
+      onSuccess.call(null, this.objects[name]);
+      return;
+    }
+
     const config = ObjectsCreator.objectsConfigMap[name];
 
-    if (!config) return;
+    if (!config) {
+      return;
+    }
 
     const onComplete = (obj3d) => {
       if (config.materialType) {
@@ -23,11 +31,13 @@ export class ObjectsCreator {
         });
 
         obj3d.traverse((child) => {
-          if (child.isMesh) {
+          if (typeof child.isMesh === 'function' && child.isMesh()) {
             child.material = material;
           }
         });
       }
+
+      this.objects[name] = obj3d;
 
       if (typeof onSuccess === "function") onSuccess.call(null, obj3d);
     };
@@ -46,18 +56,15 @@ export class ObjectsCreator {
 }
 
 ObjectsCreator.objectsConfigMap = {
-  airplane: {
-    name: "airplane",
+  [OBJECT_ELEMENTS.airplane]: {
     materialType: "BasicMaterial",
     color: MaterialCreator.Colors.White,
     path: "./3d/module-6/scene-0-objects/airplane.obj",
   },
-  suitcase: {
-    name: "suitcase",
+  [OBJECT_ELEMENTS.suitcase]: {
     path: "./3d/module-6/scene-0-objects/suitcase.gltf",
   },
-  watermelon: {
-    name: "watermelon",
+  [OBJECT_ELEMENTS.watermelon]: {
     path: "./3d/module-6/scene-0-objects/watermelon.gltf",
   },
 };
