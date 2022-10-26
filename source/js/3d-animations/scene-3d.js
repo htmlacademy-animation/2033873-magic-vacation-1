@@ -27,9 +27,6 @@ export class Scene3d {
 
   initScene() {
     this.scene = new THREE.Scene();
-
-    const axesHelper = new THREE.AxesHelper(1000);
-    this.scene.add(axesHelper);
   }
 
   initCamera(cameraConfig = {}) {
@@ -75,8 +72,6 @@ export class Scene3d {
     this.scene.add(targetObject);
 
     light1.target = targetObject;
-
-    // направлен в сторону направления камеры вниз на 15deg
 
     // Light 2
     // со значением distance 975 согласно заданию, свет от источников 2 и 3 не долетает до шара
