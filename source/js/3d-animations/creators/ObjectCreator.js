@@ -1,7 +1,7 @@
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { MaterialCreator } from "./MaterialCreator";
-import { OBJECT_ELEMENTS } from "../../constants";
+import { MATERIAL_TYPE, OBJECT_ELEMENTS } from "../../constants";
 
 export class ObjectsCreator {
   constructor(materialCreator) {
@@ -31,7 +31,7 @@ export class ObjectsCreator {
         });
 
         obj3d.traverse((child) => {
-          if (typeof child.isMesh === 'function' && child.isMesh()) {
+          if (typeof child.isMesh === "function" && child.isMesh()) {
             child.material = material;
           }
         });
@@ -57,7 +57,7 @@ export class ObjectsCreator {
 
 ObjectsCreator.objectsConfigMap = {
   [OBJECT_ELEMENTS.airplane]: {
-    materialType: "BasicMaterial",
+    materialType: MATERIAL_TYPE.BasicMaterial,
     color: MaterialCreator.Colors.White,
     path: "./3d/module-6/scene-0-objects/airplane.obj",
   },

@@ -8,7 +8,7 @@ import { MainPageComposition } from "./mesh-complex-objects/MainPageComposition"
 import { Road } from "./mesh-complex-objects/Road";
 import { Carpet } from "./mesh-complex-objects/Carpet";
 import { SvgPathsLoader } from "./loaders/SvgPathsLoader";
-import { EXTRUDE_SETTINGS, SVG_ELEMENTS } from "../constants";
+import { EXTRUDE_SETTINGS, MATERIAL_TYPE, SVG_ELEMENTS } from "../constants";
 import { ExtrudeSvgCreator } from "./creators/ExtrudeSvgCreator";
 import { ObjectsCreator } from "./creators/ObjectCreator";
 
@@ -71,27 +71,27 @@ export const sceneController = {
     sphere5.position.set(330, 110, 0);
     sphere6.position.set(330, -110, 0);
 
-    sphere1.material = materialCreator.create("SoftMaterial", {
+    sphere1.material = materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
       color: MaterialCreator.Colors.Blue,
     });
 
-    sphere2.material = materialCreator.create("SoftMaterial", {
+    sphere2.material = materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
       color: MaterialCreator.Colors.DarkBlue,
     });
 
-    sphere3.material = materialCreator.create("BasicMaterial", {
+    sphere3.material = materialCreator.create(MATERIAL_TYPE.BasicMaterial, {
       color: MaterialCreator.Colors.Blue,
     });
 
-    sphere4.material = materialCreator.create("BasicMaterial", {
+    sphere4.material = materialCreator.create(MATERIAL_TYPE.BasicMaterial, {
       color: MaterialCreator.Colors.DarkBlue,
     });
 
-    sphere5.material = materialCreator.create("StrongMaterial", {
+    sphere5.material = materialCreator.create(MATERIAL_TYPE.StrongMaterial, {
       color: MaterialCreator.Colors.Blue,
     });
 
-    sphere6.material = materialCreator.create("StrongMaterial", {
+    sphere6.material = materialCreator.create(MATERIAL_TYPE.StrongMaterial, {
       color: MaterialCreator.Colors.DarkBlue,
     });
 

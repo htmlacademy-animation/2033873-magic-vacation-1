@@ -2,42 +2,43 @@ import * as THREE from "three";
 
 import { RoadCustomMaterial } from "../CustomMaterials/RoadCustomMaterial";
 import { CarpetCustomMaterial } from "../CustomMaterials/CarpetCustomMaterial";
+import { MATERIAL_TYPE } from "../../constants";
 
 export class MaterialCreator {
   /**
    * Создает материал
    *
-   * @param {'SoftMaterial'|'BasicMaterial'|'StrongMaterial'|'CustomRoadMaterial'|'CustomCarpetMaterial'} materialType
+   * @param {MATERIAL_TYPE} materialType
    * @param {THREE.ShaderMaterialParameters} config
    * @return {THREE.Material}
    */
   create(materialType, config) {
     switch (materialType) {
-      case "SoftMaterial": {
+      case MATERIAL_TYPE.SoftMaterial: {
         return this.createSoft({
           ...MaterialCreator.Config.SoftMaterial,
           ...config,
         });
       }
-      case "BasicMaterial": {
+      case MATERIAL_TYPE.BasicMaterial: {
         return this.createBasic({
           ...MaterialCreator.Config.BasicMaterial,
           ...config,
         });
       }
-      case "StrongMaterial": {
+      case MATERIAL_TYPE.StrongMaterial: {
         return this.createStrong({
           ...MaterialCreator.Config.StrongMaterial,
           ...config,
         });
       }
-      case "CustomRoadMaterial": {
+      case MATERIAL_TYPE.CustomRoadMaterial: {
         return this.createRoadMaterial({
           ...MaterialCreator.Config.SoftMaterial,
           ...config,
         });
       }
-      case "CustomCarpetMaterial": {
+      case MATERIAL_TYPE.CustomCarpetMaterial: {
         return this.createCarpetMaterial({
           ...MaterialCreator.Config.SoftMaterial,
           ...config,
@@ -130,16 +131,16 @@ MaterialCreator.Config = {
   SoftMaterial: {
     roughness: 0.9,
     metalness: 0.0,
-    name: "SoftMaterial",
+    name: MATERIAL_TYPE.SoftMaterial,
   },
   BasicMaterial: {
     roughness: 0.62,
     metalness: 0.53,
-    name: "BasicMaterial",
+    name: MATERIAL_TYPE.BasicMaterial,
   },
   StrongMaterial: {
     shininess: 0,
     specular: 0xffffff,
-    name: "StrongMaterial",
+    name: MATERIAL_TYPE.StrongMaterial,
   },
 };

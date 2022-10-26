@@ -1,6 +1,7 @@
 import { GUI } from "dat.gui";
 import * as THREE from "three";
 import { MaterialCreator } from "../creators/MaterialCreator";
+import { MATERIAL_TYPE } from "../../constants";
 
 export class ProjectGui extends GUI {
   constructor(scene) {
@@ -11,37 +12,57 @@ export class ProjectGui extends GUI {
   }
 
   init() {
-    const softMaterial = this.addFolder("SoftMaterial");
+    const softMaterial = this.addFolder(MATERIAL_TYPE.SoftMaterial);
     softMaterial
       .add(MaterialCreator.Config.SoftMaterial, "roughness", 0, 1, 0.01)
       .onChange((data) => {
-        this.updateChildrenMeshMaterial(data, "SoftMaterial", "roughness");
+        this.updateChildrenMeshMaterial(
+          data,
+          MATERIAL_TYPE.SoftMaterial,
+          "roughness"
+        );
       });
     softMaterial
       .add(MaterialCreator.Config.SoftMaterial, "metalness", 0, 1, 0.01)
       .onChange((data) => {
-        this.updateChildrenMeshMaterial(data, "SoftMaterial", "metalness");
+        this.updateChildrenMeshMaterial(
+          data,
+          MATERIAL_TYPE.SoftMaterial,
+          "metalness"
+        );
       });
     softMaterial.open();
 
-    const basicMaterial = this.addFolder("BasicMaterial");
+    const basicMaterial = this.addFolder(MATERIAL_TYPE.BasicMaterial);
     basicMaterial
       .add(MaterialCreator.Config.BasicMaterial, "roughness", 0, 1, 0.01)
       .onChange((data) => {
-        this.updateChildrenMeshMaterial(data, "BasicMaterial", "roughness");
+        this.updateChildrenMeshMaterial(
+          data,
+          MATERIAL_TYPE.BasicMaterial,
+          "roughness"
+        );
       });
     basicMaterial
       .add(MaterialCreator.Config.BasicMaterial, "metalness", 0, 1, 0.01)
       .onChange((data) => {
-        this.updateChildrenMeshMaterial(data, "BasicMaterial", "metalness");
+        this.updateChildrenMeshMaterial(
+          data,
+          MATERIAL_TYPE.BasicMaterial,
+          "metalness"
+        );
       });
     basicMaterial.open();
 
-    const strongMaterial = this.addFolder("StrongMaterial");
+    const strongMaterial = this.addFolder(MATERIAL_TYPE.StrongMaterial);
     strongMaterial
       .add(MaterialCreator.Config.StrongMaterial, "shininess", 0, 100, 1)
       .onChange((data) => {
-        this.updateChildrenMeshMaterial(data, "StrongMaterial", "shininess");
+        this.updateChildrenMeshMaterial(
+          data,
+          MATERIAL_TYPE.StrongMaterial,
+          "shininess"
+        );
       });
     strongMaterial
       .addColor(MaterialCreator.Config.StrongMaterial, "specular")
@@ -50,7 +71,11 @@ export class ProjectGui extends GUI {
 
         MaterialCreator.Config.StrongMaterial.specular = data;
 
-        this.updateChildrenMeshMaterial(data, "StrongMaterial", "specular");
+        this.updateChildrenMeshMaterial(
+          data,
+          MATERIAL_TYPE.StrongMaterial,
+          "specular"
+        );
       });
     strongMaterial.open();
 

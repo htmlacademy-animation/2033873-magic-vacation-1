@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { SVG_ELEMENTS, OBJECT_ELEMENTS } from "../../constants";
+import {SVG_ELEMENTS, OBJECT_ELEMENTS, MATERIAL_TYPE} from "../../constants";
 import { degreesToRadians } from "../utils/degreesToRadians";
 import { MaterialCreator } from "../creators/MaterialCreator";
 import { TransformationGuiHelper } from "../ProjectGui/TransformationGuiHelper";
@@ -20,7 +20,7 @@ export class MainPageComposition extends THREE.Group {
           depth: 8,
           bevelThickness: 2,
           bevelSize: 2,
-          material: this.materialCreator.create("SoftMaterial", {
+          material: this.materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
             color: MaterialCreator.Colors.LightDominantRed,
           }),
         },
@@ -41,7 +41,7 @@ export class MainPageComposition extends THREE.Group {
           depth: 8,
           bevelThickness: 2,
           bevelSize: 2,
-          material: this.materialCreator.create("BasicMaterial", {
+          material: this.materialCreator.create(MATERIAL_TYPE.BasicMaterial, {
             color: MaterialCreator.Colors.Blue,
           }),
         },
@@ -63,7 +63,7 @@ export class MainPageComposition extends THREE.Group {
           depth: 8,
           bevelThickness: 2,
           bevelSize: 2,
-          material: this.materialCreator.create("BasicMaterial", {
+          material: this.materialCreator.create(MATERIAL_TYPE.BasicMaterial, {
             color: MaterialCreator.Colors.Green,
           }),
         },
@@ -84,7 +84,7 @@ export class MainPageComposition extends THREE.Group {
           depth: 8,
           bevelThickness: 2,
           bevelSize: 2,
-          material: this.materialCreator.create("BasicMaterial", {
+          material: this.materialCreator.create(MATERIAL_TYPE.BasicMaterial, {
             color: MaterialCreator.Colors.Blue,
           }),
         },
@@ -197,6 +197,9 @@ export class MainPageComposition extends THREE.Group {
         depth: 4,
         bevelThickness: 2,
         bevelSize: 2,
+        material: this.materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
+          color: MaterialCreator.Colors.DarkPurple,
+        }),
       },
       (keyholeMesh) => {
         keyholeMesh.rotateZ(degreesToRadians(180));
@@ -208,7 +211,7 @@ export class MainPageComposition extends THREE.Group {
 
     const meshBehindTheKeyHole = new THREE.Mesh(
       new THREE.PlaneGeometry(400, 400, 2, 2),
-      this.materialCreator.create("BasicMaterial", {
+      this.materialCreator.create(MATERIAL_TYPE.BasicMaterial, {
         color: MaterialCreator.Colors.Purple,
       })
     );
