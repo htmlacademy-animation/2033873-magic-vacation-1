@@ -7,9 +7,9 @@ import {
 import { degreesToRadians } from "../../utils/degreesToRadians";
 import { MaterialCreator } from "../../creators/MaterialCreator";
 import { Saturn } from "../../mesh-complex-objects/Saturn";
-import { PageScene } from "../PageScene";
+import { PageSceneCreator } from "../PageSceneCreator";
 
-export class MainPageScene extends PageScene {
+export class MainPageScene extends PageSceneCreator {
   constructor(
     materialCreator,
     extrudeSvgCreator,
@@ -170,7 +170,7 @@ export class MainPageScene extends PageScene {
     this.addKeyHoleBackground();
 
     this.addObjectsMesh(...this.meshObjects);
-    this.addExtrudedSvgMesh(...this.meshExtrudedObjects);
+    this.createExtrudedSvgMesh(...this.meshExtrudedObjects);
 
     this.addSaturn();
   }

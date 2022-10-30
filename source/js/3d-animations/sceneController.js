@@ -13,7 +13,8 @@ import { ExtrudeSvgCreator } from "./creators/ExtrudeSvgCreator";
 import { ObjectsCreator } from "./creators/ObjectCreator";
 import { RoomsPageScene } from "./scenes/room-page/RoomsPageScene";
 import { degreesToRadians } from "./utils/degreesToRadians";
-import {TransformationGuiHelper} from './ProjectGui/TransformationGuiHelper';
+import { TransformationGuiHelper } from "./ProjectGui/TransformationGuiHelper";
+import { PageSceneCreator } from "./scenes/PageSceneCreator";
 
 const materialCreator = new MaterialCreator();
 const latheGeometryCreator = new LatheGeometryCreator();
@@ -24,6 +25,12 @@ const extrudeSvgCreator = new ExtrudeSvgCreator(
 );
 const objectCreator = new ObjectsCreator();
 const transformationGuiHelper = new TransformationGuiHelper();
+const pageSceneCreator = new PageSceneCreator(
+  materialCreator,
+  extrudeSvgCreator,
+  objectCreator,
+  transformationGuiHelper
+);
 
 export const sceneController = {
   clearScene() {
@@ -134,12 +141,7 @@ export const sceneController = {
       0
     );
 
-    const roomsComposition = new RoomsPageScene(
-      materialCreator,
-      extrudeSvgCreator,
-      objectCreator,
-      transformationGuiHelper
-    );
+    const roomsComposition = new RoomsPageScene(pageSceneCreator);
 
     roomsComposition.rotateY(-Math.PI / 4);
 
