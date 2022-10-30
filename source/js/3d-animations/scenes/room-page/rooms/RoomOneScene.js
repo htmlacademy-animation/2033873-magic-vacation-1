@@ -7,6 +7,7 @@ import {
 } from "../../../../constants";
 import { MaterialCreator } from "../../../creators/MaterialCreator";
 import { Saturn } from "../../../mesh-complex-objects/Saturn";
+import { Carpet } from "../../../mesh-complex-objects/Carpet";
 
 export class RoomOneScene extends RoomScene {
   constructor(pageSceneCreator) {
@@ -44,6 +45,7 @@ export class RoomOneScene extends RoomScene {
 
     this.addFlower();
     this.addSaturn();
+    this.addCarpet();
   }
 
   addFlower() {
@@ -104,5 +106,11 @@ export class RoomOneScene extends RoomScene {
     this.pageSceneCreator.setTransformParams(saturn, transform);
 
     this.addObject(saturn);
+  }
+
+  addCarpet() {
+    const carpet = new Carpet(this.pageSceneCreator);
+
+    this.addObject(carpet);
   }
 }

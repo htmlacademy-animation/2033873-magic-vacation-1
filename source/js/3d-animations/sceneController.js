@@ -2,8 +2,6 @@ import { scene } from "./initAnimationScreen";
 import { LatheGeometryCreator } from "./creators/LatheGeometryCreator";
 import { MaterialCreator } from "./creators/MaterialCreator";
 import { MainPageScene } from "./scenes/main-page/MainPageScene";
-import { Road } from "./mesh-complex-objects/Road";
-import { Carpet } from "./mesh-complex-objects/Carpet";
 import { SvgPathsLoader } from "./loaders/SvgPathsLoader";
 import { EXTRUDE_SETTINGS, SVG_ELEMENTS } from "../constants";
 import { ExtrudeSvgCreator } from "./creators/ExtrudeSvgCreator";
@@ -26,22 +24,13 @@ const pageSceneCreator = new PageSceneCreator(
   materialCreator,
   extrudeSvgCreator,
   objectCreator,
+  latheGeometryCreator,
   transformationGuiHelper
 );
 
 export const sceneController = {
   clearScene() {
     scene.clearScene();
-  },
-
-  addRoadAndCarpet() {
-    const road = new Road(latheGeometryCreator, materialCreator);
-    const carpet = new Carpet(latheGeometryCreator, materialCreator);
-
-    road.position.set(0, 100, 0);
-
-    scene.addSceneObject(road);
-    scene.addSceneObject(carpet);
   },
 
   addMainPageComposition() {
@@ -66,6 +55,7 @@ export const sceneController = {
 
     roomsComposition.rotateY(-Math.PI / 4);
     roomsComposition.rotateY(-Math.PI / 2);
+    roomsComposition.rotateY(-Math.PI / 2);
 
     scene.addSceneObject(roomsComposition);
     // scene.addTransformationsToLoop([()=>{
@@ -79,8 +69,6 @@ export const sceneController = {
     // this.addMainPageComposition();
 
     this.addRoomsPageComposition();
-
-    // this.addRoadAndCarpet();
 
     // this.addAeroplane()
     //

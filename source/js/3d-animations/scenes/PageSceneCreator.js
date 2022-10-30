@@ -3,11 +3,13 @@ export class PageSceneCreator {
     materialCreator,
     extrudeSvgCreator,
     objectCreator,
+    latheGeometryCreator,
     transformationGuiHelper
   ) {
     this.extrudeSvgCreator = extrudeSvgCreator;
     this.materialCreator = materialCreator;
     this.objectCreator = objectCreator;
+    this.latheGeometryCreator = latheGeometryCreator;
     this.transformationGuiHelper = transformationGuiHelper;
   }
 
