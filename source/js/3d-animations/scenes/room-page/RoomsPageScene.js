@@ -1,11 +1,12 @@
 import * as THREE from "three";
-import {  OBJECT_ELEMENTS, MATERIAL_TYPE } from "../../constants";
-import { MaterialCreator } from "../creators/MaterialCreator";
-import { PageScene } from "./PageScene";
+import {  OBJECT_ELEMENTS, MATERIAL_TYPE } from "../../../constants";
+import { MaterialCreator } from "../../creators/MaterialCreator";
+import { PageScene } from "../PageScene";
+import {RoomsScene} from './RoomScene';
 
 export class RoomsPageScene extends PageScene {
-  constructor(materialCreator, extrudeSvgCreator, objectCreator) {
-    super(materialCreator, extrudeSvgCreator, objectCreator);
+  constructor(materialCreator, extrudeSvgCreator, objectCreator, transformationGuiHelper) {
+    super(materialCreator, extrudeSvgCreator, objectCreator, transformationGuiHelper);
 
     this.meshObjects = [
       {
@@ -157,8 +158,10 @@ export class RoomsPageScene extends PageScene {
   }
 
   constructChildren() {
-    this.addObjectsMesh(this.meshObjects);
-    this.addFloors();
+    this.add(new RoomsScene())
+
+    // this.addObjectsMesh(...this.meshObjects);
+    // this.addFloors();
   }
 
   addFloors() {
@@ -167,7 +170,7 @@ export class RoomsPageScene extends PageScene {
     this.floors.forEach((floor) => {
       const mesh = new THREE.Mesh(geometry, floor.material);
 
-      this.gui.addNewFolder(floor.name, mesh, floor.transform);
+      this.transformationGuiHelper.addNewFolder(floor.name, mesh, floor.transform);
 
       this.setTransformParams(mesh, floor.transform);
 

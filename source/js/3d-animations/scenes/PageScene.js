@@ -1,20 +1,19 @@
-import { TransformationGuiHelper } from "../ProjectGui/TransformationGuiHelper";
 import * as THREE from 'three';
 
 export class PageScene extends THREE.Group {
-  constructor(materialCreator, extrudeSvgCreator, objectCreator) {
+  constructor(materialCreator, extrudeSvgCreator, objectCreator, transformationGuiHelper) {
     super();
 
     this.extrudeSvgCreator = extrudeSvgCreator;
     this.materialCreator = materialCreator;
     this.objectCreator = objectCreator;
-    this.gui = new TransformationGuiHelper();
+    this.transformationGuiHelper = transformationGuiHelper;
   }
 
-  addObjectsMesh(meshObjects) {
+  addObjectsMesh(...meshObjects) {
     meshObjects.forEach((config) => {
       this.objectCreator.create(config.name, (obj) => {
-        this.gui.addNewFolder(config.name, obj, config.transform);
+        this.transformationGuiHelper.addNewFolder(config.name, obj, config.transform);
 
         if (config.material) {
           this.applyMaterialToObject(obj, config.material);
@@ -27,10 +26,10 @@ export class PageScene extends THREE.Group {
     });
   }
 
-  addExtrudedSvgMesh(meshExtrudedObjects) {
+  addExtrudedSvgMesh(...meshExtrudedObjects) {
     meshExtrudedObjects.forEach((config) => {
       this.extrudeSvgCreator.create(config.name, config.extrude, (obj) => {
-        this.gui.addNewFolder(config.name, obj, config.transform);
+        this.transformationGuiHelper.addNewFolder(config.name, obj, config.transform);
 
         this.setTransformParams(obj, config.transform);
 

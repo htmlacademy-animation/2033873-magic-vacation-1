@@ -1,13 +1,27 @@
 import * as THREE from "three";
-import { SVG_ELEMENTS, OBJECT_ELEMENTS, MATERIAL_TYPE } from "../../constants";
-import { degreesToRadians } from "../utils/degreesToRadians";
-import { MaterialCreator } from "../creators/MaterialCreator";
-import { Saturn } from "../mesh-complex-objects/Saturn";
-import {PageScene} from './PageScene';
+import {
+  SVG_ELEMENTS,
+  OBJECT_ELEMENTS,
+  MATERIAL_TYPE,
+} from "../../../constants";
+import { degreesToRadians } from "../../utils/degreesToRadians";
+import { MaterialCreator } from "../../creators/MaterialCreator";
+import { Saturn } from "../../mesh-complex-objects/Saturn";
+import { PageScene } from "../PageScene";
 
 export class MainPageScene extends PageScene {
-  constructor(materialCreator, extrudeSvgCreator, objectCreator) {
-    super(materialCreator, extrudeSvgCreator, objectCreator);
+  constructor(
+    materialCreator,
+    extrudeSvgCreator,
+    objectCreator,
+    transformationGuiHelper
+  ) {
+    super(
+      materialCreator,
+      extrudeSvgCreator,
+      objectCreator,
+      transformationGuiHelper
+    );
 
     this.meshExtrudedObjects = [
       {
@@ -155,8 +169,8 @@ export class MainPageScene extends PageScene {
   constructChildren() {
     this.addKeyHoleBackground();
 
-    this.addObjectsMesh(this.meshObjects);
-    this.addExtrudedSvgMesh(this.meshExtrudedObjects);
+    this.addObjectsMesh(...this.meshObjects);
+    this.addExtrudedSvgMesh(...this.meshExtrudedObjects);
 
     this.addSaturn();
   }
@@ -179,7 +193,7 @@ export class MainPageScene extends PageScene {
       scale: 0.5,
     };
 
-    this.gui.addNewFolder("saturn", saturn, transform);
+    this.transformationGuiHelper.addNewFolder("saturn", saturn, transform);
     this.setTransformParams(saturn, transform);
 
     this.add(saturn);

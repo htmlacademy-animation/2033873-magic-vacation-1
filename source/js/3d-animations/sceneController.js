@@ -4,15 +4,16 @@ import { LatheGeometryCreator } from "./creators/LatheGeometryCreator";
 import { Saturn } from "./mesh-complex-objects/Saturn";
 import { MaterialCreator } from "./creators/MaterialCreator";
 import * as THREE from "three";
-import { MainPageScene } from "./scenes/MainPageScene";
+import { MainPageScene } from "./scenes/main-page/MainPageScene";
 import { Road } from "./mesh-complex-objects/Road";
 import { Carpet } from "./mesh-complex-objects/Carpet";
 import { SvgPathsLoader } from "./loaders/SvgPathsLoader";
 import { EXTRUDE_SETTINGS, MATERIAL_TYPE, SVG_ELEMENTS } from "../constants";
 import { ExtrudeSvgCreator } from "./creators/ExtrudeSvgCreator";
 import { ObjectsCreator } from "./creators/ObjectCreator";
-import { RoomsPageScene } from "./scenes/RoomsPageScene";
+import { RoomsPageScene } from "./scenes/room-page/RoomsPageScene";
 import { degreesToRadians } from "./utils/degreesToRadians";
+import {TransformationGuiHelper} from './ProjectGui/TransformationGuiHelper';
 
 const materialCreator = new MaterialCreator();
 const latheGeometryCreator = new LatheGeometryCreator();
@@ -22,6 +23,7 @@ const extrudeSvgCreator = new ExtrudeSvgCreator(
   EXTRUDE_SETTINGS
 );
 const objectCreator = new ObjectsCreator();
+const transformationGuiHelper = new TransformationGuiHelper();
 
 export const sceneController = {
   clearScene() {
@@ -113,7 +115,8 @@ export const sceneController = {
     const mainPageComposition = new MainPageScene(
       materialCreator,
       extrudeSvgCreator,
-      objectCreator
+      objectCreator,
+      transformationGuiHelper
     );
 
     scene.addSceneObject(mainPageComposition);
@@ -134,7 +137,8 @@ export const sceneController = {
     const roomsComposition = new RoomsPageScene(
       materialCreator,
       extrudeSvgCreator,
-      objectCreator
+      objectCreator,
+      transformationGuiHelper
     );
 
     roomsComposition.rotateY(-Math.PI / 4);

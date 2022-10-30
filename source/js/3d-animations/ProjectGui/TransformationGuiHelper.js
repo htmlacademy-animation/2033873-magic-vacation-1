@@ -2,7 +2,6 @@ import { GUI } from "dat.gui";
 
 export class TransformationGuiHelper extends GUI {
   addNewFolder(name, object, transformParams) {
-
     let folderName = name;
     let index = 1;
 
