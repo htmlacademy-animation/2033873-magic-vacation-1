@@ -98,11 +98,6 @@ export class RoomOneScene extends RoomScene {
       scale: 1,
     };
 
-    this.pageSceneCreator.transformationGuiHelper.addNewFolder(
-      "saturn",
-      saturn,
-      transform
-    );
     this.pageSceneCreator.setTransformParams(saturn, transform);
 
     this.addObject(saturn);
