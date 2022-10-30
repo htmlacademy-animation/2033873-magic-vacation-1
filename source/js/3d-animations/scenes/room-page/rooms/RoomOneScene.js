@@ -18,7 +18,7 @@ export class RoomOneScene extends RoomScene {
       ),
     };
     this.floor = {
-      name: "floor",
+      name: OBJECT_ELEMENTS.floor,
       material: this.pageSceneCreator.materialCreator.create(
         MATERIAL_TYPE.SoftMaterial,
         {
@@ -26,6 +26,10 @@ export class RoomOneScene extends RoomScene {
         }
       ),
     };
+
+    this.staticOutput = {
+      name: OBJECT_ELEMENTS.staticOutput1,
+    }
 
     this.constructChildren();
   }

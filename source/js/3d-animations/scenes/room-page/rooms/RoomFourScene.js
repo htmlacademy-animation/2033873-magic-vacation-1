@@ -25,6 +25,9 @@ export class RoomFourScene extends RoomScene {
         }
       ),
     };
+    this.staticOutput = {
+      name: OBJECT_ELEMENTS.staticOutput4,
+    }
 
     this.constructChildren();
   }

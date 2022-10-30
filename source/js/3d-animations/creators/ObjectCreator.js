@@ -54,4 +54,16 @@ ObjectsCreator.objectsConfigMap = {
   [OBJECT_ELEMENTS.wallCorner]: {
     path: "./3d/module-6/rooms-scenes/common/WallCornerUnit.obj",
   },
+  [OBJECT_ELEMENTS.staticOutput1]: {
+    path: "./3d/module-6/rooms-scenes/scenesStatic/scene1-static-output-1.gltf",
+  },
+  [OBJECT_ELEMENTS.staticOutput2]: {
+    path: "./3d/module-6/rooms-scenes/scenesStatic/scene2-static-output-1.gltf",
+  },
+  [OBJECT_ELEMENTS.staticOutput3]: {
+    path: "./3d/module-6/rooms-scenes/scenesStatic/scene3-static-output-1.gltf",
+  },
+  [OBJECT_ELEMENTS.staticOutput4]: {
+    path: "./3d/module-6/rooms-scenes/scenesStatic/scene4-static-output-1.gltf",
+  },
 };

@@ -14,8 +14,21 @@ export const OBJECT_ELEMENTS = {
   suitcase: "suitcase",
   watermelon: "watermelon",
 
-  // walls
-  wallCorner: 'wallCorner'
+  // rooms common
+  wallCorner: 'wallCorner',
+  floor: 'floor',
+
+  // room-1
+  staticOutput1: 'staticOutput1',
+
+  // room-2
+  staticOutput2: 'staticOutput2',
+
+  // room-3
+  staticOutput3: 'staticOutput3',
+
+  // room-4
+  staticOutput4: 'staticOutput4'
 };
 
 export const MATERIAL_TYPE = {

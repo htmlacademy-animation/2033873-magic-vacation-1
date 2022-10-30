@@ -85,6 +85,9 @@ export const sceneController = {
     roomsComposition.rotateY(-Math.PI / 4);
 
     scene.addSceneObject(roomsComposition);
+    // scene.addTransformationsToLoop([()=>{
+    //   roomsComposition.rotateY(-0.005)
+    // }])
   },
 
   addSceneWithLantern() {
@@ -93,8 +96,6 @@ export const sceneController = {
 
   addScreenMesh() {
     // this.addSceneWithLantern();
-    //
-    // this.addSpheres();
     //
     // this.addSaturn();
     // this.addDarkSaturn();
