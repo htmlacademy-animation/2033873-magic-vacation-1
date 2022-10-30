@@ -1,7 +1,6 @@
 import { scene } from "./initAnimationScreen";
 import { SceneWithLantern } from "./scenes/SceneWithLantern";
 import { LatheGeometryCreator } from "./creators/LatheGeometryCreator";
-import { Saturn } from "./mesh-complex-objects/Saturn";
 import { MaterialCreator } from "./creators/MaterialCreator";
 import { MainPageScene } from "./scenes/main-page/MainPageScene";
 import { Road } from "./mesh-complex-objects/Road";
@@ -46,22 +45,6 @@ export const sceneController = {
     scene.addSceneObject(carpet);
   },
 
-  addSaturn() {
-    const saturn = new Saturn(materialCreator, { darkMode: false });
-
-    saturn.position.set(0, 500, 0);
-
-    scene.addSceneObject(saturn);
-  },
-
-  addDarkSaturn() {
-    const saturn = new Saturn(materialCreator, { darkMode: true });
-
-    saturn.position.set(300, 500, 0);
-
-    scene.addSceneObject(saturn);
-  },
-
   addMainPageComposition() {
     const mainPageComposition = new MainPageScene(pageSceneCreator);
 
@@ -97,7 +80,6 @@ export const sceneController = {
   addScreenMesh() {
     // this.addSceneWithLantern();
     //
-    // this.addSaturn();
     // this.addDarkSaturn();
     //
     // this.addMainPageComposition();

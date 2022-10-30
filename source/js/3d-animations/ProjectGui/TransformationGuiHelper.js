@@ -33,7 +33,7 @@ export class TransformationGuiHelper extends GUI {
         );
       });
     objectTransform
-      .add(transformParams, "transformZ", 0, 300, 3)
+      .add(transformParams, "transformZ", -1000, 1000, 10)
       .onChange((data) => {
         object.position.set(
           transformParams.transformX,
