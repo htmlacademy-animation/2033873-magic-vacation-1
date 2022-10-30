@@ -1,7 +1,8 @@
 import { RoomScene } from "../RoomScene";
 import * as THREE from "three";
-import { MATERIAL_TYPE, OBJECT_ELEMENTS } from "../../../../constants";
+import {MATERIAL_TYPE, OBJECT_ELEMENTS, SVG_ELEMENTS} from "../../../../constants";
 import { MaterialCreator } from "../../../creators/MaterialCreator";
+import {Lantern} from '../../../mesh-complex-objects/Lantern';
 
 export class RoomTwoScene extends RoomScene {
   constructor(pageSceneCreator) {
@@ -35,5 +36,95 @@ export class RoomTwoScene extends RoomScene {
 
   constructChildren() {
     super.constructChildren();
+
+    this.addLeaves()
+    this.addPyramid();
+    this.addLantern();
+  }
+
+  addLeaves() {
+    const config = {
+      name: SVG_ELEMENTS.leaf,
+      extrude: {
+        depth: 2,
+        bevelThickness: 1,
+        bevelSize: 1,
+      },
+      transform: {
+        transformX: 80,
+        transformY: 90,
+        transformZ: 480,
+
+        rotateX: -2.6,
+        rotateY: -Math.PI / 2,
+        rotateZ: 0,
+
+        scale: 1.1,
+      },
+    };
+
+    this.pageSceneCreator.createExtrudedSvgMesh(config, (leaf1) => {
+      const leaf2 = leaf1.clone()
+
+      this.pageSceneCreator.setTransformParams(leaf2, {
+        transformX: 80,
+        transformY: 300,
+        transformZ: 400,
+
+        rotateX: 2.9,
+        rotateY: -Math.PI / 2,
+        rotateZ: 0,
+
+        scale: 2.5,
+      })
+
+      this.addObject(leaf1);
+      this.addObject(leaf2)
+    });
+  }
+
+  addPyramid() {
+    const pyramid = new THREE.Mesh(
+      new THREE.ConeGeometry(250 / Math.pow(2, 0.5), 280, 4),
+      this.pageSceneCreator.materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
+        color: MaterialCreator.Colors.Blue,
+      })
+    );
+
+    const transform = {
+      transformX: 190,
+      transformY: 140,
+      transformZ: 230,
+
+      rotateX: 0,
+      rotateY: -Math.PI / 4,
+      rotateZ: 0,
+
+      scale: 1,
+    };
+
+    this.pageSceneCreator.setTransformParams(pyramid, transform);
+
+    this.addObject(pyramid);
+  }
+
+  addLantern() {
+    const lantern = new Lantern(this.pageSceneCreator.materialCreator);
+
+    const transform = {
+      transformX: 640,
+      transformY: 0,
+      transformZ: 110,
+
+      rotateX: 0,
+      rotateY: -0.3,
+      rotateZ: 0,
+
+      scale: 1,
+    };
+
+    this.pageSceneCreator.setTransformParams(lantern, transform);
+
+    this.addObject(lantern);
   }
 }

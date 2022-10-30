@@ -1,5 +1,4 @@
 import { scene } from "./initAnimationScreen";
-import { SceneWithLantern } from "./scenes/SceneWithLantern";
 import { LatheGeometryCreator } from "./creators/LatheGeometryCreator";
 import { MaterialCreator } from "./creators/MaterialCreator";
 import { MainPageScene } from "./scenes/main-page/MainPageScene";
@@ -66,6 +65,7 @@ export const sceneController = {
     const roomsComposition = new RoomsPageScene(pageSceneCreator);
 
     roomsComposition.rotateY(-Math.PI / 4);
+    roomsComposition.rotateY(-Math.PI / 2);
 
     scene.addSceneObject(roomsComposition);
     // scene.addTransformationsToLoop([()=>{
@@ -73,14 +73,8 @@ export const sceneController = {
     // }])
   },
 
-  addSceneWithLantern() {
-    scene.addSceneObject(new SceneWithLantern(materialCreator));
-  },
-
   addScreenMesh() {
     // this.addSceneWithLantern();
-    //
-    // this.addDarkSaturn();
     //
     // this.addMainPageComposition();
 
