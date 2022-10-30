@@ -56,7 +56,6 @@ export const sceneController = {
     roomsComposition.rotateY(-Math.PI / 4);
     roomsComposition.rotateY(-Math.PI / 2);
     roomsComposition.rotateY(-Math.PI / 2);
-    roomsComposition.rotateY(-Math.PI / 2);
 
     scene.addSceneObject(roomsComposition);
     // scene.addTransformationsToLoop([()=>{

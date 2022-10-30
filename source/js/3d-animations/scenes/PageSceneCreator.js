@@ -54,9 +54,9 @@ export class PageSceneCreator {
   }
 
   setTransformParams(obj, params) {
-    obj.position.set(params.transformX, params.transformY, params.transformZ);
-    obj.rotation.set(params.rotateX, params.rotateY, params.rotateZ);
-    obj.scale.set(params.scale, params.scale, params.scale);
+    obj.position.set(params.transformX || 0, params.transformY || 0, params.transformZ || 0);
+    obj.rotation.set(params.rotateX || 0, params.rotateY || 0, params.rotateZ || 0);
+    obj.scale.set(params.scale || 1, params.scale || 1, params.scale || 1);
   }
 
   applyMaterialToObject(obj3d, material) {

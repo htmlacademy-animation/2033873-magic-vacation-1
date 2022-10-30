@@ -2,8 +2,9 @@ import { RoomScene } from "../RoomScene";
 import * as THREE from "three";
 import { MATERIAL_TYPE, OBJECT_ELEMENTS } from "../../../../constants";
 import { MaterialCreator } from "../../../creators/MaterialCreator";
-import {Snowman} from '../../../mesh-complex-objects/Snowman';
-import {Road} from '../../../mesh-complex-objects/Road';
+import { Snowman } from "../../../mesh-complex-objects/Snowman";
+import { Road } from "../../../mesh-complex-objects/Road";
+import { degreesToRadians } from "../../../utils/degreesToRadians";
 
 export class RoomThreeScene extends RoomScene {
   constructor(pageSceneCreator) {
@@ -29,7 +30,7 @@ export class RoomThreeScene extends RoomScene {
     };
     this.staticOutput = {
       name: OBJECT_ELEMENTS.staticOutput3,
-    }
+    };
 
     this.constructChildren();
   }
@@ -39,6 +40,7 @@ export class RoomThreeScene extends RoomScene {
 
     this.addSnowman();
     this.addRoad();
+    this.addRoadBlocks();
   }
 
   addSnowman() {
@@ -48,9 +50,7 @@ export class RoomThreeScene extends RoomScene {
       transformY: 60,
       transformZ: 400,
 
-      rotateX: 0,
       rotateY: Math.PI / 2,
-      rotateZ: 0,
 
       scale: 1,
     };
@@ -69,5 +69,39 @@ export class RoomThreeScene extends RoomScene {
     const road = new Road(this.pageSceneCreator);
 
     this.addObject(road);
+  }
+
+  addRoadBlocks() {
+    const geometry = new THREE.CylinderGeometry(12, 12, 80, 20);
+
+    const radius = 700;
+    const cylindersAmount = 5;
+    const angleBetweenBlocks = degreesToRadians(15);
+
+    const outerAngle = Math.PI / 2 - angleBetweenBlocks * cylindersAmount;
+
+    const cylinder = new THREE.Mesh(
+      geometry,
+      this.pageSceneCreator.materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
+        color: MaterialCreator.Colors.Grey,
+      })
+    );
+
+    new Array(cylindersAmount)
+      .fill(0)
+      .map((_, index) => outerAngle + index * angleBetweenBlocks)
+      .forEach((angle) => {
+        const clone = cylinder.clone();
+
+        const transform = {
+          transformX: radius * Math.cos(angle),
+          transformY: 50,
+          transformZ: radius * Math.sin(angle),
+        };
+
+        this.pageSceneCreator.setTransformParams(clone, transform);
+
+        this.addObject(clone);
+      });
   }
 }
