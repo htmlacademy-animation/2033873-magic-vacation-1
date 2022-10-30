@@ -11,7 +11,8 @@ import { SvgPathsLoader } from "./loaders/SvgPathsLoader";
 import { EXTRUDE_SETTINGS, MATERIAL_TYPE, SVG_ELEMENTS } from "../constants";
 import { ExtrudeSvgCreator } from "./creators/ExtrudeSvgCreator";
 import { ObjectsCreator } from "./creators/ObjectCreator";
-import {RoomsPageScene} from './scenes/RoomsPageScene';
+import { RoomsPageScene } from "./scenes/RoomsPageScene";
+import { degreesToRadians } from "./utils/degreesToRadians";
 
 const materialCreator = new MaterialCreator();
 const latheGeometryCreator = new LatheGeometryCreator();
@@ -118,14 +119,27 @@ export const sceneController = {
     scene.addSceneObject(mainPageComposition);
   },
 
-  addFirstPageComposition() {
-    const firstRoomComposition = new RoomsPageScene(
+  addRoomsPageComposition() {
+    const positionZ = 2550;
+    const positionY = 800;
+
+    scene.camera.position.set(0, positionY, positionZ);
+
+    scene.controls.target.set(
+      0,
+      positionY - positionZ * Math.tan(degreesToRadians(15)),
+      0
+    );
+
+    const roomsComposition = new RoomsPageScene(
       materialCreator,
       extrudeSvgCreator,
       objectCreator
     );
 
-    scene.addSceneObject(firstRoomComposition);
+    roomsComposition.rotateY(-Math.PI / 4);
+
+    scene.addSceneObject(roomsComposition);
   },
 
   addSceneWithLantern() {
@@ -142,7 +156,7 @@ export const sceneController = {
     //
     // this.addMainPageComposition();
 
-    this.addFirstPageComposition()
+    this.addRoomsPageComposition();
 
     // this.addRoadAndCarpet();
 

@@ -37,7 +37,7 @@ export class TransformationGuiHelper extends GUI {
 
     const objectRotation = newFolder.addFolder("rotation");
     objectRotation
-      .add(transformParams, "rotateX", 0, 2 * Math.PI, 0.1)
+      .add(transformParams, "rotateX", -Math.PI, Math.PI, 0.1)
       .onChange((data) => {
         object.rotation.set(
           data,
@@ -46,7 +46,7 @@ export class TransformationGuiHelper extends GUI {
         );
       });
     objectRotation
-      .add(transformParams, "rotateY", 0, 2 * Math.PI, 0.1)
+      .add(transformParams, "rotateY", -Math.PI,  Math.PI, 0.1)
       .onChange((data) => {
         object.rotation.set(
           transformParams.rotateX,
@@ -55,7 +55,7 @@ export class TransformationGuiHelper extends GUI {
         );
       });
     objectRotation
-      .add(transformParams, "rotateZ", 0, 2 * Math.PI, 0.1)
+      .add(transformParams, "rotateZ", -Math.PI, Math.PI, 0.1)
       .onChange((data) => {
         object.rotation.set(
           transformParams.rotateX,

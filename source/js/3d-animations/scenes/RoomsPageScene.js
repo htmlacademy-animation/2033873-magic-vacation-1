@@ -53,7 +53,7 @@ export class RoomsPageScene extends THREE.Group {
         },
         material: this.materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
           color: MaterialCreator.Colors.Purple,
-          side: THREE.DoubleSide
+          side: THREE.DoubleSide,
         }),
       },
       {
@@ -71,7 +71,7 @@ export class RoomsPageScene extends THREE.Group {
         },
         material: this.materialCreator.create(MATERIAL_TYPE.BasicMaterial, {
           color: MaterialCreator.Colors.Blue,
-          side: THREE.DoubleSide
+          side: THREE.DoubleSide,
         }),
       },
       {
@@ -89,7 +89,7 @@ export class RoomsPageScene extends THREE.Group {
         },
         material: this.materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
           color: MaterialCreator.Colors.SkyLightBlue,
-          side: THREE.DoubleSide
+          side: THREE.DoubleSide,
         }),
       },
       {
@@ -107,7 +107,78 @@ export class RoomsPageScene extends THREE.Group {
         },
         material: this.materialCreator.create(MATERIAL_TYPE.BasicMaterial, {
           color: MaterialCreator.Colors.ShadowedPurple,
-          side: THREE.DoubleSide
+          side: THREE.DoubleSide,
+        }),
+      },
+    ];
+
+    this.floors = [
+      {
+        name: "floor - 1",
+        transform: {
+          transformX: 0,
+          transformY: 0,
+          transformZ: 0,
+
+          rotateX: -Math.PI / 2,
+          rotateY: 0,
+          rotateZ: -Math.PI / 2,
+
+          scale: 1,
+        },
+        material: this.materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
+          color: MaterialCreator.Colors.DarkPurple,
+        }),
+      },
+      {
+        name: "floor - 2",
+        transform: {
+          transformX: 0,
+          transformY: 0,
+          transformZ: 0,
+
+          rotateX: -Math.PI / 2,
+          rotateY: 0,
+          rotateZ: 0,
+
+          scale: 1,
+        },
+        material: this.materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
+          color: MaterialCreator.Colors.BrightBlue,
+        }),
+      },
+      {
+        name: "floor - 3",
+        transform: {
+          transformX: 0,
+          transformY: 0,
+          transformZ: 0,
+
+          rotateX: -Math.PI / 2,
+          rotateY: 0,
+          rotateZ: Math.PI / 2,
+
+          scale: 1,
+        },
+        material: this.materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
+          color: MaterialCreator.Colors.MountainBlue,
+        }),
+      },
+      {
+        name: "floor - 4",
+        transform: {
+          transformX: 0,
+          transformY: 0,
+          transformZ: 0,
+
+          rotateX: -Math.PI / 2,
+          rotateY: 0,
+          rotateZ: Math.PI,
+
+          scale: 1,
+        },
+        material: this.materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
+          color: MaterialCreator.Colors.ShadowedDarkPurple,
         }),
       },
     ];
@@ -118,13 +189,14 @@ export class RoomsPageScene extends THREE.Group {
   constructChildren() {
     // this.addExtrudedSvgMesh();
     this.addMeshObjects();
+    this.addFloors();
   }
 
   addMeshObjects() {
     this.meshObjects.forEach((config, index) => {
       this.objectCreator.create(config.name, (obj) => {
         this.gui.addNewFolder(
-          `${index} - ${config.name}`,
+          `${config.name} - ${index}`,
           obj,
           config.transform
         );
@@ -137,6 +209,20 @@ export class RoomsPageScene extends THREE.Group {
 
         this.add(obj);
       });
+    });
+  }
+
+  addFloors() {
+    const geometry = new THREE.CircleGeometry(1350, 32, 0, Math.PI / 2);
+
+    this.floors.forEach((floor) => {
+      const mesh = new THREE.Mesh(geometry, floor.material);
+
+      this.gui.addNewFolder(floor.name, mesh, floor.transform);
+
+      this.setTransformParams(mesh, floor.transform);
+
+      this.add(mesh);
     });
   }
 
