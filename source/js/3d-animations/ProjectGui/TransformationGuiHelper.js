@@ -2,7 +2,16 @@ import { GUI } from "dat.gui";
 
 export class TransformationGuiHelper extends GUI {
   addNewFolder(name, object, transformParams) {
-    const newFolder = this.addFolder(name);
+
+    let folderName = name;
+    let index = 1;
+
+    while (this.__folders[folderName]) {
+      index++;
+      folderName = `${name} - ${index}`
+    }
+
+    const newFolder = this.addFolder(folderName);
 
     const objectTransform = newFolder.addFolder("transform");
 
