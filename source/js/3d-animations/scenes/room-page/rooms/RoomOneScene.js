@@ -91,9 +91,7 @@ export class RoomOneScene extends RoomScene {
       transformY: 500,
       transformZ: 280,
 
-      rotateX: 0,
       rotateY: -Math.PI / 2,
-      rotateZ: 0,
 
       scale: 1,
     };

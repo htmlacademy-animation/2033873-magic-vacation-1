@@ -237,11 +237,6 @@ export class MainPageScene extends THREE.Group {
       scale: 0.5,
     };
 
-    this.pageSceneCreator.transformationGuiHelper.addNewFolder(
-      "saturn",
-      saturn,
-      transform
-    );
     this.pageSceneCreator.setTransformParams(saturn, transform);
 
     this.add(saturn);

@@ -57,7 +57,6 @@ export class RoomTwoScene extends RoomScene {
 
         rotateX: -2.6,
         rotateY: -Math.PI / 2,
-        rotateZ: 0,
 
         scale: 1.1,
       },
@@ -73,7 +72,6 @@ export class RoomTwoScene extends RoomScene {
 
         rotateX: 2.9,
         rotateY: -Math.PI / 2,
-        rotateZ: 0,
 
         scale: 2.5,
       })
@@ -96,9 +94,7 @@ export class RoomTwoScene extends RoomScene {
       transformY: 140,
       transformZ: 230,
 
-      rotateX: 0,
       rotateY: -Math.PI / 4,
-      rotateZ: 0,
 
       scale: 1,
     };
@@ -116,9 +112,7 @@ export class RoomTwoScene extends RoomScene {
       transformY: 0,
       transformZ: 110,
 
-      rotateX: 0,
       rotateY: -0.3,
-      rotateZ: 0,
 
       scale: 1,
     };

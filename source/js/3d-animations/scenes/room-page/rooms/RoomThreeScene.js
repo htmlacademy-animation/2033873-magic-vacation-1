@@ -55,11 +55,6 @@ export class RoomThreeScene extends RoomScene {
       scale: 1,
     };
 
-    this.pageSceneCreator.transformationGuiHelper.addNewFolder(
-      "snowman",
-      snowman,
-      transform
-    );
     this.pageSceneCreator.setTransformParams(snowman, transform);
 
     this.addObject(snowman);
