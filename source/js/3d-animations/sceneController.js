@@ -3,12 +3,11 @@ import { SceneWithLantern } from "./scenes/SceneWithLantern";
 import { LatheGeometryCreator } from "./creators/LatheGeometryCreator";
 import { Saturn } from "./mesh-complex-objects/Saturn";
 import { MaterialCreator } from "./creators/MaterialCreator";
-import * as THREE from "three";
 import { MainPageScene } from "./scenes/main-page/MainPageScene";
 import { Road } from "./mesh-complex-objects/Road";
 import { Carpet } from "./mesh-complex-objects/Carpet";
 import { SvgPathsLoader } from "./loaders/SvgPathsLoader";
-import { EXTRUDE_SETTINGS, MATERIAL_TYPE, SVG_ELEMENTS } from "../constants";
+import { EXTRUDE_SETTINGS, SVG_ELEMENTS } from "../constants";
 import { ExtrudeSvgCreator } from "./creators/ExtrudeSvgCreator";
 import { ObjectsCreator } from "./creators/ObjectCreator";
 import { RoomsPageScene } from "./scenes/room-page/RoomsPageScene";
@@ -63,68 +62,8 @@ export const sceneController = {
     scene.addSceneObject(saturn);
   },
 
-  addSpheres() {
-    const spheresGroup = new THREE.Group();
-
-    const geometry = new THREE.SphereGeometry(100, 32, 32);
-
-    const sphere1 = new THREE.Mesh(geometry);
-    const sphere2 = new THREE.Mesh(geometry);
-    const sphere3 = new THREE.Mesh(geometry);
-    const sphere4 = new THREE.Mesh(geometry);
-    const sphere5 = new THREE.Mesh(geometry);
-    const sphere6 = new THREE.Mesh(geometry);
-
-    sphere1.position.set(-110, 110, 0);
-    sphere2.position.set(-110, -110, 0);
-    sphere3.position.set(110, 110, 0);
-    sphere4.position.set(110, -110, 0);
-    sphere5.position.set(330, 110, 0);
-    sphere6.position.set(330, -110, 0);
-
-    sphere1.material = materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
-      color: MaterialCreator.Colors.Blue,
-    });
-
-    sphere2.material = materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
-      color: MaterialCreator.Colors.DarkBlue,
-    });
-
-    sphere3.material = materialCreator.create(MATERIAL_TYPE.BasicMaterial, {
-      color: MaterialCreator.Colors.Blue,
-    });
-
-    sphere4.material = materialCreator.create(MATERIAL_TYPE.BasicMaterial, {
-      color: MaterialCreator.Colors.DarkBlue,
-    });
-
-    sphere5.material = materialCreator.create(MATERIAL_TYPE.StrongMaterial, {
-      color: MaterialCreator.Colors.Blue,
-    });
-
-    sphere6.material = materialCreator.create(MATERIAL_TYPE.StrongMaterial, {
-      color: MaterialCreator.Colors.DarkBlue,
-    });
-
-    spheresGroup.add(sphere1);
-    spheresGroup.add(sphere2);
-    spheresGroup.add(sphere3);
-    spheresGroup.add(sphere4);
-    spheresGroup.add(sphere5);
-    spheresGroup.add(sphere6);
-
-    spheresGroup.translateY(-400);
-
-    scene.addSceneObject(spheresGroup);
-  },
-
   addMainPageComposition() {
-    const mainPageComposition = new MainPageScene(
-      materialCreator,
-      extrudeSvgCreator,
-      objectCreator,
-      transformationGuiHelper
-    );
+    const mainPageComposition = new MainPageScene(pageSceneCreator);
 
     scene.addSceneObject(mainPageComposition);
   },

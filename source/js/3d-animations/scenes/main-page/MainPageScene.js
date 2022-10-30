@@ -4,35 +4,53 @@ import {
   OBJECT_ELEMENTS,
   MATERIAL_TYPE,
 } from "../../../constants";
-import { degreesToRadians } from "../../utils/degreesToRadians";
 import { MaterialCreator } from "../../creators/MaterialCreator";
 import { Saturn } from "../../mesh-complex-objects/Saturn";
-import { PageSceneCreator } from "../PageSceneCreator";
 
-export class MainPageScene extends PageSceneCreator {
-  constructor(
-    materialCreator,
-    extrudeSvgCreator,
-    objectCreator,
-    transformationGuiHelper
-  ) {
-    super(
-      materialCreator,
-      extrudeSvgCreator,
-      objectCreator,
-      transformationGuiHelper
-    );
+export class MainPageScene extends THREE.Group {
+  constructor(pageSceneCreator) {
+    super();
+
+    this.pageSceneCreator = pageSceneCreator;
 
     this.meshExtrudedObjects = [
+      {
+        name: SVG_ELEMENTS.keyhole,
+        extrude: {
+          depth: 4,
+          bevelThickness: 2,
+          bevelSize: 2,
+          material: this.pageSceneCreator.materialCreator.create(
+            MATERIAL_TYPE.SoftMaterial,
+            {
+              color: MaterialCreator.Colors.DarkPurple,
+            }
+          ),
+        },
+        transform: {
+          transformX: 1000,
+          transformY: 1000,
+          transformZ: 0,
+
+          rotateX: 0,
+          rotateY: 0,
+          rotateZ: Math.PI,
+
+          scale: 1,
+        },
+      },
       {
         name: SVG_ELEMENTS.flamingo,
         extrude: {
           depth: 8,
           bevelThickness: 2,
           bevelSize: 2,
-          material: this.materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
-            color: MaterialCreator.Colors.LightDominantRed,
-          }),
+          material: this.pageSceneCreator.materialCreator.create(
+            MATERIAL_TYPE.SoftMaterial,
+            {
+              color: MaterialCreator.Colors.LightDominantRed,
+            }
+          ),
         },
         transform: {
           transformX: -460,
@@ -46,16 +64,18 @@ export class MainPageScene extends PageSceneCreator {
           scale: 1,
         },
       },
-
       {
         name: SVG_ELEMENTS.snowflake,
         extrude: {
           depth: 8,
           bevelThickness: 2,
           bevelSize: 2,
-          material: this.materialCreator.create(MATERIAL_TYPE.BasicMaterial, {
-            color: MaterialCreator.Colors.Blue,
-          }),
+          material: this.pageSceneCreator.materialCreator.create(
+            MATERIAL_TYPE.BasicMaterial,
+            {
+              color: MaterialCreator.Colors.Blue,
+            }
+          ),
         },
         transform: {
           transformX: -320,
@@ -75,9 +95,12 @@ export class MainPageScene extends PageSceneCreator {
           depth: 8,
           bevelThickness: 2,
           bevelSize: 2,
-          material: this.materialCreator.create(MATERIAL_TYPE.BasicMaterial, {
-            color: MaterialCreator.Colors.Green,
-          }),
+          material: this.pageSceneCreator.materialCreator.create(
+            MATERIAL_TYPE.BasicMaterial,
+            {
+              color: MaterialCreator.Colors.Green,
+            }
+          ),
         },
         transform: {
           transformX: 500,
@@ -97,9 +120,12 @@ export class MainPageScene extends PageSceneCreator {
           depth: 8,
           bevelThickness: 2,
           bevelSize: 2,
-          material: this.materialCreator.create(MATERIAL_TYPE.BasicMaterial, {
-            color: MaterialCreator.Colors.Blue,
-          }),
+          material: this.pageSceneCreator.materialCreator.create(
+            MATERIAL_TYPE.BasicMaterial,
+            {
+              color: MaterialCreator.Colors.Blue,
+            }
+          ),
         },
         transform: {
           transformX: 140,
@@ -143,9 +169,12 @@ export class MainPageScene extends PageSceneCreator {
 
           scale: 1,
         },
-        material: this.materialCreator.create(MATERIAL_TYPE.BasicMaterial, {
-          color: MaterialCreator.Colors.White,
-        }),
+        material: this.pageSceneCreator.materialCreator.create(
+          MATERIAL_TYPE.BasicMaterial,
+          {
+            color: MaterialCreator.Colors.White,
+          }
+        ),
       },
       {
         name: OBJECT_ELEMENTS.suitcase,
@@ -167,16 +196,31 @@ export class MainPageScene extends PageSceneCreator {
   }
 
   constructChildren() {
-    this.addKeyHoleBackground();
-
-    this.addObjectsMesh(...this.meshObjects);
-    this.createExtrudedSvgMesh(...this.meshExtrudedObjects);
+    this.addMeshObjects();
+    this.addExtrudedSvgObjects();
+    this.addPlaneMeshBehindKeyhole();
 
     this.addSaturn();
   }
 
+  addMeshObjects() {
+    this.meshObjects.forEach((config) => {
+      this.pageSceneCreator.createObjectMesh(config, (obj) => {
+        this.add(obj);
+      });
+    });
+  }
+
+  addExtrudedSvgObjects() {
+    this.meshExtrudedObjects.forEach((config) => {
+      this.pageSceneCreator.createExtrudedSvgMesh(config, (obj) => {
+        this.add(obj);
+      });
+    });
+  }
+
   addSaturn() {
-    const saturn = new Saturn(this.materialCreator, {
+    const saturn = new Saturn(this.pageSceneCreator.materialCreator, {
       darkMode: false,
       withRope: false,
     });
@@ -193,36 +237,25 @@ export class MainPageScene extends PageSceneCreator {
       scale: 0.5,
     };
 
-    this.transformationGuiHelper.addNewFolder("saturn", saturn, transform);
-    this.setTransformParams(saturn, transform);
+    this.pageSceneCreator.transformationGuiHelper.addNewFolder(
+      "saturn",
+      saturn,
+      transform
+    );
+    this.pageSceneCreator.setTransformParams(saturn, transform);
 
     this.add(saturn);
   }
 
-  async addKeyHoleBackground() {
-    await this.extrudeSvgCreator.create(
-      SVG_ELEMENTS.keyhole,
-      {
-        depth: 4,
-        bevelThickness: 2,
-        bevelSize: 2,
-        material: this.materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
-          color: MaterialCreator.Colors.DarkPurple,
-        }),
-      },
-      (keyholeMesh) => {
-        keyholeMesh.rotateZ(degreesToRadians(180));
-        keyholeMesh.position.set(1000, 1000, 0);
-
-        this.add(keyholeMesh);
-      }
-    );
-
+  addPlaneMeshBehindKeyhole() {
     const meshBehindTheKeyHole = new THREE.Mesh(
       new THREE.PlaneGeometry(400, 400, 2, 2),
-      this.materialCreator.create(MATERIAL_TYPE.BasicMaterial, {
-        color: MaterialCreator.Colors.Purple,
-      })
+      this.pageSceneCreator.materialCreator.create(
+        MATERIAL_TYPE.BasicMaterial,
+        {
+          color: MaterialCreator.Colors.Purple,
+        }
+      )
     );
 
     meshBehindTheKeyHole.position.set(0, 0, -10);
