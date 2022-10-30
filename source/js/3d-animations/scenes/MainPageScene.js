@@ -3,9 +3,9 @@ import {SVG_ELEMENTS, OBJECT_ELEMENTS, MATERIAL_TYPE} from "../../constants";
 import { degreesToRadians } from "../utils/degreesToRadians";
 import { MaterialCreator } from "../creators/MaterialCreator";
 import { TransformationGuiHelper } from "../ProjectGui/TransformationGuiHelper";
-import { Saturn } from "./Saturn";
+import { Saturn } from "../mesh-complex-objects/Saturn";
 
-export class MainPageComposition extends THREE.Group {
+export class MainPageScene extends THREE.Group {
   constructor(materialCreator, extrudeSvgCreator, objectCreator) {
     super();
 

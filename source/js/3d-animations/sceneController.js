@@ -4,7 +4,7 @@ import { LatheGeometryCreator } from "./creators/LatheGeometryCreator";
 import { Saturn } from "./mesh-complex-objects/Saturn";
 import { MaterialCreator } from "./creators/MaterialCreator";
 import * as THREE from "three";
-import { MainPageComposition } from "./mesh-complex-objects/MainPageComposition";
+import { MainPageScene } from "./scenes/MainPageScene";
 import { Road } from "./mesh-complex-objects/Road";
 import { Carpet } from "./mesh-complex-objects/Carpet";
 import { SvgPathsLoader } from "./loaders/SvgPathsLoader";
@@ -108,7 +108,7 @@ export const sceneController = {
   },
 
   addMainPageComposition() {
-    const mainPageComposition = new MainPageComposition(
+    const mainPageComposition = new MainPageScene(
       materialCreator,
       extrudeSvgCreator,
       objectCreator
