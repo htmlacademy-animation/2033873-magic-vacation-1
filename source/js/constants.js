@@ -13,6 +13,9 @@ export const OBJECT_ELEMENTS = {
   airplane: "airplane",
   suitcase: "suitcase",
   watermelon: "watermelon",
+
+  // walls
+  wallCorner: 'wallCorner'
 };
 
 export const MATERIAL_TYPE = {

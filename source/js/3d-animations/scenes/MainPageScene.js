@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import {SVG_ELEMENTS, OBJECT_ELEMENTS, MATERIAL_TYPE} from "../../constants";
+import { SVG_ELEMENTS, OBJECT_ELEMENTS, MATERIAL_TYPE } from "../../constants";
 import { degreesToRadians } from "../utils/degreesToRadians";
 import { MaterialCreator } from "../creators/MaterialCreator";
 import { TransformationGuiHelper } from "../ProjectGui/TransformationGuiHelper";
@@ -128,6 +128,9 @@ export class MainPageScene extends THREE.Group {
 
           scale: 1,
         },
+        material: this.materialCreator.create(MATERIAL_TYPE.BasicMaterial, {
+          color: MaterialCreator.Colors.White,
+        }),
       },
       [OBJECT_ELEMENTS.suitcase]: {
         transform: {
@@ -158,6 +161,10 @@ export class MainPageScene extends THREE.Group {
     Object.entries(this.objectMeshParams).forEach(([key, params]) => {
       this.objectCreator.create(key, (obj) => {
         this.gui.addNewFolder(key, obj, params.transform);
+
+        if (params.material) {
+          this.applyMaterialToObject(obj, params.material);
+        }
 
         this.setTransformParams(obj, params.transform);
 
@@ -231,26 +238,19 @@ export class MainPageScene extends THREE.Group {
         this.add(obj);
       });
     });
-
-    // this.extrudeSvgCreator.create(
-    //   SVG_FORMS.flower,
-    //   {
-    //     depth: 4,
-    //     bevelThickness: 2,
-    //     bevelSize: 2,
-    //   },
-    //   (flowerMesh) => {
-    //     flowerMesh.rotateZ(Math.PI);
-    //     flowerMesh.position.set(200, -200, 100);
-    //
-    //     this.add(flowerMesh);
-    //   }
-    // );
   }
 
   setTransformParams(obj, params) {
     obj.position.set(params.transformX, params.transformY, params.transformZ);
     obj.rotation.set(params.rotateX, params.rotateY, params.rotateZ);
     obj.scale.set(params.scale, params.scale, params.scale);
+  }
+
+  applyMaterialToObject(obj3d, material) {
+    obj3d.traverse((child) => {
+      if (typeof child.isMesh === "function" && child.isMesh()) {
+        child.material = material;
+      }
+    });
   }
 }

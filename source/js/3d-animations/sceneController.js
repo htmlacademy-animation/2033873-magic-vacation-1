@@ -11,6 +11,7 @@ import { SvgPathsLoader } from "./loaders/SvgPathsLoader";
 import { EXTRUDE_SETTINGS, MATERIAL_TYPE, SVG_ELEMENTS } from "../constants";
 import { ExtrudeSvgCreator } from "./creators/ExtrudeSvgCreator";
 import { ObjectsCreator } from "./creators/ObjectCreator";
+import {RoomsPageScene} from './scenes/RoomsPageScene';
 
 const materialCreator = new MaterialCreator();
 const latheGeometryCreator = new LatheGeometryCreator();
@@ -19,7 +20,7 @@ const extrudeSvgCreator = new ExtrudeSvgCreator(
   svgShapeLoader,
   EXTRUDE_SETTINGS
 );
-const objectCreator = new ObjectsCreator(materialCreator);
+const objectCreator = new ObjectsCreator();
 
 export const sceneController = {
   clearScene() {
@@ -117,6 +118,16 @@ export const sceneController = {
     scene.addSceneObject(mainPageComposition);
   },
 
+  addFirstPageComposition() {
+    const firstRoomComposition = new RoomsPageScene(
+      materialCreator,
+      extrudeSvgCreator,
+      objectCreator
+    );
+
+    scene.addSceneObject(firstRoomComposition);
+  },
+
   addSceneWithLantern() {
     scene.addSceneObject(new SceneWithLantern(materialCreator));
   },
@@ -129,7 +140,9 @@ export const sceneController = {
     // this.addSaturn();
     // this.addDarkSaturn();
     //
-    this.addMainPageComposition();
+    // this.addMainPageComposition();
+
+    this.addFirstPageComposition()
 
     // this.addRoadAndCarpet();
 
