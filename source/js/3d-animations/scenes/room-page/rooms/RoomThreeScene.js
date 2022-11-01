@@ -41,6 +41,7 @@ export class RoomThreeScene extends RoomScene {
     this.addSnowman();
     this.addRoad();
     this.addRoadBlocks();
+    this.addCompass();
   }
 
   addSnowman() {
@@ -98,5 +99,16 @@ export class RoomThreeScene extends RoomScene {
 
         this.addObject(clone);
       });
+  }
+
+  addCompass() {
+    this.pageSceneCreator.createObjectMesh(
+      {
+        name: OBJECT_ELEMENTS.compass,
+      },
+      (obj) => {
+        this.addObject(obj);
+      }
+    );
   }
 }
