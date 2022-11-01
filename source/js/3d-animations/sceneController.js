@@ -58,9 +58,9 @@ export const sceneController = {
     roomsComposition.rotateY(-Math.PI / 2);
 
     scene.addSceneObject(roomsComposition);
-    scene.addTransformationsToLoop([()=>{
-      roomsComposition.rotateY(-0.003)
-    }])
+    // scene.addTransformationsToLoop([()=>{
+    //   roomsComposition.rotateY(-0.003)
+    // }])
   },
 
   addScreenMesh() {
