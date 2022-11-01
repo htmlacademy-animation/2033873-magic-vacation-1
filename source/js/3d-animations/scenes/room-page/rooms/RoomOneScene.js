@@ -112,19 +112,17 @@ export class RoomOneScene extends RoomScene {
     this.pageSceneCreator.createObjectMesh(
       {
         name: OBJECT_ELEMENTS.dog,
-        enableGui: true,
         transform: {
-          transformX: 500,
-          transformY: 0,
-          transformZ: 440,
+          transformX: 480,
+          transformZ: 420,
 
           rotateY: 1.1,
 
           scale: 1,
         },
       },
-      (dog) => {
-        this.addObject(dog);
+      (obj) => {
+        this.addObject(obj);
       }
     );
   }
