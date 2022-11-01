@@ -47,7 +47,7 @@ export class RoomThreeScene extends RoomScene {
     const snowman = new Snowman(this.pageSceneCreator.materialCreator);
     const transform = {
       transformX: 210,
-      transformY: 60,
+      transformY: 50,
       transformZ: 400,
 
       rotateY: Math.PI / 2,
