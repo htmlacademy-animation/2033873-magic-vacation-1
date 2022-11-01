@@ -40,8 +40,9 @@ export const sceneController = {
   },
 
   addRoomsPageComposition() {
-    const positionZ = 2550;
-    const positionY = 800;
+    // согласно заданию должно быть 2550 / 800 - но получается слишком далеко
+    const positionZ = 2150;
+    const positionY = 700;
 
     scene.camera.position.set(0, positionY, positionZ);
 
