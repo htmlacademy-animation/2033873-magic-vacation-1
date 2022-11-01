@@ -55,23 +55,23 @@ export class Scene3d {
     this.light = new THREE.Group();
 
     // Light 1
-    const light1 = new THREE.DirectionalLight(
-      new THREE.Color("rgb(255,255,255)"),
-      0.84
-    );
+    const color = new THREE.Color("rgb(255,255,255)");
+    const intensity = 0.84;
+
+    const light1 = new THREE.DirectionalLight(color, intensity);
 
     // направлен в сторону направления камеры вниз на 15deg.
-    const targetObject = new THREE.Object3D();
+    const directionalLightTargetObject = new THREE.Object3D();
 
-    targetObject.position.set(
+    directionalLightTargetObject.position.set(
       0,
-      this.camera.position.z * Math.tan((15 * Math.PI) / 180),
+      -this.camera.position.z * Math.tan((15 * Math.PI) / 180),
       0
     );
 
-    this.scene.add(targetObject);
+    this.scene.add(directionalLightTargetObject);
 
-    light1.target = targetObject;
+    light1.target = directionalLightTargetObject;
 
     // Light 2
     // со значением distance 975 согласно заданию, свет от источников 2 и 3 не долетает до шара
@@ -96,9 +96,7 @@ export class Scene3d {
     // положение относительно камеры: вправо на 730, вверх на 800, вперед на 985
     light3.position.set(730, 800, -985);
 
-    const light4 = new THREE.AmbientLight( 0x404040 ); // soft white light
-
-    this.light.add(light1, light2, light3,light4);
+    this.light.add(light1, light2, light3);
 
     this.light.position.z = this.camera.position.z;
     this.scene.add(this.light);

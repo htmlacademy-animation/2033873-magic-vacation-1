@@ -45,6 +45,7 @@ export const sceneController = {
     const positionY = 700;
 
     scene.camera.position.set(0, positionY, positionZ);
+    scene.light.position.set(0, positionY, positionZ);
 
     scene.controls.target.set(
       0,
@@ -53,7 +54,6 @@ export const sceneController = {
     );
 
     const roomsPageScene = new RoomsPageScene(pageSceneCreator, scene);
-
 
     scene.addSceneObject(roomsPageScene);
     // scene.addTransformationsToLoop([()=>{
