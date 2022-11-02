@@ -3,6 +3,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 export class Scene3d {
   constructor(config = {}) {
+    this.config = config;
     this.meshObjects = new Set();
     this.transformationsLoop = [];
     this.canvasElement = document.getElementById(config.elementId);
@@ -127,6 +128,12 @@ export class Scene3d {
     this.controls.update();
 
     this.render();
+
+    if (this.config.stats) {
+      this.config.stats.forEach((stats) => {
+        stats.update();
+      });
+    }
   }
 
   clearScene() {
