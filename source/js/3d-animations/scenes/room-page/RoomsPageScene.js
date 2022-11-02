@@ -22,10 +22,12 @@ export class RoomsPageScene extends THREE.Group {
     const roomsComposition = new RoomsComposition(this.pageSceneCreator);
 
     roomsComposition.rotateY(-Math.PI / 4);
+    roomsComposition.rotateY(-Math.PI / 2);
+    roomsComposition.rotateY(-Math.PI / 2);
 
-    // this.scene.addTransformationsToLoop([()=>{
-    //   roomsComposition.rotateY(-0.002);
-    // }]);
+    this.scene.addTransformationsToLoop([()=>{
+      roomsComposition.rotateY(-0.002);
+    }]);
 
     // roomsComposition.rotateY(-Math.PI / 2);
     // roomsComposition.rotateY(-Math.PI / 2);
@@ -46,6 +48,13 @@ export class RoomsPageScene extends THREE.Group {
         },
       },
       (obj) => {
+        obj.traverse((o) => {
+          if (o.isMesh) {
+            o.castShadow = true;
+            o.receiveShadow = true;
+          }
+        });
+
         this.add(obj);
       }
     );

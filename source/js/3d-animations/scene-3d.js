@@ -50,6 +50,11 @@ export class Scene3d {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setClearColor(0x5f458c, 0);
     this.renderer.setPixelRatio(window.devicePixelRatio);
+
+    // активируем тени только для больших экранов
+    if (window.innerWidth > 768) {
+      this.renderer.shadowMap.enabled = true;
+    }
   }
 
   initLight() {
@@ -76,31 +81,49 @@ export class Scene3d {
 
     // Light 2
     // со значением distance 975 согласно заданию, свет от источников 2 и 3 не долетает до шара
-    const light2 = new THREE.PointLight(
+    const light2 = this.createPointLight(
+      [-785, -350, -710],
       new THREE.Color("rgb(246,242,255)"),
       0.6,
-      2500,
+      3000,
       2
     );
-
-    // положение относительно камеры: влево на 785, вниз на 350, вперед на 710
-    light2.position.set(-785, -350, -710);
 
     // Light 3
-    const light3 = new THREE.PointLight(
+    const light3 = this.createPointLight(
+      [730, 800, -985],
       new THREE.Color("rgb(245,254,255)"),
       0.95,
-      2500,
+      3000,
       2
     );
 
-    // положение относительно камеры: вправо на 730, вверх на 800, вперед на 985
-    light3.position.set(730, 800, -985);
+    this.light.position.z = this.camera.position.z;
 
     this.light.add(light1, light2, light3);
 
-    this.light.position.z = this.camera.position.z;
     this.scene.add(this.light);
+  }
+
+  createPointLight(position, color, intensity, distance, decay) {
+    const light = new THREE.PointLight(
+      new THREE.Color(color),
+      intensity,
+      distance,
+      decay
+    );
+
+    light.castShadow = true;
+    light.shadow.mapSize.width = 512;
+    light.shadow.mapSize.height = 512;
+    light.shadow.camera.near = 0.5;
+    light.shadow.camera.far = distance;
+
+    light.position.set(position[0], position[1], position[2]);
+
+    this.scene.add(new THREE.PointLightHelper(light, 10));
+
+    return light;
   }
 
   initTextureLoader() {
