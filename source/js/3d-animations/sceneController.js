@@ -29,17 +29,26 @@ const pageSceneCreator = new PageSceneCreator(
 );
 
 export const sceneController = {
+  mainPageScene: null,
+  roomsPageScene: null,
+
   clearScene() {
     scene.clearScene();
   },
 
-  addMainPageComposition() {
-    const mainPageComposition = new MainPageScene(pageSceneCreator);
+  addMainPageScene() {
+    this.clearScene();
 
-    scene.addSceneObject(mainPageComposition);
+    if (!this.mainPageScene) {
+      this.mainPageScene = new MainPageScene(pageSceneCreator);
+    }
+
+    scene.addSceneObject(this.mainPageScene);
   },
 
-  addRoomsPageComposition() {
+  addRoomsPageScene() {
+    this.clearScene();
+
     // согласно заданию должно быть 2550 / 800 - но получается слишком далеко
     const positionZ = 2150;
     const positionY = 700;
@@ -53,14 +62,16 @@ export const sceneController = {
       0
     );
 
-    const roomsPageScene = new RoomsPageScene(pageSceneCreator, scene);
+    if (!this.roomsPageScene) {
+      this.roomsPageScene = new RoomsPageScene(pageSceneCreator, scene);
+    }
 
-    scene.addSceneObject(roomsPageScene);
+    scene.addSceneObject(this.roomsPageScene);
   },
 
-  addScreenMesh() {
-    // this.addMainPageComposition();
+  addScene() {
+    this.addMainPageScene();
 
-    this.addRoomsPageComposition();
+    // this.addRoomsPageScene();
   },
 };
