@@ -5,7 +5,6 @@ export class Scene3d {
   constructor(config = {}) {
     this.config = config;
     this.meshObjects = new Set();
-    this.animations = [];
     this.canvasElement = document.getElementById(config.elementId);
 
     this.initRenderer();
@@ -161,8 +160,6 @@ export class Scene3d {
   }
 
   clearScene() {
-    this.clearAnimations();
-
     this.meshObjects.forEach((mesh) => {
       this.scene.remove(mesh);
 
@@ -170,20 +167,6 @@ export class Scene3d {
     });
 
     this.scene.dispose();
-  }
-
-  addAnimations(...animations) {
-    this.animations.push(...animations);
-  }
-
-  startAnimations() {
-    this.animations.forEach((animation) => {
-      animation.start();
-    });
-  }
-
-  clearAnimations() {
-    this.animations = [];
   }
 
   addSceneObject(meshObject) {

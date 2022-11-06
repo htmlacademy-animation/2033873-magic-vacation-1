@@ -47,6 +47,7 @@ export class MainPageScene extends THREE.Group {
       },
       {
         name: SVG_ELEMENTS.flamingo,
+        bounceAnimation: true,
         extrude: {
           depth: 8,
           bevelThickness: 2,
@@ -81,6 +82,7 @@ export class MainPageScene extends THREE.Group {
       },
       {
         name: SVG_ELEMENTS.snowflake,
+        bounceAnimation: true,
         extrude: {
           depth: 8,
           bevelThickness: 2,
@@ -92,7 +94,6 @@ export class MainPageScene extends THREE.Group {
             }
           ),
         },
-        enableGui: true,
         transform: {
           from: {
             rotateX: 6.1,
@@ -116,7 +117,7 @@ export class MainPageScene extends THREE.Group {
       },
       {
         name: SVG_ELEMENTS.leaf,
-        enableGui: true,
+        bounceAnimation: true,
         extrude: {
           depth: 8,
           bevelThickness: 2,
@@ -151,6 +152,7 @@ export class MainPageScene extends THREE.Group {
       },
       {
         name: SVG_ELEMENTS.question,
+        bounceAnimation: true,
         extrude: {
           depth: 8,
           bevelThickness: 2,
@@ -162,7 +164,6 @@ export class MainPageScene extends THREE.Group {
             }
           ),
         },
-        enableGui: true,
         transform: {
           from: {
             rotateX: -1.6,
@@ -189,7 +190,7 @@ export class MainPageScene extends THREE.Group {
     this.meshObjects = [
       {
         name: OBJECT_ELEMENTS.watermelon,
-        enableGui: true,
+        bounceAnimation: true,
         transform: {
           from: {
             rotateX: 0,
@@ -265,6 +266,10 @@ export class MainPageScene extends THREE.Group {
           this.addObjectTransformAnimation(obj, config.transform);
         }
 
+        if (config.bounceAnimation) {
+          this.addBounceAnimation(obj);
+        }
+
         this.addMesh(obj);
       });
     });
@@ -275,6 +280,10 @@ export class MainPageScene extends THREE.Group {
       this.pageSceneCreator.createExtrudedSvgMesh(config, (obj) => {
         if (config.transform.to) {
           this.addObjectTransformAnimation(obj, config.transform);
+        }
+
+        if (config.bounceAnimation) {
+          this.addBounceAnimation(obj);
         }
 
         this.addMesh(obj);
@@ -305,6 +314,8 @@ export class MainPageScene extends THREE.Group {
       saturn.scale.set(scale, scale, scale);
     });
 
+    this.addBounceAnimation(saturn);
+
     this.addMesh(saturn);
   }
 
@@ -329,7 +340,10 @@ export class MainPageScene extends THREE.Group {
 
     this.add(mesh);
 
-    if (this.objectsLoaded === this.meshObjects.length + this.meshExtrudedObjects.length + 2) {
+    if (
+      this.objectsLoaded ===
+      this.meshObjects.length + this.meshExtrudedObjects.length + 2
+    ) {
       this.animationManager.startAnimations();
     }
   }
@@ -375,6 +389,24 @@ export class MainPageScene extends THREE.Group {
         func,
         duration: 1500,
         delay: 500,
+        easing: easeOutCubic,
+      })
+    );
+  }
+
+  addBounceAnimation(obj) {
+    const amplitude = 0.3 + Math.random() / 1.5;
+    const period =  700 + 300 * Math.random();
+
+    this.animationManager.addAnimations(
+      new Animation({
+        func: (_, { startTime, currentTime }) => {
+          obj.position.y =
+            obj.position.y +
+            amplitude * Math.sin((currentTime - startTime) / period);
+        },
+        duration: "infinite",
+        delay: 2000,
         easing: easeOutCubic,
       })
     );

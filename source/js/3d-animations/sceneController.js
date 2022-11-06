@@ -29,7 +29,7 @@ const pageSceneCreator = new PageSceneCreator(
   transformationGuiHelper
 );
 
-const animationManager = new AnimationManager(scene)
+const animationManager = new AnimationManager()
 
 export const sceneController = {
   mainPageScene: null,

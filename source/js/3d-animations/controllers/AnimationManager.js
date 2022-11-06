@@ -1,17 +1,23 @@
 export class AnimationManager {
-  constructor(scene) {
-    this.scene = scene;
+  constructor() {
+    this.animations = []
   }
 
   addAnimations(...animations) {
-    this.scene.addAnimations(...animations);
+    this.animations.push(...animations);
   }
 
   startAnimations() {
-    this.scene.startAnimations();
+    this.animations.forEach((animation) => {
+      animation.start();
+    });
   }
 
   clearAnimations() {
-    this.scene.clearAnimations();
+    this.animations.forEach((animation) => {
+      animation.stop();
+    });
+
+    this.animations = [];
   }
 }
