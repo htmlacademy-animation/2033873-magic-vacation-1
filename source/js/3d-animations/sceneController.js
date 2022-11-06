@@ -10,6 +10,7 @@ import { RoomsPageScene } from "./scenes/room-page/RoomsPageScene";
 import { degreesToRadians } from "./utils/degreesToRadians";
 import { TransformationGuiHelper } from "./ProjectGui/TransformationGuiHelper";
 import { PageSceneCreator } from "./scenes/PageSceneCreator";
+import {AnimationManager} from './controllers/AnimationManager';
 
 const materialCreator = new MaterialCreator();
 const latheGeometryCreator = new LatheGeometryCreator();
@@ -28,6 +29,8 @@ const pageSceneCreator = new PageSceneCreator(
   transformationGuiHelper
 );
 
+const animationManager = new AnimationManager(scene)
+
 export const sceneController = {
   mainPageScene: null,
   roomsPageScene: null,
@@ -40,7 +43,7 @@ export const sceneController = {
     this.clearScene();
 
     if (!this.mainPageScene) {
-      this.mainPageScene = new MainPageScene(pageSceneCreator);
+      this.mainPageScene = new MainPageScene(pageSceneCreator, animationManager);
     }
 
     scene.addSceneObject(this.mainPageScene);

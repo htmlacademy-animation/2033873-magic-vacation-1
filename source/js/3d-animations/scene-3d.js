@@ -172,8 +172,8 @@ export class Scene3d {
     this.scene.dispose();
   }
 
-  addAnimations(...transformations) {
-    this.animations.push(...transformations);
+  addAnimations(...animations) {
+    this.animations.push(...animations);
   }
 
   startAnimations() {
