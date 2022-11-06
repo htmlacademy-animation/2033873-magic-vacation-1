@@ -5,7 +5,7 @@ export class Scene3d {
   constructor(config = {}) {
     this.config = config;
     this.meshObjects = new Set();
-    this.transformationsLoop = [];
+    this.animations = [];
     this.canvasElement = document.getElementById(config.elementId);
 
     this.initRenderer();
@@ -15,14 +15,14 @@ export class Scene3d {
     this.initTextureLoader();
 
     window.addEventListener("resize", this.onWindowResize.bind(this));
-    this.animate = this.animate.bind(this);
+    this.update = this.update.bind(this);
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
     this.render();
 
     if (config.enableAnimation) {
-      this.animate();
+      this.update();
     }
   }
 
@@ -146,12 +146,8 @@ export class Scene3d {
     this.renderer.render(this.scene, this.camera);
   }
 
-  animate(timestamp) {
-    requestAnimationFrame(this.animate);
-
-    this.transformationsLoop.forEach((callback) => {
-      callback(timestamp);
-    });
+  update() {
+    requestAnimationFrame(this.update);
 
     this.controls.update();
 
@@ -165,7 +161,7 @@ export class Scene3d {
   }
 
   clearScene() {
-    this.clearTransformationsLoop();
+    this.clearAnimations();
 
     this.meshObjects.forEach((mesh) => {
       this.scene.remove(mesh);
@@ -176,12 +172,18 @@ export class Scene3d {
     this.scene.dispose();
   }
 
-  addTransformationsToLoop(transformations) {
-    this.transformationsLoop.push(...transformations);
+  addAnimations(...transformations) {
+    this.animations.push(...transformations);
   }
 
-  clearTransformationsLoop() {
-    this.transformationsLoop = [];
+  startAnimations() {
+    this.animations.forEach((animation) => {
+      animation.start();
+    });
+  }
+
+  clearAnimations() {
+    this.animations = [];
   }
 
   addSceneObject(meshObject) {

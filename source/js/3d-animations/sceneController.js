@@ -56,9 +56,6 @@ export const sceneController = {
     const roomsPageScene = new RoomsPageScene(pageSceneCreator, scene);
 
     scene.addSceneObject(roomsPageScene);
-    // scene.addTransformationsToLoop([()=>{
-    //   roomsComposition.rotateY(-0.003)
-    // }])
   },
 
   addScreenMesh() {
