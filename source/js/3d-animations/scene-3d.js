@@ -34,7 +34,7 @@ export class Scene3d {
     this.camera = new THREE.PerspectiveCamera(
       cameraConfig.fov || 75,
       cameraConfig.aspect || window.innerWidth / window.innerHeight,
-      cameraConfig.near || 0.1,
+      cameraConfig.near || 10,
       cameraConfig.far || 1000
     );
 
@@ -42,14 +42,19 @@ export class Scene3d {
   }
 
   initRenderer() {
+    const devicePixelRatio = window.devicePixelRatio;
+
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvasElement,
       alpha: true,
+      // @see: https://attackingpixels.com/tips-tricks-optimizing-three-js-performance/
+      antialias: devicePixelRatio <= 1,
+      powerPreference: "high-performance",
     });
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setClearColor(0x5f458c, 0);
-    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
 
     // активируем тени только для больших экранов
     if (window.innerWidth > 768) {
