@@ -2,53 +2,69 @@ import Animation from "../../Animation/Animation";
 import { easeOutCubic } from "../../helpers/easing";
 
 function getCurrentTransformPropertyByName(
+  obj,
   propertyName,
-  { to, from },
+  propertyDirection,
+  transformTo,
   progress
 ) {
-  const defaultValue = ["scale", "scaleX", "scaleY", "scaleZ"].includes(
-    propertyName
-  )
-    ? 1
-    : 0;
+  const defaultValue = propertyName === "scale" ? 1 : 0;
 
   const fromValue =
-    typeof from[propertyName] === "number" ? from[propertyName] : defaultValue;
+    obj[propertyName] &&
+    typeof obj[propertyName][propertyDirection] === "number"
+      ? obj[propertyName][propertyDirection]
+      : defaultValue;
 
-  return typeof to[propertyName] === "number"
-    ? fromValue + (to[propertyName] - fromValue) * progress
+  return transformTo[propertyName] &&
+    typeof transformTo[propertyName][propertyDirection] === "number"
+    ? fromValue +
+        (transformTo[propertyName][propertyDirection] - fromValue) * progress
     : fromValue;
 }
 
-export function createObjectTransformAnimation(obj, transform, config) {
+export function createObjectTransformAnimation(obj, transformTo, config) {
   return new Animation({
     func: (progress) => {
-      const scale = getCurrentTransformPropertyByName(
-        "scale",
-        transform,
-        progress
-      );
-
       obj.position.set(
-        ...["transformX", "transformY", "transformZ"].map((name) =>
-          getCurrentTransformPropertyByName(name, transform, progress)
+        ...["x", "y", "z"].map((propertyDirection) =>
+          getCurrentTransformPropertyByName(
+            obj,
+            "position",
+            propertyDirection,
+            transformTo,
+            progress
+          )
         )
       );
       obj.rotation.set(
-        ...["rotateX", "rotateY", "rotateZ"].map((name) =>
-          getCurrentTransformPropertyByName(name, transform, progress)
+        ...["x", "y", "z"].map((propertyDirection) =>
+          getCurrentTransformPropertyByName(
+            obj,
+            "rotation",
+            propertyDirection,
+            progress
+          )
         )
       );
 
-      if (typeof scale === "number") {
-        obj.scale.set(scale, scale, scale);
-      } else {
-        obj.scale.set(
-          ...["scaleX", "scaleY", "scaleZ"].map((name) =>
-            getCurrentTransformPropertyByName(name, transform, progress)
+      obj.scale.set(
+        ...["x", "y", "z"].map((propertyDirection) =>
+          getCurrentTransformPropertyByName(
+            obj,
+            "scale",
+            propertyDirection,
+            typeof transformTo.scale === "number"
+              ? {
+                  scale: {
+                    [propertyDirection]: transformTo.scale,
+                  },
+                }
+              : transformTo,
+            progress
           )
-        );
-      }
+        )
+      );
     },
     ...config,
   });

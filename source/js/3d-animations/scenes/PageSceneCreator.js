@@ -19,16 +19,16 @@ export class PageSceneCreator {
         this.applyMaterialToObject(obj, config.material);
       }
 
-      if (config.transform && config.transform.from) {
+      if (config.transform) {
         if (config.enableGui) {
           this.transformationGuiHelper.addNewFolder(
             config.name,
             obj,
-            config.transform.from
+            config.transform
           );
         }
 
-        this.setTransformParams(obj, config.transform.from);
+        this.setTransformParams(obj, config.transform);
       }
 
       onComplete(obj);
@@ -37,16 +37,16 @@ export class PageSceneCreator {
 
   createExtrudedSvgMesh(config, onComplete) {
     this.extrudeSvgCreator.create(config.name, config.extrude, (obj) => {
-      if (config.transform && config.transform.from) {
+      if (config.transform) {
         if (config.enableGui) {
           this.transformationGuiHelper.addNewFolder(
             config.name,
             obj,
-            config.transform.from
+            config.transform
           );
         }
 
-        this.setTransformParams(obj, config.transform.from);
+        this.setTransformParams(obj, config.transform);
       }
 
       onComplete(obj);
@@ -66,7 +66,12 @@ export class PageSceneCreator {
       params.rotateY || 0,
       params.rotateZ || 0
     );
-    obj.scale.set(scale, scale, scale);
+
+    if (typeof params.scale === 'number') {
+      obj.scale.set(scale, scale, scale);
+    } else {
+      obj.scale.set(params.scaleX || 1, params.scaleY || 1, params.scaleZ || 1);
+    }
   }
 
   applyMaterialToObject(obj3d, material) {
