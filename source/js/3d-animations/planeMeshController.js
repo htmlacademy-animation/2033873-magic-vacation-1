@@ -124,7 +124,7 @@ export const plainMeshController = {
   setMeshTransformations(mesh, index) {
     const transformations = [];
 
-    scene.clearTransformationsLoop();
+    scene.clearAnimations();
 
     if (index === 1) {
       const bubble1 = mesh.material.uniforms.bubble1.value;
@@ -164,6 +164,6 @@ export const plainMeshController = {
       transformations.push(transformationCallback);
     }
 
-    scene.addTransformationsToLoop(transformations);
+    scene.addAnimations(...transformations);
   },
 };

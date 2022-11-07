@@ -10,6 +10,7 @@ import { RoomsPageScene } from "./scenes/room-page/RoomsPageScene";
 import { degreesToRadians } from "./utils/degreesToRadians";
 import { TransformationGuiHelper } from "./ProjectGui/TransformationGuiHelper";
 import { PageSceneCreator } from "./scenes/PageSceneCreator";
+import {AnimationManager} from './controllers/AnimationManager';
 
 const materialCreator = new MaterialCreator();
 const latheGeometryCreator = new LatheGeometryCreator();
@@ -28,18 +29,29 @@ const pageSceneCreator = new PageSceneCreator(
   transformationGuiHelper
 );
 
+const animationManager = new AnimationManager()
+
 export const sceneController = {
+  mainPageScene: null,
+  roomsPageScene: null,
+
   clearScene() {
     scene.clearScene();
   },
 
-  addMainPageComposition() {
-    const mainPageComposition = new MainPageScene(pageSceneCreator);
+  addMainPageScene() {
+    this.clearScene();
 
-    scene.addSceneObject(mainPageComposition);
+    if (!this.mainPageScene) {
+      this.mainPageScene = new MainPageScene(pageSceneCreator, animationManager);
+    }
+
+    scene.addSceneObject(this.mainPageScene);
   },
 
-  addRoomsPageComposition() {
+  addRoomsPageScene() {
+    this.clearScene();
+
     // согласно заданию должно быть 2550 / 800 - но получается слишком далеко
     const positionZ = 2150;
     const positionY = 700;
@@ -53,17 +65,16 @@ export const sceneController = {
       0
     );
 
-    const roomsPageScene = new RoomsPageScene(pageSceneCreator, scene);
+    if (!this.roomsPageScene) {
+      this.roomsPageScene = new RoomsPageScene(pageSceneCreator, scene);
+    }
 
-    scene.addSceneObject(roomsPageScene);
-    // scene.addTransformationsToLoop([()=>{
-    //   roomsComposition.rotateY(-0.003)
-    // }])
+    scene.addSceneObject(this.roomsPageScene);
   },
 
-  addScreenMesh() {
-    // this.addMainPageComposition();
+  addScene() {
+    this.addMainPageScene();
 
-    this.addRoomsPageComposition();
+    // this.addRoomsPageScene();
   },
 };
