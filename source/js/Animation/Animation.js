@@ -1,4 +1,4 @@
-import { easeLinear } from "../../helpers/easing";
+import { easeLinear } from "../helpers/easing";
 
 export default class Animation {
   constructor(options) {

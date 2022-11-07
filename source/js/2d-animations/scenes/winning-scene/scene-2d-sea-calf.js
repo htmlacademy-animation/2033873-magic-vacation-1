@@ -1,6 +1,6 @@
-import Animation from "../Animation/Animation.js";
-import Scene2D from "../Animation/scene-2d.js";
-import { easeInQuad, easeOutElastic } from "../../helpers/easing.js";
+import Animation from "../../../Animation/Animation.js";
+import Scene2D from "../scene-2d.js";
+import { easeInQuad, easeOutElastic } from "../../../helpers/easing.js";
 
 const IMAGES_URLS = Object.freeze({
   plane: "airplane.png",

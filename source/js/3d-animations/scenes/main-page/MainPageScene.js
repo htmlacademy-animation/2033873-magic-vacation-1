@@ -7,7 +7,7 @@ import {
 import { MaterialCreator } from "../../creators/MaterialCreator";
 import { Saturn } from "../../mesh-complex-objects/Saturn";
 import { easeOutCubic } from "../../../helpers/easing";
-import Animation from "../../../2d-animations/Animation/Animation.js";
+import Animation from "../../../Animation/Animation.js";
 
 export class MainPageScene extends THREE.Group {
   constructor(pageSceneCreator, animationManager) {
@@ -396,7 +396,7 @@ export class MainPageScene extends THREE.Group {
 
   addBounceAnimation(obj) {
     const amplitude = 0.3 + Math.random() / 1.5;
-    const period =  700 + 300 * Math.random();
+    const period = 700 + 300 * Math.random();
 
     this.animationManager.addAnimations(
       new Animation({

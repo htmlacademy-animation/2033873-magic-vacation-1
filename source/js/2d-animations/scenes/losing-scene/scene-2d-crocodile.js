@@ -1,6 +1,10 @@
-import Scene2D from "../Animation/scene-2d";
-import Animation from "../Animation/Animation";
-import { easeInCubic, easeInOutSine, easeOutCubic } from "../../helpers/easing";
+import Scene2D from "../scene-2d";
+import Animation from "../../../Animation/Animation";
+import {
+  easeInCubic,
+  easeInOutSine,
+  easeOutCubic,
+} from "../../../helpers/easing";
 
 const IMAGES_URLS = Object.freeze({
   key: "key.png",
@@ -287,7 +291,7 @@ export default class Scene2dCrocodile extends Scene2D {
   }
 
   startDropAnimation() {
-    this.dropAnimations = []
+    this.dropAnimations = [];
 
     this.initDropAnimation();
 
@@ -328,8 +332,8 @@ export default class Scene2dCrocodile extends Scene2D {
         delay: 1000,
         easing: easeInOutSine,
         callback: () => {
-          setTimeout(() => this.startDropAnimation(), 500)
-        }
+          setTimeout(() => this.startDropAnimation(), 500);
+        },
       })
     );
   }
