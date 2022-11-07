@@ -1,9 +1,13 @@
 import { RoomScene } from "../RoomScene";
 import * as THREE from "three";
-import {MATERIAL_TYPE, OBJECT_ELEMENTS, SVG_ELEMENTS} from "../../../../constants";
+import {
+  MATERIAL_TYPE,
+  OBJECT_ELEMENTS,
+  SVG_ELEMENTS,
+} from "../../../../constants";
 import { MaterialCreator } from "../../../creators/MaterialCreator";
-import {Saturn} from '../../../mesh-complex-objects/Saturn';
-import {Carpet} from '../../../mesh-complex-objects/Carpet';
+import { Saturn } from "../../../mesh-complex-objects/Saturn";
+import { Carpet } from "../../../mesh-complex-objects/Carpet";
 
 export class RoomFourScene extends RoomScene {
   constructor(pageSceneCreator) {
@@ -29,7 +33,7 @@ export class RoomFourScene extends RoomScene {
     };
     this.staticOutput = {
       name: OBJECT_ELEMENTS.staticOutput4,
-    }
+    };
 
     this.constructChildren();
   }
@@ -58,14 +62,16 @@ export class RoomFourScene extends RoomScene {
         ),
       },
       transform: {
-        transformX: 60,
-        transformY: 410,
-        transformZ: 440,
+        from: {
+          transformX: 60,
+          transformY: 410,
+          transformZ: 440,
 
-        rotateX: Math.PI,
-        rotateY: -Math.PI / 2,
+          rotateX: Math.PI,
+          rotateY: -Math.PI / 2,
 
-        scale: 1,
+          scale: 1,
+        },
       },
     };
 
@@ -106,9 +112,11 @@ export class RoomFourScene extends RoomScene {
       {
         name: OBJECT_ELEMENTS.sonya,
         transform: {
-          transformX: 440,
-          transformY: 120,
-          transformZ: 280,
+          from: {
+            transformX: 440,
+            transformY: 120,
+            transformZ: 280,
+          },
         },
       },
       (obj) => {

@@ -1,14 +1,13 @@
 import * as THREE from "three";
 import { OBJECT_ELEMENTS } from "../../../constants";
 import { RoomsComposition } from "./rooms/RoomsComposition";
-import Animation from "../../../Animation/Animation";
 
 export class RoomsPageScene extends THREE.Group {
-  constructor(pageSceneCreator, scene) {
+  constructor(pageSceneCreator, animationManager) {
     super();
 
     this.pageSceneCreator = pageSceneCreator;
-    this.scene = scene;
+    this.animationManager = animationManager;
 
     this.constructChildren();
   }
@@ -20,26 +19,12 @@ export class RoomsPageScene extends THREE.Group {
   }
 
   addRooms() {
-    const roomsComposition = new RoomsComposition(this.pageSceneCreator);
-
-    roomsComposition.rotateY(-Math.PI / 4);
-    roomsComposition.rotateY(-Math.PI / 2);
-    roomsComposition.rotateY(-Math.PI / 2);
-
-    this.scene.addAnimations(
-      new Animation({
-        duration: "infinite",
-        func: () => {
-          roomsComposition.rotateY(-0.004);
-        },
-      })
+    const roomsComposition = new RoomsComposition(
+      this.pageSceneCreator,
+      this.animationManager
     );
 
-    this.scene.startAnimations();
-
-    // roomsComposition.rotateY(-Math.PI / 2);
-    // roomsComposition.rotateY(-Math.PI / 2);
-    // roomsComposition.rotateY(-Math.PI / 2);
+    roomsComposition.rotateY(-Math.PI / 4);
 
     this.add(roomsComposition);
   }
@@ -48,11 +33,15 @@ export class RoomsPageScene extends THREE.Group {
     this.pageSceneCreator.createObjectMesh(
       {
         name: OBJECT_ELEMENTS.suitcase,
+        enableGui: true,
         transform: {
-          transformX: -340,
-          transformZ: 750,
+          from: {
+            transformX: -340,
+            transformY: 150,
+            transformZ: 750,
 
-          rotateY: -0.4,
+            rotateY: -0.4,
+          },
         },
       },
       (obj) => {
@@ -62,6 +51,18 @@ export class RoomsPageScene extends THREE.Group {
             o.receiveShadow = true;
           }
         });
+        //
+        // this.animationManager.addAnimations(
+        //   new Animation({
+        //     duration: 1000,
+        //     delay: 1000,
+        //     func: (progress) => {
+        //       obj.scale.y = 1 - 0.5 * progress;
+        //     },
+        //   })
+        // );
+        //
+        // this.animationManager.startAnimations();
 
         this.add(obj);
       }

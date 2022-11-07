@@ -64,15 +64,17 @@ export class RoomOneScene extends RoomScene {
         ),
       },
       transform: {
-        transformX: 60,
-        transformY: 410,
-        transformZ: 440,
+        from: {
+          transformX: 60,
+          transformY: 410,
+          transformZ: 440,
 
-        rotateX: Math.PI,
-        rotateY: -Math.PI / 2,
-        rotateZ: 0,
+          rotateX: Math.PI,
+          rotateY: -Math.PI / 2,
+          rotateZ: 0,
 
-        scale: 1,
+          scale: 1,
+        },
       },
     };
 
@@ -113,12 +115,14 @@ export class RoomOneScene extends RoomScene {
       {
         name: OBJECT_ELEMENTS.dog,
         transform: {
-          transformX: 480,
-          transformZ: 420,
+          from: {
+            transformX: 480,
+            transformZ: 420,
 
-          rotateY: 1.1,
+            rotateY: 1.1,
 
-          scale: 1,
+            scale: 1,
+          }
         },
       },
       (obj) => {

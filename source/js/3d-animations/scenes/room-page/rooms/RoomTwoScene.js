@@ -1,8 +1,12 @@
 import { RoomScene } from "../RoomScene";
 import * as THREE from "three";
-import {MATERIAL_TYPE, OBJECT_ELEMENTS, SVG_ELEMENTS} from "../../../../constants";
+import {
+  MATERIAL_TYPE,
+  OBJECT_ELEMENTS,
+  SVG_ELEMENTS,
+} from "../../../../constants";
 import { MaterialCreator } from "../../../creators/MaterialCreator";
-import {Lantern} from '../../../mesh-complex-objects/Lantern';
+import { Lantern } from "../../../mesh-complex-objects/Lantern";
 
 export class RoomTwoScene extends RoomScene {
   constructor(pageSceneCreator) {
@@ -29,7 +33,7 @@ export class RoomTwoScene extends RoomScene {
 
     this.staticOutput = {
       name: OBJECT_ELEMENTS.staticOutput2,
-    }
+    };
 
     this.constructChildren();
   }
@@ -37,7 +41,7 @@ export class RoomTwoScene extends RoomScene {
   constructChildren() {
     super.constructChildren();
 
-    this.addLeaves()
+    this.addLeaves();
     this.addPyramid();
     this.addLantern();
   }
@@ -51,19 +55,21 @@ export class RoomTwoScene extends RoomScene {
         bevelSize: 1,
       },
       transform: {
-        transformX: 80,
-        transformY: 90,
-        transformZ: 480,
+        from: {
+          transformX: 80,
+          transformY: 90,
+          transformZ: 480,
 
-        rotateX: -2.6,
-        rotateY: -Math.PI / 2,
+          rotateX: -2.6,
+          rotateY: -Math.PI / 2,
 
-        scale: 1.1,
+          scale: 1.1,
+        },
       },
     };
 
     this.pageSceneCreator.createExtrudedSvgMesh(config, (leaf1) => {
-      const leaf2 = leaf1.clone()
+      const leaf2 = leaf1.clone();
 
       this.pageSceneCreator.setTransformParams(leaf2, {
         transformX: 80,
@@ -74,10 +80,10 @@ export class RoomTwoScene extends RoomScene {
         rotateY: -Math.PI / 2,
 
         scale: 2.5,
-      })
+      });
 
       this.addObject(leaf1);
-      this.addObject(leaf2)
+      this.addObject(leaf2);
     });
   }
 
