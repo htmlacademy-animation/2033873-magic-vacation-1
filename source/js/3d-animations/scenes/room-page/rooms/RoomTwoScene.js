@@ -55,16 +55,16 @@ export class RoomTwoScene extends RoomScene {
         bevelSize: 1,
       },
       transform: {
-        from: {
-          transformX: 80,
-          transformY: 90,
-          transformZ: 480,
-
-          rotateX: -2.6,
-          rotateY: -Math.PI / 2,
-
-          scale: 1.1,
+        position: {
+          x: 80,
+          y: 90,
+          z: 480,
         },
+        rotation: {
+          x: -2.6,
+          y: -Math.PI / 2,
+        },
+        scale: 1.1,
       },
     };
 
@@ -72,13 +72,15 @@ export class RoomTwoScene extends RoomScene {
       const leaf2 = leaf1.clone();
 
       this.pageSceneCreator.setTransformParams(leaf2, {
-        transformX: 80,
-        transformY: 300,
-        transformZ: 400,
-
-        rotateX: 2.9,
-        rotateY: -Math.PI / 2,
-
+        position: {
+          x: 80,
+          y: 300,
+          z: 400,
+        },
+        rotation: {
+          x: 2.9,
+          y: -Math.PI / 2,
+        },
         scale: 2.5,
       });
 
@@ -96,12 +98,14 @@ export class RoomTwoScene extends RoomScene {
     );
 
     const transform = {
-      transformX: 190,
-      transformY: 140,
-      transformZ: 230,
-
-      rotateY: -Math.PI / 4,
-
+      position: {
+        x: 190,
+        y: 140,
+        z: 230,
+      },
+      rotation: {
+        y: -Math.PI / 4,
+      },
       scale: 1,
     };
 
@@ -114,12 +118,14 @@ export class RoomTwoScene extends RoomScene {
     const lantern = new Lantern(this.pageSceneCreator.materialCreator);
 
     const transform = {
-      transformX: 640,
-      transformY: 0,
-      transformZ: 110,
-
-      rotateY: -0.3,
-
+      position: {
+        x: 640,
+        y: 0,
+        z: 110,
+      },
+      rotation: {
+        y: -0.3,
+      },
       scale: 1,
     };
 

@@ -62,16 +62,16 @@ export class RoomFourScene extends RoomScene {
         ),
       },
       transform: {
-        from: {
-          transformX: 60,
-          transformY: 410,
-          transformZ: 440,
-
-          rotateX: Math.PI,
-          rotateY: -Math.PI / 2,
-
-          scale: 1,
+        position: {
+          x: 60,
+          y: 410,
+          z: 440,
         },
+        rotation: {
+          x: Math.PI,
+          y: -Math.PI / 2,
+        },
+        scale: 1,
       },
     };
 
@@ -87,12 +87,14 @@ export class RoomFourScene extends RoomScene {
     });
 
     const transform = {
-      transformX: 350,
-      transformY: 500,
-      transformZ: 280,
-
-      rotateY: -Math.PI / 2,
-
+      position: {
+        x: 350,
+        y: 500,
+        z: 280,
+      },
+      rotation: {
+        y: -Math.PI / 2,
+      },
       scale: 1,
     };
 
@@ -112,10 +114,10 @@ export class RoomFourScene extends RoomScene {
       {
         name: OBJECT_ELEMENTS.sonya,
         transform: {
-          from: {
-            transformX: 440,
-            transformY: 120,
-            transformZ: 280,
+          position: {
+            x: 440,
+            y: 120,
+            z: 280,
           },
         },
       },

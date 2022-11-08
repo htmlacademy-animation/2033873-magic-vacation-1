@@ -47,12 +47,14 @@ export class RoomThreeScene extends RoomScene {
   addSnowman() {
     const snowman = new Snowman(this.pageSceneCreator.materialCreator);
     const transform = {
-      transformX: 210,
-      transformY: 50,
-      transformZ: 400,
-
-      rotateY: Math.PI / 2,
-
+      position: {
+        x: 210,
+        y: 50,
+        z: 400,
+      },
+      rotation: {
+        y: Math.PI / 2,
+      },
       scale: 1,
     };
 
@@ -90,9 +92,11 @@ export class RoomThreeScene extends RoomScene {
         const clone = cylinder.clone();
 
         const transform = {
-          transformX: radius * Math.cos(angle),
-          transformY: 40,
-          transformZ: radius * Math.sin(angle),
+          position: {
+            x: radius * Math.cos(angle),
+            y: 40,
+            z: radius * Math.sin(angle),
+          },
         };
 
         this.pageSceneCreator.setTransformParams(clone, transform);
