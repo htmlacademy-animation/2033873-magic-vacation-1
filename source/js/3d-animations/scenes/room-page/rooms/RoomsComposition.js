@@ -5,10 +5,11 @@ import { RoomThreeScene } from "./RoomThreeScene";
 import { RoomFourScene } from "./RoomFourScene";
 
 export class RoomsComposition extends THREE.Group {
-  constructor(pageSceneCreator) {
+  constructor(pageSceneCreator, animationManager) {
     super();
 
     this.pageSceneCreator = pageSceneCreator;
+    this.animationManager = animationManager;
 
     this.constructRooms();
   }

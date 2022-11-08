@@ -6,8 +6,11 @@ import {
 } from "../../../constants";
 import { MaterialCreator } from "../../creators/MaterialCreator";
 import { Saturn } from "../../mesh-complex-objects/Saturn";
+import {
+  createBounceAnimation,
+  createObjectTransformAnimation,
+} from "../../creators/animationCreators";
 import { easeOutCubic } from "../../../helpers/easing";
-import Animation from "../../../2d-animations/Animation/Animation.js";
 
 export class MainPageScene extends THREE.Group {
   constructor(pageSceneCreator, animationManager) {
@@ -261,34 +264,37 @@ export class MainPageScene extends THREE.Group {
 
   addMeshObjects() {
     this.meshObjects.forEach((config) => {
-      this.pageSceneCreator.createObjectMesh(config, (obj) => {
-        if (config.transform.to) {
-          this.addObjectTransformAnimation(obj, config.transform);
-        }
-
-        if (config.bounceAnimation) {
-          this.addBounceAnimation(obj);
-        }
-
-        this.addMesh(obj);
-      });
+      this.pageSceneCreator.createObjectMesh(config, this.addObject(config));
     });
   }
 
   addExtrudedSvgObjects() {
     this.meshExtrudedObjects.forEach((config) => {
-      this.pageSceneCreator.createExtrudedSvgMesh(config, (obj) => {
-        if (config.transform.to) {
-          this.addObjectTransformAnimation(obj, config.transform);
-        }
-
-        if (config.bounceAnimation) {
-          this.addBounceAnimation(obj);
-        }
-
-        this.addMesh(obj);
-      });
+      this.pageSceneCreator.createExtrudedSvgMesh(
+        config,
+        this.addObject(config)
+      );
     });
+  }
+
+  addObject(config) {
+    return (obj) => {
+      if (config.transform.to) {
+        this.animationManager.addAnimations(
+          createObjectTransformAnimation(obj, config.transform, {
+            duration: 1500,
+            delay: 500,
+            easing: easeOutCubic,
+          })
+        );
+      }
+
+      if (config.bounceAnimation) {
+        this.animationManager.addAnimations(createBounceAnimation(obj));
+      }
+
+      this.addMesh(obj);
+    };
   }
 
   addSaturn() {
@@ -298,23 +304,35 @@ export class MainPageScene extends THREE.Group {
     });
 
     const transform = {
-      rotateY: 3.6,
-      rotateZ: 5,
+      from: {
+        rotateY: 3.6,
+        rotateZ: 5,
 
-      scale: 0,
+        scale: 0,
+      },
+      to: {
+        transformX: 350,
+        transformY: -120,
+        transformZ: 140,
+
+        rotateY: 3.6,
+        rotateZ: 3,
+
+        scale: 0.5,
+      },
     };
 
-    this.pageSceneCreator.setTransformParams(saturn, transform);
+    this.pageSceneCreator.setTransformParams(saturn, transform.from);
 
-    this.addObjectAppearAnimation((progress) => {
-      const scale = 0.5 * progress;
+    this.animationManager.addAnimations(
+      createObjectTransformAnimation(saturn, transform, {
+        duration: 1500,
+        delay: 500,
+        easing: easeOutCubic,
+      })
+    );
 
-      saturn.position.set(350 * progress, -120 * progress, 140 * progress);
-      saturn.rotation.set(0, 3.6, 5 - 2 * progress);
-      saturn.scale.set(scale, scale, scale);
-    });
-
-    this.addBounceAnimation(saturn);
+    this.animationManager.addAnimations(createBounceAnimation(saturn));
 
     this.addMesh(saturn);
   }
@@ -346,69 +364,5 @@ export class MainPageScene extends THREE.Group {
     ) {
       this.animationManager.startAnimations();
     }
-  }
-
-  getCurrentTransformPropertyByName(propertyName, { to, from }, progress) {
-    const defaultValue = propertyName === "scale" ? 1 : 0;
-
-    const fromValue =
-      typeof from[propertyName] === "number"
-        ? from[propertyName]
-        : defaultValue;
-
-    return typeof to[propertyName] === "number"
-      ? fromValue + (to[propertyName] - fromValue) * progress
-      : fromValue;
-  }
-
-  addObjectTransformAnimation(obj, transform) {
-    this.addObjectAppearAnimation((progress) => {
-      const scale = this.getCurrentTransformPropertyByName(
-        "scale",
-        transform,
-        progress
-      );
-
-      obj.position.set(
-        ...["transformX", "transformY", "transformZ"].map((name) =>
-          this.getCurrentTransformPropertyByName(name, transform, progress)
-        )
-      );
-      obj.rotation.set(
-        ...["rotateX", "rotateY", "rotateZ"].map((name) =>
-          this.getCurrentTransformPropertyByName(name, transform, progress)
-        )
-      );
-      obj.scale.set(scale, scale, scale);
-    });
-  }
-
-  addObjectAppearAnimation(func) {
-    this.animationManager.addAnimations(
-      new Animation({
-        func,
-        duration: 1500,
-        delay: 500,
-        easing: easeOutCubic,
-      })
-    );
-  }
-
-  addBounceAnimation(obj) {
-    const amplitude = 0.3 + Math.random() / 1.5;
-    const period =  700 + 300 * Math.random();
-
-    this.animationManager.addAnimations(
-      new Animation({
-        func: (_, { startTime, currentTime }) => {
-          obj.position.y =
-            obj.position.y +
-            amplitude * Math.sin((currentTime - startTime) / period);
-        },
-        duration: "infinite",
-        delay: 2000,
-        easing: easeOutCubic,
-      })
-    );
   }
 }
