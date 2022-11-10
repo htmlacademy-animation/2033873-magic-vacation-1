@@ -107,13 +107,6 @@ export class RoomOneScene extends RoomScene {
 
     this.pageSceneCreator.setTransformParams(saturn, transform);
 
-    group.add(
-      new THREE.Mesh(
-        new THREE.SphereGeometry(20, 20),
-        new THREE.MeshPhongMaterial()
-      )
-    );
-
     group.position.set(250, 1500, 280);
 
     group.add(saturn);

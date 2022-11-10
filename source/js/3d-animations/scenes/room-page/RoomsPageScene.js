@@ -32,7 +32,6 @@ export class RoomsPageScene extends THREE.Group {
 
     roomsComposition.rotateY(-Math.PI / 4);
     roomsComposition.rotateY(-Math.PI / 2);
-    roomsComposition.rotateY(-Math.PI );
 
     this.add(roomsComposition);
   }

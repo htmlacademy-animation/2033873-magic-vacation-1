@@ -7,6 +7,8 @@ import {
 } from "../../../../constants";
 import { MaterialCreator } from "../../../creators/MaterialCreator";
 import { Lantern } from "../../../mesh-complex-objects/Lantern";
+import Animation from "../../../../Animation/Animation";
+import { easeInOutSine } from "../../../../helpers/easing";
 
 export class RoomTwoScene extends RoomScene {
   constructor(pageSceneCreator, animationManager) {
@@ -49,6 +51,7 @@ export class RoomTwoScene extends RoomScene {
   addLeaves() {
     const config = {
       name: SVG_ELEMENTS.leaf,
+      enableGui: true,
       extrude: {
         depth: 2,
         bevelThickness: 1,
@@ -56,9 +59,9 @@ export class RoomTwoScene extends RoomScene {
       },
       transform: {
         position: {
-          x: 80,
-          y: 90,
-          z: 480,
+          x: 0,
+          y: 76,
+          z: 128,
         },
         rotation: {
           x: -2.6,
@@ -68,14 +71,18 @@ export class RoomTwoScene extends RoomScene {
       },
     };
 
+    const group = new THREE.Group();
+    const groupLeaf1 = new THREE.Group();
+    const groupLeaf2 = new THREE.Group();
+
     this.pageSceneCreator.createExtrudedSvgMesh(config, (leaf1) => {
       const leaf2 = leaf1.clone();
 
       this.pageSceneCreator.setTransformParams(leaf2, {
         position: {
-          x: 80,
-          y: 300,
-          z: 400,
+          x: 0,
+          y: 320,
+          z: 80,
         },
         rotation: {
           x: 2.9,
@@ -84,8 +91,41 @@ export class RoomTwoScene extends RoomScene {
         scale: 2.5,
       });
 
-      this.addObject(leaf1);
-      this.addObject(leaf2);
+      group.position.set(80, 20, 330);
+
+      group.add(
+        new THREE.Mesh(
+          new THREE.SphereGeometry(4, 20),
+          new THREE.MeshPhongMaterial()
+        )
+      );
+
+      this.animationManager.addAnimations(
+        new Animation({
+          func: (_, { startTime, currentTime }) => {
+            const time = ((currentTime - startTime) / 300) % 16;
+            groupLeaf1.rotation.x = 0.3 * Math.exp(-0.2*time) * Math.cos(1.2* time + Math.PI / 2);
+          },
+          duration: "infinite",
+          easing: easeInOutSine,
+        }),
+        new Animation({
+          func: (_, { startTime, currentTime }) => {
+            const time = ((currentTime - startTime) / 300) % 16;
+            groupLeaf2.rotation.x = 0.4 * Math.exp(-0.2*time) * Math.cos(time + Math.PI / 2);
+          },
+          duration: "infinite",
+          easing: easeInOutSine,
+        })
+      );
+
+      groupLeaf1.add(leaf1);
+      groupLeaf2.add(leaf2);
+
+      group.add(groupLeaf1);
+      group.add(groupLeaf2);
+
+      this.addObject(group);
     });
   }
 
