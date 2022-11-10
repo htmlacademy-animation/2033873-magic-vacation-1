@@ -1,16 +1,17 @@
 import { RoomScene } from "../RoomScene";
 import * as THREE from "three";
 import {
-  MATERIAL_TYPE, MESH_NAMES,
+  MATERIAL_TYPE,
+  MESH_NAMES,
   OBJECT_ELEMENTS,
   SVG_ELEMENTS,
 } from "../../../../constants";
 import { MaterialCreator } from "../../../creators/MaterialCreator";
 import { Saturn } from "../../../mesh-complex-objects/Saturn";
 import { Carpet } from "../../../mesh-complex-objects/Carpet";
-import { easeOutCubic } from "../../../../helpers/easing";
+import { easeLinear, easeOutCubic } from "../../../../helpers/easing";
 import Animation from "../../../../Animation/Animation";
-import {degreesToRadians} from '../../../utils/degreesToRadians';
+import { degreesToRadians } from "../../../utils/degreesToRadians";
 
 export class RoomOneScene extends RoomScene {
   constructor(pageSceneCreator, animationManager) {
@@ -111,34 +112,45 @@ export class RoomOneScene extends RoomScene {
 
     group.add(saturn);
 
-    const bounceAngle = 1
+    const bounceAngle = 1;
 
     this.animationManager.addAnimations(
       new Animation({
         func: (_, { startTime, currentTime }) => {
-          group.rotation.z = degreesToRadians(bounceAngle) * Math.sin((currentTime - startTime) / 1000);
-          group.rotation.x = degreesToRadians(bounceAngle) * Math.sin((currentTime - startTime) / 1000);
+          group.rotation.z =
+            degreesToRadians(bounceAngle) *
+            Math.sin((currentTime - startTime) / 1000);
+          group.rotation.x =
+            degreesToRadians(bounceAngle) *
+            Math.sin((currentTime - startTime) / 1000);
         },
         duration: "infinite",
         easing: easeOutCubic,
       })
     );
 
-    saturn.traverse(obj => {
+    saturn.traverse((obj) => {
       if (obj.isMesh && obj.name === MESH_NAMES.SaturnRing) {
         this.animationManager.addAnimations(
           new Animation({
             func: (_, { startTime, currentTime }) => {
-              obj.rotation.x = degreesToRadians(-5) * Math.sin( (currentTime - startTime) / 1000);
-              obj.rotation.y = degreesToRadians(10) * Math.sin( (currentTime - startTime) / 1000);
-              obj.rotation.z =  degreesToRadians(-18) + degreesToRadians(5) * Math.sin( (currentTime - startTime) / 1000);
+              obj.rotation.x =
+                degreesToRadians(-5) *
+                Math.sin((currentTime - startTime) / 1000);
+              obj.rotation.y =
+                degreesToRadians(10) *
+                Math.sin((currentTime - startTime) / 1000);
+              obj.rotation.z =
+                degreesToRadians(-18) +
+                degreesToRadians(5) *
+                  Math.sin((currentTime - startTime) / 1000);
             },
             duration: "infinite",
             easing: easeOutCubic,
           })
         );
       }
-    })
+    });
 
     this.addObject(group);
   }
@@ -164,8 +176,28 @@ export class RoomOneScene extends RoomScene {
           scale: 1,
         },
       },
-      (obj) => {
-        this.addObject(obj);
+      (dog) => {
+        dog.traverse((obj) => {
+          if (obj.name === "Tail") {
+            this.animationManager.addAnimations(
+              new Animation({
+                func: (_, { startTime, currentTime }) => {
+                  const time =
+                    ((currentTime - startTime) / 70) % (Math.PI * 6.5);
+                  if (time > 0 && time < Math.PI) {
+                    obj.rotation.x = (degreesToRadians(30) * time) / Math.PI;
+                  } else {
+                    obj.rotation.x = -degreesToRadians(30) * Math.cos(time);
+                  }
+                },
+                duration: "infinite",
+                easing: easeLinear,
+              })
+            );
+          }
+        });
+
+        this.addObject(dog);
       }
     );
   }

@@ -93,13 +93,6 @@ export class RoomTwoScene extends RoomScene {
 
       group.position.set(80, 20, 330);
 
-      group.add(
-        new THREE.Mesh(
-          new THREE.SphereGeometry(4, 20),
-          new THREE.MeshPhongMaterial()
-        )
-      );
-
       this.animationManager.addAnimations(
         new Animation({
           func: (_, { startTime, currentTime }) => {
