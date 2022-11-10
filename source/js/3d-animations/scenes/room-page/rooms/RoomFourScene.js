@@ -10,8 +10,8 @@ import { Saturn } from "../../../mesh-complex-objects/Saturn";
 import { Carpet } from "../../../mesh-complex-objects/Carpet";
 
 export class RoomFourScene extends RoomScene {
-  constructor(pageSceneCreator) {
-    super(pageSceneCreator);
+  constructor(pageSceneCreator, animationManager) {
+    super(pageSceneCreator, animationManager);
 
     this.wall = {
       name: OBJECT_ELEMENTS.wallCorner,

@@ -14,9 +14,7 @@ import {degreesToRadians} from '../../../utils/degreesToRadians';
 
 export class RoomOneScene extends RoomScene {
   constructor(pageSceneCreator, animationManager) {
-    super(pageSceneCreator);
-
-    this.animationManager = animationManager;
+    super(pageSceneCreator, animationManager);
 
     this.wall = {
       name: OBJECT_ELEMENTS.wallCorner,
@@ -129,7 +127,6 @@ export class RoomOneScene extends RoomScene {
           group.rotation.x = degreesToRadians(bounceAngle) * Math.sin((currentTime - startTime) / 1000);
         },
         duration: "infinite",
-        delay: 2000,
         easing: easeOutCubic,
       })
     );
@@ -144,7 +141,6 @@ export class RoomOneScene extends RoomScene {
               obj.rotation.z =  degreesToRadians(-18) + degreesToRadians(5) * Math.sin( (currentTime - startTime) / 1000);
             },
             duration: "infinite",
-            delay: 2000,
             easing: easeOutCubic,
           })
         );

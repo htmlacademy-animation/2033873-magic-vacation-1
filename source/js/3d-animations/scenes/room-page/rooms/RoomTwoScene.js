@@ -9,8 +9,8 @@ import { MaterialCreator } from "../../../creators/MaterialCreator";
 import { Lantern } from "../../../mesh-complex-objects/Lantern";
 
 export class RoomTwoScene extends RoomScene {
-  constructor(pageSceneCreator) {
-    super(pageSceneCreator);
+  constructor(pageSceneCreator, animationManager) {
+    super(pageSceneCreator, animationManager);
 
     this.wall = {
       name: OBJECT_ELEMENTS.wallCorner,
