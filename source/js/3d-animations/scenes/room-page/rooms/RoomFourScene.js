@@ -8,6 +8,9 @@ import {
 import { MaterialCreator } from "../../../creators/MaterialCreator";
 import { Saturn } from "../../../mesh-complex-objects/Saturn";
 import { Carpet } from "../../../mesh-complex-objects/Carpet";
+import Animation from "../../../../Animation/Animation";
+import { degreesToRadians } from "../../../utils/degreesToRadians";
+import { easeInOutSine, easeInQuad } from "../../../../helpers/easing";
 
 export class RoomFourScene extends RoomScene {
   constructor(pageSceneCreator, animationManager) {
@@ -121,8 +124,49 @@ export class RoomFourScene extends RoomScene {
           },
         },
       },
-      (obj) => {
-        this.addObject(obj);
+      (sonya) => {
+        this.animationManager.addAnimations(
+          new Animation({
+            func: (_, { startTime, currentTime }) => {
+              sonya.position.y =
+                120 + 10 * Math.sin((currentTime - startTime) / 500);
+            },
+            duration: "infinite",
+            easing: easeInOutSine,
+          })
+        );
+
+        sonya.traverse((obj) => {
+          if (obj.name === "RightHand") {
+            this.animationManager.addAnimations(
+              new Animation({
+                func: (_, { startTime, currentTime }) => {
+                  obj.rotation.y =
+                    degreesToRadians(-55) +
+                    degreesToRadians(5) *
+                      Math.cos(1.5 + (currentTime - startTime) / 500);
+                },
+                duration: "infinite",
+                easing: easeInQuad,
+              })
+            );
+          } else if (obj.name === "LeftHand") {
+            this.animationManager.addAnimations(
+              new Animation({
+                func: (_, { startTime, currentTime }) => {
+                  obj.rotation.y =
+                    degreesToRadians(55) +
+                    degreesToRadians(5) *
+                      Math.cos(-1.5 + (currentTime - startTime) / 500);
+                },
+                duration: "infinite",
+                easing: easeInQuad,
+              })
+            );
+          }
+        });
+
+        this.addObject(sonya);
       }
     );
   }
