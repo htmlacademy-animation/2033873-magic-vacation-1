@@ -51,7 +51,6 @@ export class RoomTwoScene extends RoomScene {
   addLeaves() {
     const config = {
       name: SVG_ELEMENTS.leaf,
-      enableGui: true,
       extrude: {
         depth: 2,
         bevelThickness: 1,
