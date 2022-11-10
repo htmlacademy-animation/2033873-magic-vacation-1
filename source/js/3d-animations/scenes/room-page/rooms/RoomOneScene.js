@@ -1,17 +1,22 @@
 import { RoomScene } from "../RoomScene";
 import * as THREE from "three";
 import {
-  MATERIAL_TYPE,
+  MATERIAL_TYPE, MESH_NAMES,
   OBJECT_ELEMENTS,
   SVG_ELEMENTS,
 } from "../../../../constants";
 import { MaterialCreator } from "../../../creators/MaterialCreator";
 import { Saturn } from "../../../mesh-complex-objects/Saturn";
 import { Carpet } from "../../../mesh-complex-objects/Carpet";
+import { easeOutCubic } from "../../../../helpers/easing";
+import Animation from "../../../../Animation/Animation";
+import {degreesToRadians} from '../../../utils/degreesToRadians';
 
 export class RoomOneScene extends RoomScene {
-  constructor(pageSceneCreator) {
+  constructor(pageSceneCreator, animationManager) {
     super(pageSceneCreator);
+
+    this.animationManager = animationManager;
 
     this.wall = {
       name: OBJECT_ELEMENTS.wallCorner,
@@ -83,6 +88,8 @@ export class RoomOneScene extends RoomScene {
   }
 
   addSaturn() {
+    const group = new THREE.Group();
+
     const saturn = new Saturn(this.pageSceneCreator.materialCreator, {
       darkMode: false,
       withRope: true,
@@ -90,9 +97,9 @@ export class RoomOneScene extends RoomScene {
 
     const transform = {
       position: {
-        x: 350,
-        y: 500,
-        z: 280,
+        x: 0,
+        y: -1000,
+        z: 0,
       },
       rotation: {
         y: -Math.PI / 2,
@@ -102,7 +109,49 @@ export class RoomOneScene extends RoomScene {
 
     this.pageSceneCreator.setTransformParams(saturn, transform);
 
-    this.addObject(saturn);
+    group.add(
+      new THREE.Mesh(
+        new THREE.SphereGeometry(20, 20),
+        new THREE.MeshPhongMaterial()
+      )
+    );
+
+    group.position.set(250, 1500, 280);
+
+    group.add(saturn);
+
+    const bounceAngle = 1
+
+    this.animationManager.addAnimations(
+      new Animation({
+        func: (_, { startTime, currentTime }) => {
+          group.rotation.z = degreesToRadians(bounceAngle) * Math.sin((currentTime - startTime) / 1000);
+          group.rotation.x = degreesToRadians(bounceAngle) * Math.sin((currentTime - startTime) / 1000);
+        },
+        duration: "infinite",
+        delay: 2000,
+        easing: easeOutCubic,
+      })
+    );
+
+    saturn.traverse(obj => {
+      if (obj.isMesh && obj.name === MESH_NAMES.SaturnRing) {
+        this.animationManager.addAnimations(
+          new Animation({
+            func: (_, { startTime, currentTime }) => {
+              obj.rotation.x = degreesToRadians(-5) * Math.sin( (currentTime - startTime) / 1000);
+              obj.rotation.y = degreesToRadians(10) * Math.sin( (currentTime - startTime) / 1000);
+              obj.rotation.z =  degreesToRadians(-18) + degreesToRadians(5) * Math.sin( (currentTime - startTime) / 1000);
+            },
+            duration: "infinite",
+            delay: 2000,
+            easing: easeOutCubic,
+          })
+        );
+      }
+    })
+
+    this.addObject(group);
   }
 
   addCarpet() {

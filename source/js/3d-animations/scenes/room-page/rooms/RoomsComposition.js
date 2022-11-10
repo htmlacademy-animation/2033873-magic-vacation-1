@@ -22,7 +22,7 @@ export class RoomsComposition extends THREE.Group {
   }
 
   addRoomOne() {
-    this.add(new RoomOneScene(this.pageSceneCreator));
+    this.add(new RoomOneScene(this.pageSceneCreator,     this.animationManager));
   }
 
   addRoomTwo() {
