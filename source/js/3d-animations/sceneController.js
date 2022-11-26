@@ -7,10 +7,9 @@ import { EXTRUDE_SETTINGS, SVG_ELEMENTS } from "../constants";
 import { ExtrudeSvgCreator } from "./creators/ExtrudeSvgCreator";
 import { ObjectsCreator } from "./creators/ObjectCreator";
 import { RoomsPageScene } from "./scenes/room-page/RoomsPageScene";
-import { degreesToRadians } from "./utils/degreesToRadians";
 import { TransformationGuiHelper } from "./ProjectGui/TransformationGuiHelper";
 import { PageSceneCreator } from "./scenes/PageSceneCreator";
-import {AnimationManager} from './controllers/AnimationManager';
+import { AnimationManager } from "./controllers/AnimationManager";
 
 const materialCreator = new MaterialCreator();
 const latheGeometryCreator = new LatheGeometryCreator();
@@ -29,7 +28,7 @@ const pageSceneCreator = new PageSceneCreator(
   transformationGuiHelper
 );
 
-const animationManager = new AnimationManager()
+const animationManager = new AnimationManager();
 
 export const sceneController = {
   mainPageScene: null,
@@ -37,45 +36,46 @@ export const sceneController = {
 
   clearScene() {
     scene.clearScene();
-    animationManager.clearAnimations()
+    animationManager.clearAnimations();
   },
 
   addMainPageScene() {
-    this.clearScene();
-
     if (!this.mainPageScene) {
-      this.mainPageScene = new MainPageScene(pageSceneCreator, animationManager);
+      this.mainPageScene = new MainPageScene(
+        pageSceneCreator,
+        animationManager
+      );
     }
 
     scene.addSceneObject(this.mainPageScene);
   },
 
   addRoomsPageScene() {
-    this.clearScene();
-
     // согласно заданию должно быть 2550 / 800 - но получается слишком далеко
-    const positionZ = 2150;
-    const positionY = 700;
+    // const positionZ = 2150;
+    // const positionY = 700;
 
-    scene.camera.position.set(0, positionY, positionZ);
-    scene.light.position.set(0, positionY, positionZ);
+    // scene.camera.position.set(0, positionY, positionZ);
+    // scene.light.position.set(0, positionY, positionZ);
+    //
+    // scene.controls.target.set(
+    //   0,
+    //   positionY - positionZ * Math.tan(degreesToRadians(15)),
+    //   0
+    // );
 
-    scene.controls.target.set(
-      0,
-      positionY - positionZ * Math.tan(degreesToRadians(15)),
-      0
+    this.roomsPageScene = new RoomsPageScene(
+      pageSceneCreator,
+      animationManager
     );
 
-    if (!this.roomsPageScene) {
-      this.roomsPageScene = new RoomsPageScene(pageSceneCreator, animationManager);
-    }
+    this.roomsPageScene.position.set(0, -920, -3270);
 
     scene.addSceneObject(this.roomsPageScene);
   },
 
   addScene() {
     this.addMainPageScene();
-
-    // this.addRoomsPageScene();
+    this.addRoomsPageScene();
   },
 };
