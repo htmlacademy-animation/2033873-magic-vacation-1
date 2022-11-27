@@ -1,4 +1,4 @@
-import { scene } from "./initAnimationScreen";
+import { infrastructure } from "./initAnimationScreen";
 import { LatheGeometryCreator } from "./creators/LatheGeometryCreator";
 import { MaterialCreator } from "./creators/MaterialCreator";
 import { MainPageScene } from "./scenes/main-page/MainPageScene";
@@ -7,9 +7,11 @@ import { EXTRUDE_SETTINGS, SVG_ELEMENTS } from "../constants";
 import { ExtrudeSvgCreator } from "./creators/ExtrudeSvgCreator";
 import { ObjectsCreator } from "./creators/ObjectCreator";
 import { RoomsPageScene } from "./scenes/room-page/RoomsPageScene";
-import { TransformationGuiHelper } from "./ProjectGui/TransformationGuiHelper";
+// import { TransformationGuiHelper } from "./ProjectGui/TransformationGuiHelper";
 import { PageSceneCreator } from "./scenes/PageSceneCreator";
 import { AnimationManager } from "./controllers/AnimationManager";
+import { CameraRig } from "./rigs/CameraRig/CameraRig";
+import * as THREE from "three";
 
 const materialCreator = new MaterialCreator();
 const latheGeometryCreator = new LatheGeometryCreator();
@@ -19,13 +21,13 @@ const extrudeSvgCreator = new ExtrudeSvgCreator(
   EXTRUDE_SETTINGS
 );
 const objectCreator = new ObjectsCreator();
-const transformationGuiHelper = new TransformationGuiHelper();
+// const transformationGuiHelper = new TransformationGuiHelper();
 const pageSceneCreator = new PageSceneCreator(
   materialCreator,
   extrudeSvgCreator,
   objectCreator,
   latheGeometryCreator,
-  transformationGuiHelper
+  // transformationGuiHelper
 );
 
 const animationManager = new AnimationManager();
@@ -35,7 +37,7 @@ export const sceneController = {
   roomsPageScene: null,
 
   clearScene() {
-    scene.clearScene();
+    infrastructure.clearScene();
     animationManager.clearAnimations();
   },
 
@@ -47,7 +49,7 @@ export const sceneController = {
       );
     }
 
-    scene.addSceneObject(this.mainPageScene);
+    infrastructure.addSceneObject(this.mainPageScene);
   },
 
   addRoomsPageScene() {
@@ -69,13 +71,50 @@ export const sceneController = {
       animationManager
     );
 
-    this.roomsPageScene.position.set(0, -920, -3270);
+    this.roomsPageScene.position.set(0, -700, -3270);
 
-    scene.addSceneObject(this.roomsPageScene);
+    infrastructure.addSceneObject(this.roomsPageScene);
+  },
+
+  addStagesListeners(buttons, cameraRig) {
+    const listener = (event) => {
+      if (!event) return;
+
+      const target = event.currentTarget;
+
+      if (!target) return;
+
+      cameraRig.changeStateTo(
+        CameraRig.getCameraRigStageState(Number(target.dataset.index))
+      );
+    };
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", listener);
+    });
   },
 
   addScene() {
     this.addMainPageScene();
     this.addRoomsPageScene();
+
+    const cameraRig = new CameraRig(CameraRig.getCameraRigStageState(0));
+
+    cameraRig.addObjectToCameraNull(infrastructure.camera);
+
+    cameraRig.addObjectToCameraNull(
+      new THREE.Mesh(
+        new THREE.SphereGeometry(50, 32, 32),
+        new THREE.MeshBasicMaterial({ color: "#ff0000" })
+      )
+    );
+    cameraRig.addObjectToCameraNull(infrastructure.light);
+
+    this.addStagesListeners(
+      [...document.querySelectorAll(".stage-button")],
+      cameraRig
+    );
+
+    infrastructure.scene.add(cameraRig);
   },
 };
