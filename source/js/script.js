@@ -10,6 +10,7 @@ import social from "./modules/social.js";
 import FullPageScroll from "./modules/full-page-scroll";
 import "./modules/accent-typography.js";
 import "./3d-animations/initAnimationScreen"
+import {SceneController} from './3d-animations/SceneController';
 
 // init modules
 mobileHeight();
@@ -21,9 +22,14 @@ result();
 form();
 social();
 
+export const sceneController = new SceneController()
+
 const fullPageScroll = new FullPageScroll();
 fullPageScroll.init();
 
 window.addEventListener(`load`, () => {
-  document.body.classList.add(`loaded`);
+  // fixme: поправить этот костыль после реализации контроля за загрузкой 3D сцены
+  setTimeout(()=>{
+    document.body.classList.add(`loaded`);
+  }, 2000)
 });
