@@ -113,7 +113,7 @@ export class RoomOneScene extends RoomScene {
     const bounceAngle = 1;
 
     this.animationManager.addRoomsPageAnimations(
-      1,
+      0,
       new Animation({
         func: (_, { startTime, currentTime }) => {
           group.rotation.z =
@@ -131,7 +131,7 @@ export class RoomOneScene extends RoomScene {
     saturn.traverse((obj) => {
       if (obj.isMesh && obj.name === MESH_NAMES.SaturnRing) {
         this.animationManager.addRoomsPageAnimations(
-          1,
+          0,
           new Animation({
             func: (_, { startTime, currentTime }) => {
               obj.rotation.x =
@@ -179,7 +179,7 @@ export class RoomOneScene extends RoomScene {
     dog.traverse((obj) => {
       if (obj.name === "Tail") {
         this.animationManager.addRoomsPageAnimations(
-          1,
+          0,
           new Animation({
             func: (_, { startTime, currentTime }) => {
               const time = ((currentTime - startTime) / 70) % (Math.PI * 6.5);

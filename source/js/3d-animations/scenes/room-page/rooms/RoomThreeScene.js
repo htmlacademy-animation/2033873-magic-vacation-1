@@ -113,7 +113,7 @@ export class RoomThreeScene extends RoomScene {
     compass.traverse((obj) => {
       if (obj.name === "Compas") {
         this.animationManager.addRoomsPageAnimations(
-          3,
+          2,
           new Animation({
             func: (_, { startTime, currentTime }) => {
               obj.rotation.z =

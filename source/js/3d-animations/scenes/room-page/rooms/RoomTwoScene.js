@@ -92,7 +92,7 @@ export class RoomTwoScene extends RoomScene {
     group.position.set(80, 20, 330);
 
     this.animationManager.addRoomsPageAnimations(
-      2,
+      1,
       new Animation({
         func: (_, { startTime, currentTime }) => {
           const time = ((currentTime - startTime) / 300) % 16;

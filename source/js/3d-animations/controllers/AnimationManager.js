@@ -2,9 +2,9 @@ export class AnimationManager {
   constructor() {
     this.animations = {
       mainPage: [],
-      roomsPage: [],
-      suitcase: []
-    }
+      roomsPage: [[], [], [], []],
+      suitcase: [],
+    };
   }
 
   addMainPageAnimations(...animations) {
@@ -12,7 +12,7 @@ export class AnimationManager {
   }
 
   addRoomsPageAnimations(key, ...animations) {
-    this.animations.roomsPage.push(...animations);
+    this.animations.roomsPage[key].push(...animations);
   }
 
   addSuitcaseAnimations(...animations) {
@@ -21,6 +21,24 @@ export class AnimationManager {
 
   startAnimations(key) {
     this.animations[key].forEach((animation) => {
+      animation.start();
+    });
+  }
+
+  startMainPageAnimations() {
+    this.animations.mainPage.forEach((animation) => {
+      animation.start();
+    });
+  }
+
+  startSuitcaseAnimations() {
+    this.animations.suitcase.forEach((animation) => {
+      animation.start();
+    });
+  }
+
+  startRoomAnimations(roomIndex) {
+    this.animations.roomsPage[roomIndex].forEach((animation) => {
       animation.start();
     });
   }

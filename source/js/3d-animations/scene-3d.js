@@ -47,7 +47,7 @@ export class Scene3d {
     });
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setClearColor(0x5f458c, 0);
+    this.renderer.setClearColor(0x5f458c, 1);
     this.renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
 
     // активируем тени только для больших экранов

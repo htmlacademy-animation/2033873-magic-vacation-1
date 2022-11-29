@@ -123,7 +123,7 @@ export class RoomFourScene extends RoomScene {
     });
 
     this.animationManager.addRoomsPageAnimations(
-      4,
+      3,
       new Animation({
         func: (_, { startTime, currentTime }) => {
           sonya.position.y =
@@ -137,7 +137,7 @@ export class RoomFourScene extends RoomScene {
     sonya.traverse((obj) => {
       if (obj.name === "RightHand") {
         this.animationManager.addRoomsPageAnimations(
-          4,
+          3,
           new Animation({
             func: (_, { startTime, currentTime }) => {
               obj.rotation.y =
@@ -151,7 +151,7 @@ export class RoomFourScene extends RoomScene {
         );
       } else if (obj.name === "LeftHand") {
         this.animationManager.addRoomsPageAnimations(
-          4,
+          3,
           new Animation({
             func: (_, { startTime, currentTime }) => {
               obj.rotation.y =

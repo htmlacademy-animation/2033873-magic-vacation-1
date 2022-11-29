@@ -34,6 +34,8 @@ const animationManager = new AnimationManager();
 export class SceneController {
   constructor() {
     this.previousRoomSceneIndex = 1;
+    this.isSuitcaseAppear = false;
+    this.isMainPageObjectsAppear = false;
   }
 
   async addMainPageScene() {
@@ -61,6 +63,15 @@ export class SceneController {
     await this.addMainPageScene();
     await this.addRoomsPageScene();
 
+    if (startSceneIndex === 0) {
+      animationManager.startMainPageAnimations();
+      this.isMainPageObjectsAppear = true;
+    } else {
+      animationManager.startRoomAnimations(0);
+      animationManager.startSuitcaseAnimations();
+      this.isSuitcaseAppear = true;
+    }
+
     this.addCameraRig(startSceneIndex);
   }
 
@@ -76,6 +87,13 @@ export class SceneController {
 
   showMainScene() {
     this.cameraRig.changeStateTo(CameraRig.getCameraRigStageState(0));
+
+    setTimeout(() => {
+      if (!this.isMainPageObjectsAppear) {
+        animationManager.startMainPageAnimations();
+        this.isMainPageObjectsAppear = true;
+      }
+    }, 500);
   }
 
   showRoomScene(index) {
@@ -86,5 +104,16 @@ export class SceneController {
     this.cameraRig.changeStateTo(
       CameraRig.getCameraRigStageState(index || this.previousRoomSceneIndex)
     );
+
+    animationManager.startRoomAnimations(
+      (index || this.previousRoomSceneIndex) - 1
+    );
+
+    setTimeout(() => {
+      if (!this.isSuitcaseAppear) {
+        animationManager.startSuitcaseAnimations();
+        this.isSuitcaseAppear = true;
+      }
+    }, 800);
   }
 }
