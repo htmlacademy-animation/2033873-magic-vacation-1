@@ -35,10 +35,15 @@ export class CameraRig extends THREE.Group {
     return -4750;
   }
 
-  constructor(stateParameters) {
+  constructor(stateParameters, sceneController) {
     super();
 
     this.stateParameters = stateParameters;
+    this.sceneController = sceneController;
+
+    this.keyholeCover = sceneController.mainPageScene.children.find(
+      ({ name }) => name === "keyholeCover"
+    );
 
     // Set internal parameters
     this._depth = this.stateParameters.depth || 0;
@@ -81,8 +86,28 @@ export class CameraRig extends THREE.Group {
 
   set depth(value) {
     if (value === this._depth) return;
+
     this._depth = value;
     this._depthChanged = true;
+
+    if (this.keyholeCover) {
+      let opacity;
+
+      const fullOpacityBreakpoint = -3700
+      const noOpacityBreakpoint = -3000
+
+      if (value < fullOpacityBreakpoint) {
+        opacity = 1;
+      } else if (value > noOpacityBreakpoint) {
+        opacity = 0;
+      } else {
+        opacity = (value - noOpacityBreakpoint) / (fullOpacityBreakpoint - noOpacityBreakpoint);
+      }
+
+      this.keyholeCover.opacity = opacity;
+
+      this.keyholeCover.invalidate();
+    }
   }
 
   get depth() {

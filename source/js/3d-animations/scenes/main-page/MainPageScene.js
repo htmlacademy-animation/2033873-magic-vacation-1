@@ -1,22 +1,12 @@
 import * as THREE from "three";
-import {
-  SVG_ELEMENTS,
-  OBJECT_ELEMENTS,
-  MATERIAL_TYPE,
-} from "../../../constants";
-import { MaterialCreator } from "../../creators/MaterialCreator";
-import { Saturn } from "../../mesh-complex-objects/Saturn";
-import {
-  createBounceAnimation,
-  createObjectTransformAnimation,
-} from "../../creators/animationCreators";
-import {
-  easeInOutSine,
-  easeOutCubic,
-  easeOutExpo,
-} from "../../../helpers/easing";
+import {MATERIAL_TYPE, OBJECT_ELEMENTS, SVG_ELEMENTS} from "../../../constants";
+import {MaterialCreator} from "../../creators/MaterialCreator";
+import {Saturn} from "../../mesh-complex-objects/Saturn";
+import {createBounceAnimation, createObjectTransformAnimation} from "../../creators/animationCreators";
+import {easeInOutSine, easeOutCubic, easeOutExpo} from "../../../helpers/easing";
 import Animation from "../../../Animation/Animation";
-import { AirplaneRig } from "../../rigs/AirplaneRig/AirplaneRig";
+import {AirplaneRig} from "../../rigs/AirplaneRig/AirplaneRig";
+import {KeyholeCover} from '../../mesh-complex-objects/KeyholeCover';
 
 export class MainPageScene extends THREE.Group {
   constructor(pageSceneCreator, animationManager) {
@@ -234,7 +224,7 @@ export class MainPageScene extends THREE.Group {
   async constructChildren() {
     await this.addMeshObjects();
     await this.addExtrudedSvgObjects();
-    this.addPlaneMeshBehindKeyhole();
+    this.addKeyholeCover();
 
     this.addSaturn();
 
@@ -244,7 +234,7 @@ export class MainPageScene extends THREE.Group {
   async addAeroplaneRig() {
     const airplaneRig = new AirplaneRig(this.pageSceneCreator);
 
-    await airplaneRig.constructRig()
+    await airplaneRig.constructRig();
 
     airplaneRig.position.x = 135;
 
@@ -369,20 +359,12 @@ export class MainPageScene extends THREE.Group {
     this.addMesh(saturn);
   }
 
-  addPlaneMeshBehindKeyhole() {
-    const meshBehindTheKeyHole = new THREE.Mesh(
-      new THREE.PlaneGeometry(400, 400, 2, 2),
-      this.pageSceneCreator.materialCreator.create(
-        MATERIAL_TYPE.BasicMaterial,
-        {
-          color: MaterialCreator.Colors.Purple,
-        }
-      )
-    );
+  addKeyholeCover() {
+    const keyholeCover = new KeyholeCover(this.pageSceneCreator)
 
-    meshBehindTheKeyHole.position.set(0, 0, -200);
+    keyholeCover.position.set(0, 0, -200);
 
-    this.addMesh(meshBehindTheKeyHole);
+    this.addMesh(keyholeCover);
   }
 
   addMesh(mesh) {
@@ -469,3 +451,4 @@ export class MainPageScene extends THREE.Group {
     return suitcasePositionWrapper;
   }
 }
+

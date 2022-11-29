@@ -184,7 +184,8 @@ export class SceneController {
 
   addCameraRig(startSceneIndex) {
     this.cameraRig = new CameraRig(
-      CameraRig.getCameraRigStageState(startSceneIndex)
+      CameraRig.getCameraRigStageState(startSceneIndex),
+      this
     );
 
     this.cameraRig.addObjectToCameraNull(infrastructure.camera);
