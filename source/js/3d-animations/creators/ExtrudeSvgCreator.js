@@ -4,9 +4,16 @@ export class ExtrudeSvgCreator {
   constructor(svgShapeLoader, settings) {
     this.svgShapeLoader = svgShapeLoader;
     this.settings = settings;
+
+    this.extrudedObjects = {};
   }
 
   async create(name, settings = {}, onLoad) {
+    if (this.extrudedObjects[name] && typeof onLoad === "function") {
+      onLoad.call(null, this.extrudedObjects[name]);
+      return;
+    }
+
     const currentSettings = { ...this.settings, ...settings };
 
     const group = new THREE.Group();
@@ -31,6 +38,6 @@ export class ExtrudeSvgCreator {
       }
     }
 
-    onLoad(group) ;
+    onLoad(group);
   }
 }
