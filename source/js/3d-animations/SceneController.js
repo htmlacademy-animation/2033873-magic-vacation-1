@@ -33,18 +33,11 @@ const animationManager = new AnimationManager();
 
 export class SceneController {
   constructor() {
-    this.isInit = false;
-
     this.previousRoomSceneIndex = 1;
   }
 
   addMainPageScene() {
-    if (!this.mainPageScene) {
-      this.mainPageScene = new MainPageScene(
-        pageSceneCreator,
-        animationManager
-      );
-    }
+    this.mainPageScene = new MainPageScene(pageSceneCreator, animationManager);
 
     infrastructure.addSceneObject(this.mainPageScene);
   }
@@ -60,13 +53,11 @@ export class SceneController {
     infrastructure.addSceneObject(this.roomsPageScene);
   }
 
-  initScene(startSceneIndex) {
+  async initScene(startSceneIndex) {
     this.addMainPageScene();
     this.addRoomsPageScene();
 
     this.addCameraRig(startSceneIndex);
-
-    this.isInit = true;
   }
 
   addCameraRig(startSceneIndex) {
