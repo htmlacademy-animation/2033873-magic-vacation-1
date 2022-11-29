@@ -121,6 +121,11 @@ export class CameraRig extends THREE.Group {
     }
   }
 
+
+  addObjectToRotationAxis(object) {
+    this.rotationAxis.add(object);
+  }
+
   addObjectToCameraNull(object) {
     this.cameraNull.add(object);
   }
