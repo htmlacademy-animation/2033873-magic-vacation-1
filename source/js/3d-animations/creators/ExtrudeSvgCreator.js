@@ -8,10 +8,9 @@ export class ExtrudeSvgCreator {
     this.extrudedObjects = {};
   }
 
-  async create(name, settings = {}, onLoad) {
-    if (this.extrudedObjects[name] && typeof onLoad === "function") {
-      onLoad.call(null, this.extrudedObjects[name]);
-      return;
+  async create(name, settings = {}) {
+    if (this.extrudedObjects[name]) {
+      return this.extrudedObjects[name].clone();
     }
 
     const currentSettings = { ...this.settings, ...settings };
@@ -38,6 +37,8 @@ export class ExtrudeSvgCreator {
       }
     }
 
-    onLoad(group);
+    this.extrudedObjects[name] = group;
+
+    return group;
   }
 }

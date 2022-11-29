@@ -10,51 +10,62 @@ export class RoomsComposition extends THREE.Group {
 
     this.pageSceneCreator = pageSceneCreator;
     this.animationManager = animationManager;
-
-    this.constructRooms();
   }
 
-  constructRooms() {
-    this.addRoomOne();
-    this.addRoomTwo();
-    this.addRoomThree();
-    this.addRoomFour();
+  async constructRooms() {
+    await this.addRoomOne();
+    await this.addRoomTwo();
+    await this.addRoomThree();
+    await this.addRoomFour();
   }
 
-  addRoomOne() {
-    this.add(new RoomOneScene(this.pageSceneCreator, this.animationManager));
+  async addRoomOne() {
+    const roomOne = new RoomOneScene(
+      this.pageSceneCreator,
+      this.animationManager
+    );
+
+    await roomOne.constructChildren();
+
+    this.add(roomOne);
   }
 
-  addRoomTwo() {
+  async addRoomTwo() {
     const roomTwo = new RoomTwoScene(
       this.pageSceneCreator,
       this.animationManager
     );
+
+    await roomTwo.constructChildren();
 
     roomTwo.rotateY(Math.PI / 2);
 
     this.add(roomTwo);
   }
 
-  addRoomThree() {
-    const roomTwo = new RoomThreeScene(
+  async addRoomThree() {
+    const roomThree = new RoomThreeScene(
       this.pageSceneCreator,
       this.animationManager
     );
 
-    roomTwo.rotateY(Math.PI);
+    await roomThree.constructChildren();
 
-    this.add(roomTwo);
+    roomThree.rotateY(Math.PI);
+
+    this.add(roomThree);
   }
 
-  addRoomFour() {
-    const roomTwo = new RoomFourScene(
+  async addRoomFour() {
+    const roomFour = new RoomFourScene(
       this.pageSceneCreator,
       this.animationManager
     );
 
-    roomTwo.rotateY(-Math.PI / 2);
+    await roomFour.constructChildren();
 
-    this.add(roomTwo);
+    roomFour.rotateY(-Math.PI / 2);
+
+    this.add(roomFour);
   }
 }

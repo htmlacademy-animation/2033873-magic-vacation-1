@@ -36,17 +36,21 @@ export class SceneController {
     this.previousRoomSceneIndex = 1;
   }
 
-  addMainPageScene() {
+  async addMainPageScene() {
     this.mainPageScene = new MainPageScene(pageSceneCreator, animationManager);
+
+    await this.mainPageScene.constructChildren();
 
     infrastructure.addSceneObject(this.mainPageScene);
   }
 
-  addRoomsPageScene() {
+  async addRoomsPageScene() {
     this.roomsPageScene = new RoomsPageScene(
       pageSceneCreator,
       animationManager
     );
+
+    await this.roomsPageScene.constructChildren();
 
     this.roomsPageScene.position.set(0, -700, -3270);
 
@@ -54,8 +58,8 @@ export class SceneController {
   }
 
   async initScene(startSceneIndex) {
-    this.addMainPageScene();
-    this.addRoomsPageScene();
+    await this.addMainPageScene();
+    await this.addRoomsPageScene();
 
     this.addCameraRig(startSceneIndex);
   }
