@@ -13,7 +13,7 @@ import { AnimationManager } from "./controllers/AnimationManager";
 import { CameraRig } from "./rigs/CameraRig/CameraRig";
 import { createObjectTransformAnimation } from "./creators/animationCreators";
 import { easeInCubic, easeInOutSine, easeOutCubic } from "../helpers/easing";
-import * as THREE from 'three';
+import * as THREE from "three";
 
 const materialCreator = new MaterialCreator();
 const latheGeometryCreator = new LatheGeometryCreator();
@@ -96,7 +96,7 @@ export class SceneController {
 
     this.suitcase = new THREE.Group();
 
-    this.suitcase.position.y = this.roomsPageScene.position.y
+    this.suitcase.position.y = this.roomsPageScene.position.y;
 
     this.suitcase.add(suitcase);
 
@@ -190,6 +190,11 @@ export class SceneController {
     this.cameraRig.addObjectToCameraNull(infrastructure.camera);
     this.cameraRig.addObjectToCameraNull(infrastructure.light);
     this.cameraRig.addObjectToRotationAxis(this.suitcase);
+
+    const pointerLight = new THREE.Group();
+    pointerLight.position.z = -CameraRig.getMinDepth();
+    pointerLight.add(infrastructure.pointerLight);
+    this.cameraRig.addObjectToRotationAxis(pointerLight);
 
     infrastructure.scene.add(this.cameraRig);
   }

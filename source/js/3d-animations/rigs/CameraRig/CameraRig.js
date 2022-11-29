@@ -9,7 +9,7 @@ export class CameraRig extends THREE.Group {
     if (index === 0) {
       return {
         index,
-        depth: -4750,
+        depth: CameraRig.getMaxDepth(),
         rotationAxisYAngle: 0,
         horizonIncline: 0,
       };
@@ -18,13 +18,21 @@ export class CameraRig extends THREE.Group {
     if ([1, 2, 3, 4].includes(index)) {
       return {
         index,
-        depth: -2150,
+        depth: CameraRig.getMinDepth(),
         rotationAxisYAngle: ((index - 1) * Math.PI) / 2,
         horizonIncline: -degreesToRadians(15),
       };
     }
 
     return {};
+  }
+
+  static getMinDepth() {
+    return -2150;
+  }
+
+  static getMaxDepth() {
+    return -4750;
   }
 
   constructor(stateParameters) {
@@ -120,7 +128,6 @@ export class CameraRig extends THREE.Group {
       this._rotationAxisYAngleChanged = false;
     }
   }
-
 
   addObjectToRotationAxis(object) {
     this.rotationAxis.add(object);
