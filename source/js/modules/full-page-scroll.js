@@ -2,7 +2,7 @@ import throttle from "lodash/throttle";
 import bodyTheme from "../helpers/body-theme";
 import { game } from "./game";
 import { prizesAnimation } from "./prizesAnimation";
-import {sceneController} from '../script';
+import { sceneController } from "../script";
 
 export default class FullPageScroll {
   constructor() {
@@ -74,16 +74,10 @@ export default class FullPageScroll {
     const isIntroPage = nextActiveScreen.classList.contains(`screen--intro`);
     const isStoryPage = nextActiveScreen.classList.contains(`screen--story`);
 
-    if (isIntroPage || isStoryPage) {
-      if (!sceneController.isInit) {
-        sceneController.initScene(isIntroPage ? 0 : 1);
-      }
-
-      if (isIntroPage) {
-        sceneController.showMainScene();
-      } else if (isStoryPage) {
-        sceneController.showRoomScene();
-      }
+    if (isIntroPage) {
+      sceneController.showMainScene();
+    } else if (isStoryPage) {
+      sceneController.showRoomScene();
     }
 
     if (
