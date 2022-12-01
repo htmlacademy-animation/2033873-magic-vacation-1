@@ -17,7 +17,11 @@ import { PageSceneCreator } from "./scenes/PageSceneCreator";
 import { AnimationManager } from "./controllers/AnimationManager";
 import { CameraRig } from "./rigs/CameraRig/CameraRig";
 import { createObjectTransformAnimation } from "./creators/animationCreators";
-import { easeInCubic, easeInOutSine, easeOutCubic } from "../helpers/easing";
+import {
+  easeInCubic,
+  easeInOutSine,
+  easeOutCubic,
+} from "../helpers/easing";
 import * as THREE from "three";
 import { degreesToRadians } from "./utils/degreesToRadians";
 
@@ -45,6 +49,8 @@ export class SceneController {
     this.previousRoomIndex = 1;
     this.isSuitcaseAppear = false;
     this.isMainPageObjectsAppear = false;
+
+    this.mouseEventHandlerTick = null;
 
     this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
   }
@@ -217,9 +223,12 @@ export class SceneController {
       ((this.previousRoomIndex - 1) * Math.PI) / 2
     );
 
-    this.cameraRig.changeStateTo(CameraRig.getCameraRigStageState(0, this.previousRoomIndex), () => {
-      window.addEventListener("mousemove", this.mouseMoveHandler);
-    });
+    this.cameraRig.changeStateTo(
+      CameraRig.getCameraRigStageState(0, this.previousRoomIndex),
+      () => {
+        window.addEventListener("mousemove", this.mouseMoveHandler);
+      }
+    );
 
     setTimeout(() => {
       if (!this.isMainPageObjectsAppear) {
@@ -257,12 +266,43 @@ export class SceneController {
   }
 
   mouseMoveHandler(ev) {
+    if (this.mouseEventHandlerTick) {
+      window.cancelAnimationFrame(this.mouseEventHandlerTick);
+    }
+
     const windowHeight = window.innerHeight;
 
-    const currentMouseYPosition =
-      (2 * (windowHeight / 2 - ev.y)) / windowHeight;
+    const targetMouseYPosition = (2 * (windowHeight / 2 - ev.y)) / windowHeight;
 
-    this.cameraRig.pitchRotation = degreesToRadians(4 * currentMouseYPosition);
-    this.cameraRig.invalidate();
+    const targetPitchRotation = degreesToRadians(4 * targetMouseYPosition);
+
+    let currentPitchRotation = this.cameraRig.pitchRotation;
+
+    const movePitchRotationCloserToTarget = (increase) => {
+      if (
+        (increase && currentPitchRotation > targetPitchRotation) ||
+        (!increase && currentPitchRotation < targetPitchRotation)
+      ) {
+        window.cancelAnimationFrame(this.mouseEventHandlerTick);
+        return;
+      }
+
+      if (increase) {
+        currentPitchRotation += 0.001;
+      } else {
+        currentPitchRotation -= 0.001;
+      }
+
+      this.cameraRig.pitchRotation = currentPitchRotation;
+      this.cameraRig.invalidate();
+      //
+      this.mouseEventHandlerTick = requestAnimationFrame(() => {
+        movePitchRotationCloserToTarget(increase);
+      });
+    };
+
+    movePitchRotationCloserToTarget(
+      targetPitchRotation > this.cameraRig.pitchRotation
+    );
   }
 }

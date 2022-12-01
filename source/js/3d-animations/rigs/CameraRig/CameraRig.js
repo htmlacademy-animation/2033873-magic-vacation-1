@@ -3,43 +3,64 @@ import { degreesToRadians } from "../../utils/degreesToRadians";
 import Animation from "../../../Animation/Animation";
 import { easeInOutSine } from "../../../helpers/easing";
 import { AnimationController } from "./AnimationController";
-import {BACKGROUND_AXIS_POSITION_Z} from '../../../constants';
+import { BACKGROUND_AXIS_POSITION_Z } from "../../../constants";
 
 export class CameraRig extends THREE.Group {
   static getCameraRigStageState(nextSceneIndex, prevRoomIndex = 1) {
+    // переход из комнаты на главную
     if (nextSceneIndex === 0) {
       return {
-        index: nextSceneIndex,
-        depth: CameraRig.getMaxDepth(),
-        rotationAxisYAngle: ((prevRoomIndex - 1) * Math.PI) / 2,
-        horizonIncline: 0,
-        pitchRotation: 0,
-        pitchDepth: 1405,
+        newStateParams: {
+          index: nextSceneIndex,
+          depth: CameraRig.getMaxDepth(),
+          rotationAxisYAngle: ((prevRoomIndex - 1) * Math.PI) / 2,
+          horizonIncline: 0,
+          pitchRotation: 0,
+          pitchDepth: 1405,
+        },
+        animationParams: {
+          duration: 1500,
+          easing: easeInOutSine,
+        },
       };
     }
 
-    if (typeof nextSceneIndex !== 'number') {
-        return {
+    // переход с главной к комнате
+    if (typeof nextSceneIndex !== "number") {
+      return {
+        newStateParams: {
           index: prevRoomIndex,
           depth: CameraRig.getMinDepth(),
           rotationAxisYAngle: ((prevRoomIndex - 1) * Math.PI) / 2,
           horizonIncline: -degreesToRadians(15),
           pitchRotation: 0,
           pitchDepth: 2200,
-        };
-    }
-
-    if ([1, 2, 3, 4].includes(nextSceneIndex)) {
-      return {
-        index: nextSceneIndex,
-        depth: CameraRig.getMinDepth(),
-        rotationAxisYAngle: ((nextSceneIndex - 1) * Math.PI) / 2,
-        horizonIncline: -degreesToRadians(15),
-        pitchDepth: 2200,
+        },
+        animationParams: {
+          duration: 1500,
+          easing: easeInOutSine,
+        },
       };
     }
 
-    return {};
+    // переход между комнатами
+    if ([1, 2, 3, 4].includes(nextSceneIndex)) {
+      return {
+        newStateParams: {
+          index: nextSceneIndex,
+          depth: CameraRig.getMinDepth(),
+          rotationAxisYAngle: ((nextSceneIndex - 1) * Math.PI) / 2,
+          horizonIncline: -degreesToRadians(15),
+          pitchDepth: 2200,
+        },
+        animationParams: {
+          duration: 700,
+          easing: easeInOutSine,
+        },
+      };
+    }
+
+    return { newStateParams: {}, animationParams: {} };
   }
 
   static getMinDepth() {
@@ -53,7 +74,7 @@ export class CameraRig extends THREE.Group {
   constructor(stateParameters, sceneController) {
     super();
 
-    this.stateParameters = stateParameters;
+    this.stateParameters = stateParameters.newStateParams;
 
     this.keyholeCover = sceneController.mainPageScene.children[0].children.find(
       ({ name }) => name === "keyholeCover"
@@ -73,8 +94,6 @@ export class CameraRig extends THREE.Group {
     this._pitchDepthChanged = true;
 
     this.animationController = new AnimationController();
-
-    this.animationFrameIndex = null;
 
     this.constructRigElements();
 
@@ -165,7 +184,7 @@ export class CameraRig extends THREE.Group {
   }
 
   get pitchRotation() {
-    return this._rotationAxisYAngle;
+    return this._pitchRotation;
   }
 
   set pitchRotation(value) {
@@ -229,7 +248,7 @@ export class CameraRig extends THREE.Group {
     this.cameraNull.add(object);
   }
 
-  changeStateTo(newStateParameters, onComplete) {
+  changeStateTo({ newStateParams, animationParams }, onComplete) {
     const initDepth = this._depth;
     const initHorizonIncline = this._horizonIncline;
     const initRotationAxisYAngle = this._rotationAxisYAngle;
@@ -239,43 +258,42 @@ export class CameraRig extends THREE.Group {
     this.animationController.start(
       new Animation({
         func: (progress) => {
-          if (typeof newStateParameters.depth === "number") {
+          if (typeof newStateParams.depth === "number") {
             this.depth =
-              initDepth + (newStateParameters.depth - initDepth) * progress;
+              initDepth + (newStateParams.depth - initDepth) * progress;
           }
 
-          if (typeof newStateParameters.horizonIncline === "number") {
+          if (typeof newStateParams.horizonIncline === "number") {
             this.horizonIncline =
               initHorizonIncline +
-              (newStateParameters.horizonIncline - initHorizonIncline) *
-                progress;
+              (newStateParams.horizonIncline - initHorizonIncline) * progress;
           }
 
-          if (typeof newStateParameters.rotationAxisYAngle === "number") {
+          if (typeof newStateParams.rotationAxisYAngle === "number") {
             this.rotationAxisYAngle =
               initRotationAxisYAngle +
-              (newStateParameters.rotationAxisYAngle - initRotationAxisYAngle) *
+              (newStateParams.rotationAxisYAngle - initRotationAxisYAngle) *
                 progress;
           }
 
-          if (typeof newStateParameters.pitchRotation === "number") {
+          if (typeof newStateParams.pitchRotation === "number") {
             this.pitchRotation =
               initPitchRotation +
-              (newStateParameters.pitchRotation - initPitchRotation) * progress;
+              (newStateParams.pitchRotation - initPitchRotation) * progress;
           }
 
-          if (typeof newStateParameters.pitchDepth === "number") {
+          if (typeof newStateParams.pitchDepth === "number") {
             this.pitchDepth =
               initPitchDepth +
-              (newStateParameters.pitchDepth - initPitchDepth) * progress;
+              (newStateParams.pitchDepth - initPitchDepth) * progress;
           }
 
           this.invalidate();
         },
-        duration: this.getTransitionDuration(newStateParameters.index),
-        easing: easeInOutSine,
+        duration: animationParams.duration,
+        easing: animationParams.easing,
         callback: () => {
-          this.setState(newStateParameters);
+          this.setState(newStateParams);
 
           if (typeof onComplete === "function") {
             onComplete();
@@ -283,13 +301,5 @@ export class CameraRig extends THREE.Group {
         },
       })
     );
-  }
-
-  getTransitionDuration(nextStateParametersIndex) {
-    if (nextStateParametersIndex === 0 || this.stateParameters.index === 0) {
-      return 1500;
-    }
-
-    return 700;
   }
 }
