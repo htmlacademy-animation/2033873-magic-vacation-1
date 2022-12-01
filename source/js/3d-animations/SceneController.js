@@ -219,6 +219,10 @@ export class SceneController {
   showMainScene() {
     window.removeEventListener("mousemove", this.mouseMoveHandler);
 
+    if (this.mouseEventHandlerTick) {
+      window.cancelAnimationFrame(this.mouseEventHandlerTick);
+    }
+
     this.mainPageScene.setRotationYAxis(
       ((this.previousRoomIndex - 1) * Math.PI) / 2
     );
@@ -240,6 +244,10 @@ export class SceneController {
 
   showRoomScene(nextRoomIndex) {
     window.removeEventListener("mousemove", this.mouseMoveHandler);
+
+    if (this.mouseEventHandlerTick) {
+      window.cancelAnimationFrame(this.mouseEventHandlerTick);
+    }
 
     if (typeof nextRoomIndex === "number") {
       this.previousRoomIndex = nextRoomIndex;
