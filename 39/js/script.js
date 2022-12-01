@@ -71270,6 +71270,10 @@ class SceneController {
   showMainScene() {
     window.removeEventListener("mousemove", this.mouseMoveHandler);
 
+    if (this.mouseEventHandlerTick) {
+      window.cancelAnimationFrame(this.mouseEventHandlerTick);
+    }
+
     this.mainPageScene.setRotationYAxis(
       ((this.previousRoomIndex - 1) * Math.PI) / 2
     );
@@ -71291,6 +71295,10 @@ class SceneController {
 
   showRoomScene(nextRoomIndex) {
     window.removeEventListener("mousemove", this.mouseMoveHandler);
+
+    if (this.mouseEventHandlerTick) {
+      window.cancelAnimationFrame(this.mouseEventHandlerTick);
+    }
 
     if (typeof nextRoomIndex === "number") {
       this.previousRoomIndex = nextRoomIndex;
@@ -73092,8 +73100,6 @@ class Scene3d {
     light.shadow.camera.far = distance;
 
     light.position.set(position[0], position[1], position[2]);
-
-    this.scene.add(new three__WEBPACK_IMPORTED_MODULE_0__["PointLightHelper"](light, 10));
 
     return light;
   }
@@ -75540,6 +75546,10 @@ class FullPageScroll {
   changeVisibilityDisplay() {
     const prevActiveScreen = document.querySelector(`.screen.active`);
     const nextActiveScreen = this.screenElements[this.activeScreen];
+
+    if (prevActiveScreen === nextActiveScreen) {
+      return;
+    }
 
     const isIntroPage = nextActiveScreen.classList.contains(`screen--intro`);
     const isStoryPage = nextActiveScreen.classList.contains(`screen--story`);
