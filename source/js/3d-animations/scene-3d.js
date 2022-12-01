@@ -126,8 +126,6 @@ export class Scene3d {
 
     light.position.set(position[0], position[1], position[2]);
 
-    this.scene.add(new THREE.PointLightHelper(light, 10));
-
     return light;
   }
 
