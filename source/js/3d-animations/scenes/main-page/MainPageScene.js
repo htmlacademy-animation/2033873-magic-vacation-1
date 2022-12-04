@@ -247,7 +247,7 @@ export class MainPageScene extends THREE.Group {
 
     await airplaneRig.constructRig();
 
-    airplaneRig.position.x = 135;
+    airplaneRig.position.x = 100;
 
     const initialFightRadius = airplaneRig.flightRadius;
     const initialFightHeight = airplaneRig.flightHeight;
@@ -277,7 +277,7 @@ export class MainPageScene extends THREE.Group {
                 (progress - 0.5) * Math.PI;
 
           airplaneRig.planeIncline =
-            initialPlaneIncline + (progress * Math.PI) / 5;
+            initialPlaneIncline + (progress * Math.PI) / 4.5;
 
           airplaneRig.invalidate(progress);
         },
