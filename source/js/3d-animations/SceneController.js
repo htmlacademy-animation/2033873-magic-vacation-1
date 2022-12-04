@@ -15,11 +15,12 @@ import { RoomsPageScene } from "./scenes/room-page/RoomsPageScene";
 // import { TransformationGuiHelper } from "./ProjectGui/TransformationGuiHelper";
 import { PageSceneCreator } from "./scenes/PageSceneCreator";
 import { AnimationManager } from "./controllers/AnimationManager";
-import { CameraRig } from "./rigs/CameraRig/CameraRig";
+import { CameraRigDesktop } from "./rigs/CameraRig/CameraRigDesktop";
 import { createObjectTransformAnimation } from "./creators/animationCreators";
 import { easeInCubic, easeInOutSine, easeOutCubic } from "../helpers/easing";
 import * as THREE from "three";
 import { degreesToRadians } from "./utils/degreesToRadians";
+import { CameraRigMobile } from "./rigs/CameraRig/CameraRigMobile";
 
 const materialCreator = new MaterialCreator();
 const latheGeometryCreator = new LatheGeometryCreator();
@@ -46,12 +47,22 @@ export class SceneController {
     this.isSuitcaseAppear = false;
     this.isMainPageObjectsAppear = false;
 
-    this.mouseEventHandlerTick = null;
+    this.eventHandlerTick = null;
 
     this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
+    this.touchMoveHandler = this.touchMoveHandler.bind(this);
+    this.onResize = this.onResize.bind(this);
+
+    window.addEventListener("resize", this.onResize);
+  }
+
+  onResize() {
+    this.addCameraRig();
   }
 
   async initScene(startSceneIndex) {
+    this.sceneIndex = startSceneIndex;
+
     await this.addMainPageScene();
     await this.addRoomsPageScene();
     await this.initSuitCase();
@@ -65,7 +76,7 @@ export class SceneController {
       this.isSuitcaseAppear = true;
     }
 
-    this.addCameraRig(startSceneIndex);
+    this.addCameraRig();
   }
 
   async addMainPageScene() {
@@ -194,39 +205,85 @@ export class SceneController {
     );
   }
 
-  addCameraRig(startSceneIndex) {
-    this.cameraRig = new CameraRig(
-      CameraRig.getCameraRigStageState(startSceneIndex),
-      this
-    );
-
-    this.cameraRig.addObjectToCameraNull(infrastructure.camera);
-    this.cameraRig.addObjectToCameraNull(infrastructure.light);
-    this.cameraRig.addObjectToRotationAxis(this.suitcase);
+  addDepsToCameraRig(cameraRigInstance) {
+    cameraRigInstance.addObjectToCameraNull(infrastructure.camera);
+    cameraRigInstance.addObjectToCameraNull(infrastructure.light);
+    cameraRigInstance.addObjectToRotationAxis(this.suitcase);
 
     const pointerLight = new THREE.Group();
     pointerLight.position.z = 2250;
     pointerLight.add(infrastructure.pointerLight);
-    this.cameraRig.addObjectToRotationAxis(pointerLight);
+    cameraRigInstance.addObjectToRotationAxis(pointerLight);
+  }
 
-    infrastructure.scene.add(this.cameraRig);
+  subscribeScreenMove() {
+    if ("ontouchmove" in window) {
+      window.addEventListener("touchmove", this.touchMoveHandler);
+    } else {
+      window.addEventListener("mousemove", this.mouseMoveHandler);
+    }
+  }
+
+  unsubscribeScreenMove() {
+    if ("ontouchmove" in window) {
+      window.removeEventListener("touchmove", this.touchMoveHandler);
+    } else {
+      window.removeEventListener("mousemove", this.mouseMoveHandler);
+    }
+
+    if (this.eventHandlerTick) {
+      window.cancelAnimationFrame(this.eventHandlerTick);
+    }
+  }
+
+  addCameraRig() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    if (height < 1 || width < 1) return;
+
+    // camera resize
+    if (width > height) {
+      if (this.cameraRig instanceof CameraRigDesktop) {
+        return;
+      }
+
+      infrastructure.scene.remove(this.cameraRig);
+
+      this.cameraRigDesktop = new CameraRigDesktop(this.sceneIndex, this);
+      this.addDepsToCameraRig(this.cameraRigDesktop);
+
+      this.cameraRig = this.cameraRigDesktop;
+
+      infrastructure.scene.add(this.cameraRig);
+    } else {
+      if (this.cameraRig instanceof CameraRigMobile) {
+        return;
+      }
+
+      infrastructure.scene.remove(this.cameraRig);
+
+      this.cameraRigMobile = new CameraRigMobile(this.sceneIndex, this);
+      this.addDepsToCameraRig(this.cameraRigMobile);
+
+      this.cameraRig = this.cameraRigMobile;
+      infrastructure.scene.add(this.cameraRig);
+    }
   }
 
   showMainScene() {
-    window.removeEventListener("mousemove", this.mouseMoveHandler);
+    this.sceneIndex = 0;
 
-    if (this.mouseEventHandlerTick) {
-      window.cancelAnimationFrame(this.mouseEventHandlerTick);
-    }
+    this.unsubscribeScreenMove();
 
     this.mainPageScene.setRotationYAxis(
       ((this.previousRoomIndex - 1) * Math.PI) / 2
     );
 
     this.cameraRig.changeStateTo(
-      CameraRig.getCameraRigStageState(0, this.previousRoomIndex),
+      this.cameraRig.getCameraRigStageState(0, this.previousRoomIndex),
       () => {
-        window.addEventListener("mousemove", this.mouseMoveHandler);
+        this.subscribeScreenMove();
       }
     );
 
@@ -244,26 +301,25 @@ export class SceneController {
       return;
     }
 
-    window.removeEventListener("mousemove", this.mouseMoveHandler);
+    this.sceneIndex = nextRoomIndex || this.previousRoomIndex;
 
-    if (this.mouseEventHandlerTick) {
-      window.cancelAnimationFrame(this.mouseEventHandlerTick);
-    }
+    this.unsubscribeScreenMove();
 
     if (typeof nextRoomIndex === "number") {
       this.previousRoomIndex = nextRoomIndex;
     }
 
     this.cameraRig.changeStateTo(
-      CameraRig.getCameraRigStageState(nextRoomIndex, this.previousRoomIndex),
+      this.cameraRig.getCameraRigStageState(
+        nextRoomIndex,
+        this.previousRoomIndex
+      ),
       () => {
-        window.addEventListener("mousemove", this.mouseMoveHandler);
+        this.subscribeScreenMove();
       }
     );
 
-    animationManager.startRoomAnimations(
-      (nextRoomIndex || this.previousRoomIndex) - 1
-    );
+    animationManager.startRoomAnimations(this.sceneIndex - 1);
 
     // начальное появление чемодана
     setTimeout(() => {
@@ -275,15 +331,30 @@ export class SceneController {
   }
 
   mouseMoveHandler(ev) {
-    if (this.mouseEventHandlerTick) {
-      window.cancelAnimationFrame(this.mouseEventHandlerTick);
+    const targetPositionY = ev.y;
+
+    this.handleMove(targetPositionY);
+  }
+
+  touchMoveHandler(ev) {
+    const targetPositionY = ev.targetTouches[0].clientY;
+
+    this.handleMove(targetPositionY);
+  }
+
+  handleMove(targetPositionY) {
+    if (this.eventHandlerTick) {
+      window.cancelAnimationFrame(this.eventHandlerTick);
     }
 
     const windowHeight = window.innerHeight;
 
-    const targetMouseYPosition = (2 * (windowHeight / 2 - ev.y)) / windowHeight;
+    const targetPositionYNormalized =
+      (2 * (windowHeight / 2 - targetPositionY)) / windowHeight;
 
-    const targetPitchRotation = degreesToRadians(4 * targetMouseYPosition);
+    const targetPitchRotation = degreesToRadians(
+      this.cameraRig.getMaxPitchRotation() * targetPositionYNormalized
+    );
 
     let currentPitchRotation = this.cameraRig.pitchRotation;
 
@@ -292,7 +363,7 @@ export class SceneController {
         (increase && currentPitchRotation > targetPitchRotation) ||
         (!increase && currentPitchRotation < targetPitchRotation)
       ) {
-        window.cancelAnimationFrame(this.mouseEventHandlerTick);
+        window.cancelAnimationFrame(this.eventHandlerTick);
         return;
       }
 
@@ -305,7 +376,7 @@ export class SceneController {
       this.cameraRig.pitchRotation = currentPitchRotation;
       this.cameraRig.invalidate();
       //
-      this.mouseEventHandlerTick = requestAnimationFrame(() => {
+      this.eventHandlerTick = requestAnimationFrame(() => {
         movePitchRotationCloserToTarget(increase);
       });
     };

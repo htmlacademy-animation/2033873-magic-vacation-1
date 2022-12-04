@@ -373,7 +373,7 @@ export class MainPageScene extends THREE.Group {
   addKeyholeCover() {
     const keyholeCover = new KeyholeCover(this.pageSceneCreator)
 
-    keyholeCover.position.set(0, 0, -200);
+    keyholeCover.position.set(0, 0, -700);
 
     this.addMesh(keyholeCover);
   }
