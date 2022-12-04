@@ -237,6 +237,10 @@ export class SceneController {
   }
 
   addCameraRig() {
+    this.mainPageScene.setRotationYAxis(
+      ((this.previousRoomIndex - 1) * Math.PI) / 2
+    );
+
     const width = window.innerWidth;
     const height = window.innerHeight;
 
