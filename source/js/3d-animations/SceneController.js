@@ -17,11 +17,7 @@ import { PageSceneCreator } from "./scenes/PageSceneCreator";
 import { AnimationManager } from "./controllers/AnimationManager";
 import { CameraRig } from "./rigs/CameraRig/CameraRig";
 import { createObjectTransformAnimation } from "./creators/animationCreators";
-import {
-  easeInCubic,
-  easeInOutSine,
-  easeOutCubic,
-} from "../helpers/easing";
+import { easeInCubic, easeInOutSine, easeOutCubic } from "../helpers/easing";
 import * as THREE from "three";
 import { degreesToRadians } from "./utils/degreesToRadians";
 
@@ -243,6 +239,11 @@ export class SceneController {
   }
 
   showRoomScene(nextRoomIndex) {
+    // если просто переключаем слайдер в рамках одной комнаты, то ничего не делаем
+    if (this.previousRoomIndex === nextRoomIndex) {
+      return;
+    }
+
     window.removeEventListener("mousemove", this.mouseMoveHandler);
 
     if (this.mouseEventHandlerTick) {
