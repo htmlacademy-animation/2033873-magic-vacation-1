@@ -2540,7 +2540,7 @@ body.purple .page-header__menu a:hover, body.purple .page-header__menu a:focus {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  padding: 14.6rem 0 7.7rem;
+  padding: 10rem 0 7.7rem;
   width: 100%;
 }
 @media (min-width: 2000px) {
@@ -2561,6 +2561,11 @@ body.purple .page-header__menu a:hover, body.purple .page-header__menu a:focus {
 @media (max-width: 768px) and (orientation: landscape) {
   .prizes {
     padding: 5rem 0 1.5rem;
+  }
+}
+@media (max-width: 768px) and (orientation: portrait) {
+  .prizes {
+    padding: 5rem 1rem 0 0;
   }
 }
 
@@ -2671,13 +2676,13 @@ body.purple .page-header__menu a:hover, body.purple .page-header__menu a:focus {
 @media (max-width: 768px) and (orientation: portrait) {
   .prizes__item {
     display: flex;
+    flex-direction: row-reverse;
     align-items: center;
     height: 20vh;
-    margin-left: 0;
-    margin-bottom: 2.8rem;
-  }
-  .prizes__item:last-child {
-    margin-bottom: 0;
+    margin: 0;
+    justify-content: space-between;
+    transition: none;
+    width: 100%;
   }
 }
 @media (max-width: 1024px) and (orientation: landscape) {
@@ -2689,13 +2694,16 @@ body.purple .page-header__menu a:hover, body.purple .page-header__menu a:focus {
   transition: transform 0.8s ease-out 3.3s;
   transform: translateX(330px);
 }
+.prizes__item--journeys.active {
+  transform: translateX(100px);
+}
 @media (max-width: 768px) and (orientation: portrait) {
   .prizes__item--journeys {
     transform: translateX(0);
   }
-}
-.prizes__item--journeys.active {
-  transform: translateX(100px);
+  .prizes__item--journeys.active {
+    transform: translateX(0);
+  }
 }
 .prizes__item--cases {
   transition: opacity 0.5s ease-out;
@@ -2717,6 +2725,14 @@ body.purple .page-header__menu a:hover, body.purple .page-header__menu a:focus {
 @media (max-width: 1024px) and (orientation: portrait) {
   .prizes__icon {
     margin-right: 3.8rem;
+  }
+}
+@media (max-width: 768px) and (orientation: portrait) {
+  .prizes__icon {
+    width: 12rem;
+    height: 11rem;
+    margin: 0;
+    transform: translateY(-2rem);
   }
 }
 .prizes__icon img {
@@ -2765,9 +2781,16 @@ body.purple .page-header__menu a:hover, body.purple .page-header__menu a:focus {
     font-size: 1.1rem;
   }
 }
-@media (max-width: 768px) and (orientation: landscape) {
+@media (max-width: 768px) and (orientation: portrait) {
   .prizes__desc {
     font-size: 0.8rem;
+    transform: none;
+  }
+  .prizes__item:nth-child(1) > .prizes__desc {
+    transform: none;
+  }
+  .prizes__item:nth-child(2) > .prizes__desc {
+    transform: none;
   }
 }
 .prizes__desc b {
