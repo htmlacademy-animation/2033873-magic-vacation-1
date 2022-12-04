@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { infrastructure } from "./initAnimationScreen";
+import { infrastructure } from "./initInfrastructure";
 import vertexShader from "../../shader/planeMeshShader/vertexShader.glsl";
 import fragmentShader from "../../shader/planeMeshShader/fragmentShader.glsl";
 

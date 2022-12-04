@@ -1,4 +1,4 @@
-import { infrastructure } from "./initAnimationScreen";
+import { infrastructure } from "./initInfrastructure";
 import { LatheGeometryCreator } from "./creators/LatheGeometryCreator";
 import { MaterialCreator } from "./creators/MaterialCreator";
 import { MainPageScene } from "./scenes/main-page/MainPageScene";
