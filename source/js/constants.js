@@ -54,6 +54,7 @@ export const EXTRUDE_SETTINGS = {
 };
 
 export const MESH_NAMES = {
+  Saturn: 'Saturn',
   SaturnRing: 'SaturnRing'
 }
 
