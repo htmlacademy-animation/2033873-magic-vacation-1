@@ -72482,6 +72482,7 @@ class MaterialCreator {
         matcap: this.textureLoader.load("./img/module-7/matcaps/Soft-Mat.png"),
         color: config.color,
         name: config.name,
+        side: config.side
       });
     }
   }
@@ -72499,6 +72500,7 @@ class MaterialCreator {
         matcap: this.textureLoader.load("./img/module-7/matcaps/Basic-Mat.png"),
         color: config.color,
         name: config.name,
+        side: config.side
       });
     }
   }
@@ -72518,6 +72520,7 @@ class MaterialCreator {
         ),
         color: config.color,
         name: config.name,
+        side: config.side
       });
     }
   }
