@@ -68,7 +68,8 @@ export class MaterialCreator {
     } else {
       return new THREE.MeshMatcapMaterial({
         matcap: this.textureLoader.load("./img/module-7/matcaps/Soft-Mat.png"),
-        ...config,
+        color: config.color,
+        name: config.name,
       });
     }
   }
@@ -84,7 +85,8 @@ export class MaterialCreator {
     } else {
       return new THREE.MeshMatcapMaterial({
         matcap: this.textureLoader.load("./img/module-7/matcaps/Basic-Mat.png"),
-        ...config,
+        color: config.color,
+        name: config.name,
       });
     }
   }
@@ -102,7 +104,8 @@ export class MaterialCreator {
         matcap: this.textureLoader.load(
           "./img/module-7/matcaps/Strong-Mat-SnowColor.png"
         ),
-        ...config,
+        color: config.color,
+        name: config.name,
       });
     }
   }
