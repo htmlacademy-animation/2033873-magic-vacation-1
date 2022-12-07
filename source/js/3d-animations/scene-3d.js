@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import {isDesktop} from '../constants';
+import { isDesktop } from "../constants";
 
 export class Scene3d {
   constructor(config = {}) {
@@ -24,6 +24,8 @@ export class Scene3d {
 
     this.resize();
 
+    this.customRenderer = null;
+
     window.addEventListener("resize", () => {
       this.resizeInProgress = true;
     });
@@ -44,18 +46,23 @@ export class Scene3d {
 
   initRenderer() {
     const devicePixelRatio = window.devicePixelRatio;
+    this.devicePixelRation = Math.min(devicePixelRatio, 2);
 
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvasElement,
       alpha: true,
       // @see: https://attackingpixels.com/tips-tricks-optimizing-three-js-performance/
-      antialias: devicePixelRatio <= 1,
+      antialias: this.devicePixelRation <= 1,
       powerPreference: "high-performance",
+
+      // подключен в связи с появлением артефактов в Chrome при активации EffectComposer
+      // @See: https://github.com/htmlacademy-animation/2033873-magic-vacation-1/pull/43#pullrequestreview-1207817966
+      logarithmicDepthBuffer: true,
     });
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setClearColor(0x5f458c, 1);
-    this.renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    this.renderer.setPixelRatio(this.devicePixelRation);
 
     // активируем тени только для больших экранов
     if (isDesktop) {
@@ -137,7 +144,20 @@ export class Scene3d {
   }
 
   render() {
+    if (this.customRenderer) {
+      this.customRenderer.render();
+      return;
+    }
+
     this.renderer.render(this.scene, this.camera);
+  }
+
+  setRenderer(renderer) {
+    this.customRenderer = renderer;
+  }
+
+  resetRender() {
+    this.customRenderer = null;
   }
 
   update() {
@@ -171,13 +191,6 @@ export class Scene3d {
     this.scene.add(meshObject);
 
     this.render();
-  }
-
-  setSceneObjects(...meshObjects) {
-    this.clearScene();
-
-    this.meshObjects.add(...meshObjects);
-    this.scene.add(...meshObjects);
   }
 
   resize() {

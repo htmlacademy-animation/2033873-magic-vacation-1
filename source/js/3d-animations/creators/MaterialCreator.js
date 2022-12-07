@@ -68,7 +68,9 @@ export class MaterialCreator {
     } else {
       return new THREE.MeshMatcapMaterial({
         matcap: this.textureLoader.load("./img/module-7/matcaps/Soft-Mat.png"),
-        ...config,
+        color: config.color,
+        name: config.name,
+        side: config.side || THREE.FrontSide
       });
     }
   }
@@ -84,7 +86,9 @@ export class MaterialCreator {
     } else {
       return new THREE.MeshMatcapMaterial({
         matcap: this.textureLoader.load("./img/module-7/matcaps/Basic-Mat.png"),
-        ...config,
+        color: config.color,
+        name: config.name,
+        side: config.side || THREE.FrontSide
       });
     }
   }
@@ -102,7 +106,9 @@ export class MaterialCreator {
         matcap: this.textureLoader.load(
           "./img/module-7/matcaps/Strong-Mat-SnowColor.png"
         ),
-        ...config,
+        color: config.color,
+        name: config.name,
+        side: config.side || THREE.FrontSide
       });
     }
   }
@@ -151,7 +157,7 @@ MaterialCreator.Colors = {
   Orange: "rgb(230, 80, 0)",
   Green: "rgb(0, 210, 134)",
   White: "rgb(255, 255, 255)",
-  SnowColor: "rgb(182, 206, 240",
+  SnowColor: "rgb(182, 206, 240)",
 };
 
 MaterialCreator.Config = {
