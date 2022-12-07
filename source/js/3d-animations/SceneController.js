@@ -468,29 +468,42 @@ export class SceneController {
           bubblePosition: new THREE.Vector2(0, -2 * 0.07),
           bubbleRadius: 0.06,
           startTime: 0,
+          startPositionX: 0.3,
           delay: 600,
-          getPositionX: (time) =>
-            0.3 +
-            0.02 * Math.exp(-0.05 * time) * Math.sin(Math.PI * time * 2.5),
+          getPositionX(time) {
+            return (
+              this.startPositionX +
+              0.02 * Math.exp(-0.05 * time) * Math.sin(Math.PI * time * 2.5)
+            );
+          },
           getPositionY: (y) => y + 0.005,
         }),
         bubble2: new THREE.Uniform({
           bubblePosition: new THREE.Vector2(0, -2 * 0.06),
           bubbleRadius: 0.07,
           startTime: 0,
+          startPositionX: 0.4,
           delay: 0,
-          getPositionX: (time) =>
-            0.4 +
-            0.03 * Math.exp(-0.05 * time) * Math.sin(Math.PI * time * 2.5),
+          getPositionX(time) {
+            return (
+              this.startPositionX +
+              0.03 * Math.exp(-0.05 * time) * Math.sin(Math.PI * time * 2.5)
+            );
+          },
           getPositionY: (y) => y + 0.005,
         }),
         bubble3: new THREE.Uniform({
           bubblePosition: new THREE.Vector2(0, -2 * 0.04),
           bubbleRadius: 0.04,
+          startPositionX: 0.5,
           startTime: 0,
           delay: 1000,
-          getPositionX: (time) =>
-            0.5 + 0.01 * Math.exp(-0.05 * time) * Math.sin(Math.PI * time * 2),
+          getPositionX(time) {
+            return (
+              this.startPositionX +
+              0.01 * Math.exp(-0.05 * time) * Math.sin(Math.PI * time * 2)
+            );
+          },
           getPositionY: (y) => y + 0.006,
         }),
         hasBubbles: new THREE.Uniform(false),
@@ -529,6 +542,7 @@ export class SceneController {
 
             if (bubble.bubblePosition.y > 1.0 + 2 * bubble.bubbleRadius) {
               bubble.bubblePosition.y = -2 * bubble.bubbleRadius;
+              bubble.startPositionX = Math.random();
               bubble.startTime = currentTime;
             }
 
