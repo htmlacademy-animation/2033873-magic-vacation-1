@@ -72141,29 +72141,42 @@ class SceneController {
           bubblePosition: new three__WEBPACK_IMPORTED_MODULE_13__["Vector2"](0, -2 * 0.07),
           bubbleRadius: 0.06,
           startTime: 0,
+          startPositionX: 0.3,
           delay: 600,
-          getPositionX: (time) =>
-            0.3 +
-            0.02 * Math.exp(-0.05 * time) * Math.sin(Math.PI * time * 2.5),
+          getPositionX(time) {
+            return (
+              this.startPositionX +
+              0.02 * Math.exp(-0.05 * time) * Math.sin(Math.PI * time * 2.5)
+            );
+          },
           getPositionY: (y) => y + 0.005,
         }),
         bubble2: new three__WEBPACK_IMPORTED_MODULE_13__["Uniform"]({
           bubblePosition: new three__WEBPACK_IMPORTED_MODULE_13__["Vector2"](0, -2 * 0.06),
           bubbleRadius: 0.07,
           startTime: 0,
+          startPositionX: 0.4,
           delay: 0,
-          getPositionX: (time) =>
-            0.4 +
-            0.03 * Math.exp(-0.05 * time) * Math.sin(Math.PI * time * 2.5),
+          getPositionX(time) {
+            return (
+              this.startPositionX +
+              0.03 * Math.exp(-0.05 * time) * Math.sin(Math.PI * time * 2.5)
+            );
+          },
           getPositionY: (y) => y + 0.005,
         }),
         bubble3: new three__WEBPACK_IMPORTED_MODULE_13__["Uniform"]({
           bubblePosition: new three__WEBPACK_IMPORTED_MODULE_13__["Vector2"](0, -2 * 0.04),
           bubbleRadius: 0.04,
+          startPositionX: 0.5,
           startTime: 0,
           delay: 1000,
-          getPositionX: (time) =>
-            0.5 + 0.01 * Math.exp(-0.05 * time) * Math.sin(Math.PI * time * 2),
+          getPositionX(time) {
+            return (
+              this.startPositionX +
+              0.01 * Math.exp(-0.05 * time) * Math.sin(Math.PI * time * 2)
+            );
+          },
           getPositionY: (y) => y + 0.006,
         }),
         hasBubbles: new three__WEBPACK_IMPORTED_MODULE_13__["Uniform"](false),
@@ -72202,6 +72215,7 @@ class SceneController {
 
             if (bubble.bubblePosition.y > 1.0 + 2 * bubble.bubbleRadius) {
               bubble.bubblePosition.y = -2 * bubble.bubbleRadius;
+              bubble.startPositionX = Math.random();
               bubble.startTime = currentTime;
             }
 
@@ -72482,7 +72496,7 @@ class MaterialCreator {
         matcap: this.textureLoader.load("./img/module-7/matcaps/Soft-Mat.png"),
         color: config.color,
         name: config.name,
-        side: config.side
+        side: config.side || three__WEBPACK_IMPORTED_MODULE_0__["FrontSide"]
       });
     }
   }
@@ -72500,7 +72514,7 @@ class MaterialCreator {
         matcap: this.textureLoader.load("./img/module-7/matcaps/Basic-Mat.png"),
         color: config.color,
         name: config.name,
-        side: config.side
+        side: config.side || three__WEBPACK_IMPORTED_MODULE_0__["FrontSide"]
       });
     }
   }
@@ -72520,7 +72534,7 @@ class MaterialCreator {
         ),
         color: config.color,
         name: config.name,
-        side: config.side
+        side: config.side || three__WEBPACK_IMPORTED_MODULE_0__["FrontSide"]
       });
     }
   }
@@ -72569,7 +72583,7 @@ MaterialCreator.Colors = {
   Orange: "rgb(230, 80, 0)",
   Green: "rgb(0, 210, 134)",
   White: "rgb(255, 255, 255)",
-  SnowColor: "rgb(182, 206, 240",
+  SnowColor: "rgb(182, 206, 240)",
 };
 
 MaterialCreator.Config = {
@@ -74294,7 +74308,7 @@ class Scene3d {
 
   initRenderer() {
     const devicePixelRatio = window.devicePixelRatio;
-    this.devicePixelRation = Math.min(devicePixelRatio, 2)
+    this.devicePixelRation = Math.min(devicePixelRatio, 2);
 
     this.renderer = new three__WEBPACK_IMPORTED_MODULE_0__["WebGLRenderer"]({
       canvas: this.canvasElement,
@@ -74302,6 +74316,10 @@ class Scene3d {
       // @see: https://attackingpixels.com/tips-tricks-optimizing-three-js-performance/
       antialias: this.devicePixelRation <= 1,
       powerPreference: "high-performance",
+
+      // подключен в связи с появлением артефактов в Chrome при активации EffectComposer
+      // @See: https://github.com/htmlacademy-animation/2033873-magic-vacation-1/pull/43#pullrequestreview-1207817966
+      logarithmicDepthBuffer: true,
     });
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
