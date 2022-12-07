@@ -46,7 +46,7 @@ export class Scene3d {
 
   initRenderer() {
     const devicePixelRatio = window.devicePixelRatio;
-    this.devicePixelRation = Math.min(devicePixelRatio, 2)
+    this.devicePixelRation = Math.min(devicePixelRatio, 2);
 
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvasElement,
@@ -54,6 +54,10 @@ export class Scene3d {
       // @see: https://attackingpixels.com/tips-tricks-optimizing-three-js-performance/
       antialias: this.devicePixelRation <= 1,
       powerPreference: "high-performance",
+
+      // подключен в связи с появлением артефактов в Chrome при активации EffectComposer
+      // @See: https://github.com/htmlacademy-animation/2033873-magic-vacation-1/pull/43#pullrequestreview-1207817966
+      logarithmicDepthBuffer: true,
     });
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
