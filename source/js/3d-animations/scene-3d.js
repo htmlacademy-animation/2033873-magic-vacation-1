@@ -46,7 +46,11 @@ export class Scene3d {
 
   initRenderer() {
     const devicePixelRatio = window.devicePixelRatio;
-    this.devicePixelRation = Math.min(devicePixelRatio, 2);
+    // для мобильных устройств делаем картинку более четкой
+    this.devicePixelRation =
+      window.innerHeight > window.innerWidth
+        ? Math.min(devicePixelRatio, 2)
+        : Math.min(devicePixelRatio, 1.5);
 
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvasElement,

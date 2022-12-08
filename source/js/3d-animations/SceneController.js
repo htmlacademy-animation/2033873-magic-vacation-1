@@ -476,7 +476,7 @@ export class SceneController {
               0.02 * Math.exp(-0.05 * time) * Math.sin(Math.PI * time * 2.5)
             );
           },
-          getPositionY: (y) => y + 0.005,
+          getPositionY: (y) => y + 0.01,
         }),
         bubble2: new THREE.Uniform({
           bubblePosition: new THREE.Vector2(0, -2 * 0.06),
@@ -490,7 +490,7 @@ export class SceneController {
               0.03 * Math.exp(-0.05 * time) * Math.sin(Math.PI * time * 2.5)
             );
           },
-          getPositionY: (y) => y + 0.005,
+          getPositionY: (y) => y + 0.01,
         }),
         bubble3: new THREE.Uniform({
           bubblePosition: new THREE.Vector2(0, -2 * 0.04),
@@ -504,7 +504,7 @@ export class SceneController {
               0.01 * Math.exp(-0.05 * time) * Math.sin(Math.PI * time * 2)
             );
           },
-          getPositionY: (y) => y + 0.006,
+          getPositionY: (y) => y + 0.012,
         }),
         hasBubbles: new THREE.Uniform(false),
       },
