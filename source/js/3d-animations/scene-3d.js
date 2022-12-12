@@ -18,10 +18,6 @@ export class Scene3d {
 
     this.render();
 
-    if (config.enableAnimation) {
-      this.update();
-    }
-
     this.resize();
 
     this.customRenderer = null;
@@ -177,7 +173,19 @@ export class Scene3d {
       });
     }
 
-    requestAnimationFrame(this.update);
+    this.cancelAnimationFrameId = requestAnimationFrame(this.update);
+  }
+
+  startAnimation() {
+    this.stopAnimation();
+
+    this.update();
+  }
+
+  stopAnimation() {
+    if (this.cancelAnimationFrameId) {
+      window.cancelAnimationFrame(this.cancelAnimationFrameId);
+    }
   }
 
   clearScene() {

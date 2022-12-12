@@ -58,7 +58,6 @@ export class SceneController {
     this.infrastructure = new Scene3d({
       elementId: "canvas--animation-screen",
       cameraConfig: { fov: 35, near: 1, far: 5500 },
-      enableAnimation: true,
       // stats: [stats1, stats2]
     });
     this.diceLoader = diceLoader;
@@ -92,6 +91,10 @@ export class SceneController {
     await this.addRoomsPageScene();
     await this.initSuitCase();
 
+    this.addCameraRig();
+
+    this.infrastructure.startAnimation();
+
     if (startSceneIndex === 0) {
       animationManager.startMainPageAnimations();
       this.isMainPageObjectsAppear = true;
@@ -100,8 +103,14 @@ export class SceneController {
       animationManager.startSuitcaseAnimations();
       this.isSuitcaseAppear = true;
     }
+  }
 
-    this.addCameraRig();
+  startAnimation() {
+    this.infrastructure.startAnimation()
+  }
+
+  stopAnimation() {
+    this.infrastructure.stopAnimation()
   }
 
   async addMainPageScene() {
