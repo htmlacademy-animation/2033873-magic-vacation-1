@@ -95,6 +95,10 @@ export default class FullPageScroll {
       prevActiveScreen && prevActiveScreen.classList.contains(`screen--story`);
     const isPrevGamePage =
       prevActiveScreen && prevActiveScreen.classList.contains(`screen--game`);
+    const isPrevPrizesPage =
+      prevActiveScreen && prevActiveScreen.classList.contains(`screen--prizes`);
+    const isPrevRulesPage =
+      prevActiveScreen && prevActiveScreen.classList.contains(`screen--rules`);
 
     if (isNextIntroPage) {
       sceneController.showMainScene();
@@ -134,13 +138,22 @@ export default class FullPageScroll {
       (isPrevIntroPage || isPrevStoryPage) &&
       (isNextGamePage || isNextRulesPage || isNextPrizesPage)
     ) {
-      if (nextActiveScreen.classList.contains(`screen--prizes`)) {
+      if (isNextPrizesPage) {
         setTimeout(() => {
           prizesAnimation.start();
         }, 500);
       }
 
       this.showTransitionScreen(prevActiveScreen, nextActiveScreen);
+
+      return;
+    }
+
+    if (isPrevPrizesPage || isPrevRulesPage || isPrevGamePage) {
+      this.transitionBetweenScreenWithOpacity(
+        prevActiveScreen,
+        nextActiveScreen
+      );
 
       return;
     }
@@ -175,6 +188,30 @@ export default class FullPageScroll {
       }
 
       document.documentElement.classList.remove(`is-transitioning`);
+      this.transitionBackground.classList.remove(
+        `transition--background__show`
+      );
+    }, 400);
+  }
+
+  /**
+   * Запускаем плавный переход между экранами через исчезновение
+   *
+   * @param {HTMLElement} prevActiveScreen
+   * @param {HTMLElement} nextActiveScreen
+   */
+  transitionBetweenScreenWithOpacity(prevActiveScreen, nextActiveScreen) {
+    prevActiveScreen.classList.add("screen--fadeOut");
+    this.transitionBackground.classList.add(`transition--background__show`);
+
+    setTimeout(() => {
+      prevActiveScreen.classList.remove(`screen--fadeOut`);
+
+      nextActiveScreen.classList.remove(`screen--hidden`);
+      nextActiveScreen.classList.add(`active`);
+
+      prevActiveScreen.classList.remove(`active`);
+      prevActiveScreen.classList.add(`screen--hidden`);
       this.transitionBackground.classList.remove(
         `transition--background__show`
       );
