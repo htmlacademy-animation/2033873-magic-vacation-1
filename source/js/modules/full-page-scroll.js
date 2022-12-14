@@ -202,7 +202,6 @@ export default class FullPageScroll {
    */
   transitionBetweenScreenWithOpacity(prevActiveScreen, nextActiveScreen) {
     prevActiveScreen.classList.add("screen--fadeOut");
-    this.transitionBackground.classList.add(`transition--background__show`);
 
     setTimeout(() => {
       prevActiveScreen.classList.remove(`screen--fadeOut`);
@@ -212,9 +211,6 @@ export default class FullPageScroll {
 
       prevActiveScreen.classList.remove(`active`);
       prevActiveScreen.classList.add(`screen--hidden`);
-      this.transitionBackground.classList.remove(
-        `transition--background__show`
-      );
     }, 400);
   }
 
