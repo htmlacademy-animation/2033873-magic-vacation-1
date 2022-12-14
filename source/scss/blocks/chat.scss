@@ -53,10 +53,32 @@
 
 .chat__list {
   @include list-reset;
+  @include hide-scrollbar;
   display: flex;
   flex-direction: column;
-  margin-top: auto;
+
+  flex-grow: 1;
+
+  padding-top: calc(100vh - 33.9rem);
+  overflow: scroll;
+
+  @media (min-width: $stop-scaling) {
+    padding-top: calc(100vh - 339px);
+  }
+
+  @media (orientation: portrait) {
+    padding-top: calc(var(--vh, 1vh) * 100 - 22.4rem);
+  }
+
+  @media (max-width: $tablet) and (orientation: landscape) {
+    padding-top: calc(var(--vh, 1vh) * 100 - 25rem);
+  }
+
+  @media (max-width: $mobile) and (orientation: landscape) {
+    padding-top: calc(var(--vh, 1vh) * 100 - 16rem);
+  }
 }
+
 
 .chat__message {
   flex: none;
