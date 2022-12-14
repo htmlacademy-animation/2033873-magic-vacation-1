@@ -6,7 +6,7 @@ const introTitle = new AccentTypographyBuild(document.querySelector(`.intro__tit
 });
 
 const introDate = new AccentTypographyBuild(document.querySelector(`.intro__date`), {
-  letterDelays: [3, 1, 1, 4, 0, 0, 1, 2, 0, 0, 3, 2, 1],
+  letterDelays: [3, 1, 2, 4, 0, 0, 1, 2, 0, 0, 3, 2, 1],
   delay: 800,
 });
 
